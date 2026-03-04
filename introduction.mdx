@@ -1,0 +1,192 @@
+---
+title: Welcome to Okulink Safaris
+description: Comprehensive documentation for Kenya's premier safari tour booking and management platform
+mode: custom
+---
+
+<div className="relative overflow-hidden bg-gradient-to-br from-[#9d4c35] via-[#4f2d31] to-[#1a1d27] dark:from-[#9d4c35] dark:via-[#4f2d31] dark:to-[#0f1117] py-20">
+  <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-center">
+      <div className="lg:col-span-7">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
+          Welcome to Okulink Safaris Documentation
+        </h1>
+        <p className="text-lg sm:text-xl text-gray-100 dark:text-gray-200 max-w-2xl mb-8">
+          Build and manage unforgettable safari experiences across Kenya. Complete guides for users, administrators, and developers.
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <a 
+            href="/quickstart" 
+            className="inline-flex items-center px-6 py-3 rounded-lg bg-white text-[#9d4c35] font-semibold hover:bg-gray-100 transition-colors"
+          >
+            Get Started
+            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a 
+            href="/api/overview" 
+            className="inline-flex items-center px-6 py-3 rounded-lg border-2 border-white/30 bg-white/10 text-white font-semibold hover:bg-white/20 transition-colors"
+          >
+            API Reference
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Quick start</h2>
+  <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+    Get up and running with Okulink Safaris in minutes
+  </p>
+
+  <Steps>
+    <Step title="Create your account">
+      Register for an account to start exploring safari tours and making bookings.
+      
+      ```bash
+      POST /register
+      {
+        "name": "John Doe",
+        "email": "john@example.com",
+        "password": "secure_password"
+      }
+      ```
+      
+      <Note>Email verification is required before you can make bookings.</Note>
+    </Step>
+
+    <Step title="Browse available tours">
+      Explore our curated collection of safari tours across Kenya's most spectacular destinations.
+      
+      ```bash
+      GET /safaris
+      ```
+      
+      Filter by category, duration, or price to find the perfect safari experience.
+    </Step>
+
+    <Step title="Make your first booking">
+      Select your preferred tour and complete the booking process.
+      
+      ```bash
+      POST /bookings/new
+      {
+        "tour_id": 1,
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john@example.com",
+        "phone_number": "+254712345678",
+        "adults": 2,
+        "kids": 1
+      }
+      ```
+      
+      <Info>You'll receive a confirmation email with your booking details.</Info>
+    </Step>
+
+    <Step title="Manage your bookings">
+      View and manage all your bookings from your profile dashboard.
+      
+      ```bash
+      GET /profile
+      ```
+    </Step>
+  </Steps>
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Explore by topic</h2>
+  <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+    Find what you need to get the most out of Okulink Safaris
+  </p>
+
+  <CardGroup cols={3}>
+    <Card title="Tours & safaris" icon="binoculars" href="/features/tours-safaris">
+      Browse and manage safari tour packages across Kenya
+    </Card>
+    <Card title="Bookings" icon="calendar-check" href="/features/bookings">
+      Complete booking system with email notifications
+    </Card>
+    <Card title="Accommodations" icon="hotel" href="/features/accommodations">
+      Discover lodges, camps, and hotels for your safari
+    </Card>
+    <Card title="Events" icon="calendar-days" href="/features/events">
+      Stay updated on upcoming safari events and experiences
+    </Card>
+    <Card title="Products & services" icon="bag-shopping" href="/features/products-services">
+      Additional travel products and safari services
+    </Card>
+    <Card title="Blog" icon="newspaper" href="/features/blog">
+      Latest stories and guides from Kenya's safari world
+    </Card>
+  </CardGroup>
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">For administrators</h2>
+  <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+    Manage content, bookings, and users through the admin dashboard
+  </p>
+
+  <CardGroup cols={2}>
+    <Card title="Admin dashboard" icon="gauge-high" href="/admin-guide/dashboard">
+      Overview of your platform's performance and metrics
+    </Card>
+    <Card title="Managing tours" icon="map-location-dot" href="/admin-guide/managing-tours">
+      Create, edit, and publish safari tour packages
+    </Card>
+    <Card title="Managing bookings" icon="clipboard-list" href="/admin-guide/managing-bookings">
+      Process and confirm customer bookings
+    </Card>
+    <Card title="Content management" icon="pen-to-square" href="/admin-guide/content-management">
+      Manage blogs, events, products, and services
+    </Card>
+  </CardGroup>
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Developer resources</h2>
+  <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+    Technical documentation for integrating with Okulink Safaris
+  </p>
+
+  <CardGroup cols={2}>
+    <Card title="API overview" icon="code" href="/api/overview">
+      REST API endpoints and conventions
+    </Card>
+    <Card title="Authentication" icon="key" href="/api/authentication">
+      Laravel Sanctum authentication with email verification
+    </Card>
+    <Card title="Routes reference" icon="route" href="/api/routes/tours">
+      Complete reference of all available routes
+    </Card>
+    <Card title="Data models" icon="database" href="/api/models/tours">
+      Database schema and model relationships
+    </Card>
+  </CardGroup>
+</div>
+
+<div className="mt-20 mb-16 max-w-5xl mx-auto px-6">
+  <div className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-[#27272a] bg-gradient-to-br from-[#9d4c35]/10 to-[#4f2d31]/10 dark:from-[#9d4c35]/20 dark:to-[#4f2d31]/20 p-8 lg:p-12">
+    <div className="relative z-10">
+      <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+        Ready to get started?
+      </h2>
+      <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-2xl">
+        Follow our quickstart guide to set up your development environment and make your first API call.
+      </p>
+      <a 
+        href="/quickstart" 
+        className="inline-flex items-center px-6 py-3 rounded-lg bg-[#9d4c35] text-white font-semibold hover:bg-[#8a4330] transition-colors"
+      >
+        Get Started
+        <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>

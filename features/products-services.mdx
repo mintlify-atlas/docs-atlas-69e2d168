@@ -1,0 +1,506 @@
+---
+title: 'Products & Services'
+description: 'Manage additional products and services to complement safari experiences'
+icon: 'cart-shopping'
+---
+
+## Overview
+
+The Products and Services features allow Okulink Safaris to offer supplementary items and services that enhance the safari experience. From safari gear and equipment to specialized services like photography packages and transport arrangements, these features provide additional revenue streams and customer convenience.
+
+<Note>
+Products and Services are separate features with similar functionality but distinct purposes. Products are physical items available for purchase, while Services are intangible offerings provided to customers.
+</Note>
+
+## Products Feature
+
+### Key Features
+
+<CardGroup cols={2}>
+  <Card title="Inventory Tracking" icon="boxes-stacked">
+    Monitor product availability with quantity management
+  </Card>
+  <Card title="Rich Media" icon="images">
+    Showcase products with up to 6 images per listing
+  </Card>
+  <Card title="Category Organization" icon="tags">
+    Organize products by type for easy browsing
+  </Card>
+  <Card title="Price Management" icon="dollar-sign">
+    Set and update product pricing easily
+  </Card>
+</CardGroup>
+
+### Product Information
+
+#### Database Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Product name |
+| `slug` | string | URL-friendly identifier (unique) |
+| `category` | string | Product category or type |
+| `location` | string | Where product is available/sourced |
+| `price` | string | Product price |
+| `quantity_available` | integer | Current stock level |
+| `description` | text | Detailed product information |
+| `image` - `image6` | string | Up to 6 product images |
+| `user_id` | integer | Administrator who created the listing |
+| `published` | integer | Publication status (0 = draft, 1 = published) |
+
+### Creating a Product
+
+<Steps>
+  <Step title="Access Product Creation">
+    Navigate to `/product/new` (route name: `products.create`) from the admin dashboard
+    
+    <Info>Requires authentication and email verification</Info>
+  </Step>
+  
+  <Step title="Enter Product Details">
+    Complete all required fields:
+    
+    - **Name**: Product name (e.g., "Professional Binoculars 10x42")
+    - **Category**: Product type (e.g., "Safari Equipment", "Clothing", "Photography Gear")
+    - **Location**: Availability location or source
+    - **Price**: Product cost
+    - **Quantity Available**: Current stock level
+    - **Description**: Comprehensive product details, specifications, and benefits
+  </Step>
+  
+  <Step title="Upload Product Images">
+    - **Main Image**: Primary product photo (required)
+    - **Second Image**: Alternative view or detail shot (required)
+    - **Additional Images**: Up to 4 more images showing different angles, features, or uses (optional)
+  </Step>
+  
+  <Step title="Create Product">
+    Submit to save the product. The system will:
+    - Generate a slug from the product name
+    - Store all images
+    - Create product in draft mode
+    - Associate with your user account
+    - Redirect to products management page
+  </Step>
+</Steps>
+
+### Product Management
+
+#### Viewing Products
+
+<Tabs>
+  <Tab title="Admin View">
+    Access all products at `/all-products` (route name: `products.all`):
+    - All products (published and unpublished)
+    - 20 products per page
+    - Latest products first
+    - Management actions available
+  </Tab>
+  
+  <Tab title="Public View">
+    Customers browse products at `/products` (route name: `products`):
+    - Only published products
+    - 20 products per page
+    - Latest additions first
+    - Filter by category
+  </Tab>
+</Tabs>
+
+#### Product Details
+
+View individual products at `/product/{slug}` (route name: `products.show`):
+- Complete product information
+- All product images
+- Price and availability
+- Latest 5 products for cross-selling
+
+#### Editing Products
+
+<Steps>
+  <Step title="Navigate to Edit">
+    Access `/product/edit/{id}` from the products management page
+  </Step>
+  
+  <Step title="Update Information">
+    Modify any product details including:
+    - Name (slug preserved)
+    - Category
+    - Location
+    - Price
+    - Quantity available
+    - Description
+  </Step>
+  
+  <Step title="Update Images">
+    Upload new images if needed (optional - existing images preserved if not replaced)
+  </Step>
+  
+  <Step title="Save">
+    Update to save changes and return to products management
+  </Step>
+</Steps>
+
+### Product Routes
+
+| Action | Method | Route | Route Name | Auth Required |
+|--------|--------|-------|------------|---------------|
+| List all (admin) | GET | `/all-products` | `products.all` | Yes (verified) |
+| Browse (public) | GET | `/products` | `products` | No |
+| Create form | GET | `/product/new` | `products.create` | Yes (verified) |
+| Store product | POST | `/product/create` | `products.store` | Yes (verified) |
+| Show details | GET | `/product/{slug}` | `products.show` | No |
+| Edit form | GET | `/product/edit/{id}` | `products.edit` | Yes (verified) |
+| Update product | PUT | `/product/update/{id}` | `products.update` | Yes (verified) |
+| Delete product | DELETE | `/product/delete/{id}` | `products.delete` | Yes (verified) |
+| Toggle publish | PUT | `/product/publish/{id}` | `products.publish` | Yes (verified) |
+| Filter by category | GET | `/product/category/{category}` | `products.category` | Yes (verified) |
+
+### Product Validation
+
+```php
+'name' => 'required',
+'category' => 'required',
+'image' => 'required',
+'location' => 'required',
+'price' => 'required',
+'quantity_available' => 'required',
+'description' => 'required'
+```
+
+## Services Feature
+
+### Key Features
+
+<CardGroup cols={2}>
+  <Card title="Service Showcase" icon="hands-helping">
+    Display available services with detailed descriptions
+  </Card>
+  <Card title="Visual Content" icon="images">
+    Up to 6 images per service to illustrate offerings
+  </Card>
+  <Card title="Flexible Pricing" icon="tag">
+    Customizable pricing for different service tiers
+  </Card>
+  <Card title="Location-Based" icon="map-marker">
+    Specify where services are available
+  </Card>
+</CardGroup>
+
+### Service Information
+
+#### Database Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Service name |
+| `slug` | string | URL-friendly identifier (unique) |
+| `category` | string | Service category or type |
+| `location` | string | Where service is offered |
+| `price` | string | Service pricing |
+| `description` | text | Detailed service information |
+| `image` - `image6` | string | Up to 6 service images |
+| `user_id` | integer | Administrator who created the listing |
+| `published` | integer | Publication status (0 = draft, 1 = published) |
+
+<Note>
+Services have the same fields as products except they don't include `quantity_available` since services are not physical inventory.
+</Note>
+
+### Creating a Service
+
+<Steps>
+  <Step title="Access Service Creation">
+    Navigate to `/service/new` (route name: `services.create`)
+  </Step>
+  
+  <Step title="Enter Service Details">
+    Fill in required fields:
+    - **Name**: Service name (e.g., "Professional Safari Photography Package")
+    - **Category**: Service type (e.g., "Photography", "Transport", "Guiding")
+    - **Location**: Where service is available
+    - **Price**: Service cost (can include various packages)
+    - **Description**: What's included, duration, terms
+  </Step>
+  
+  <Step title="Upload Service Images">
+    - **Main Image**: Primary service image (required)
+    - **Second Image**: Secondary image (required)
+    - **Additional Images**: Up to 4 more (optional)
+  </Step>
+  
+  <Step title="Create Service">
+    Submit to save the service listing
+  </Step>
+</Steps>
+
+### Service Management
+
+Service management follows the same pattern as products:
+
+- **Admin View**: `/all-services` (route name: `services.all`)
+- **Public View**: `/services` (route name: `services`)
+- **Details**: `/service/{slug}` (route name: `services.show`)
+- **Edit**: `/service/edit/{id}` (route name: `services.edit`)
+- **Update**: PUT to `/service/update/{id}` (route name: `services.update`)
+- **Delete**: DELETE to `/service/delete/{id}` (route name: `services.delete`)
+- **Publish**: PUT to `/service/publish/{id}` (route name: `services.publish`)
+- **Category Filter**: `/service/category/{category}` (route name: `services.category`)
+
+### Service Validation
+
+```php
+'name' => 'required',
+'category' => 'required',
+'image' => 'required',
+'location' => 'required',
+'price' => 'required',
+'description' => 'required'
+```
+
+## Product Categories
+
+<CardGroup cols={2}>
+  <Card title="Safari Equipment" icon="binoculars">
+    - Binoculars and optical equipment
+    - Cameras and photography gear
+    - Field guides and maps
+    - Camping equipment
+    - Navigation tools
+  </Card>
+  <Card title="Clothing & Accessories" icon="shirt">
+    - Safari clothing
+    - Hats and sun protection
+    - Boots and footwear
+    - Backpacks and bags
+    - Rain gear
+  </Card>
+  <Card title="Health & Safety" icon="kit-medical">
+    - First aid kits
+    - Insect repellent
+    - Sunscreen
+    - Water purification
+    - Emergency supplies
+  </Card>
+  <Card title="Souvenirs & Gifts" icon="gift">
+    - Local crafts
+    - Photography prints
+    - Books and media
+    - Clothing with branding
+    - Wildlife replicas
+  </Card>
+</CardGroup>
+
+## Service Categories
+
+<CardGroup cols={2}>
+  <Card title="Photography Services" icon="camera">
+    - Professional safari photography
+    - Photography workshops
+    - Photo editing and printing
+    - Equipment rental
+    - Drone photography
+  </Card>
+  <Card title="Transport Services" icon="van-shuttle">
+    - Airport transfers
+    - Inter-park transfers
+    - Vehicle rental
+    - Private driver services
+    - Luxury transport upgrades
+  </Card>
+  <Card title="Guiding Services" icon="user-tie">
+    - Private guide services
+    - Specialized guides (birding, photography)
+    - Cultural interpreters
+    - Walking safari guides
+    - Multi-day guide packages
+  </Card>
+  <Card title="Additional Services" icon="concierge-bell">
+    - Laundry service
+    - Meal arrangements
+    - Spa treatments
+    - Equipment rental
+    - Travel insurance
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Product Management">
+    **Inventory Control:**
+    - Keep `quantity_available` updated
+    - Set to 0 when out of stock (or unpublish)
+    - Update after each sale
+    - Plan restock levels
+    
+    **Product Descriptions:**
+    - Include specifications and features
+    - Mention brand names if applicable
+    - List what's included
+    - Note any requirements or compatibility
+    - Include care instructions if relevant
+    
+    **Pricing:**
+    - Research competitive pricing
+    - Include any taxes or fees
+    - Offer bundle discounts
+    - Update seasonal pricing
+  </Accordion>
+  
+  <Accordion title="Service Management">
+    **Service Descriptions:**
+    - Clearly state what's included
+    - Specify duration
+    - List requirements or prerequisites
+    - Mention any limitations or restrictions
+    - Include booking/cancellation terms
+    
+    **Pricing Structure:**
+    - Be transparent about what's covered
+    - Offer tiered packages when applicable
+    - Note any additional costs
+    - Include seasonal variations
+    
+    **Service Delivery:**
+    - Set realistic expectations
+    - Define service areas/locations
+    - Specify availability (days, times)
+    - Include contact information for booking
+  </Accordion>
+  
+  <Accordion title="Image Strategy">
+    **For Products:**
+    - Clean, well-lit product photos
+    - Multiple angles and views
+    - Show scale/size reference
+    - Detail shots of key features
+    - In-use context photos
+    
+    **For Services:**
+    - Show service in action
+    - Include staff/guides providing service
+    - Display results or outcomes
+    - Showcase various service aspects
+    - Use authentic customer photos
+  </Accordion>
+</AccordionGroup>
+
+## Pricing Guidelines
+
+<Tabs>
+  <Tab title="Products">
+    **Fixed Price Products:**
+    ```
+    $45 - Single item price
+    ```
+    
+    **Volume Pricing:**
+    ```
+    $45 each | 2 for $80 | 3+ for $35 each
+    ```
+    
+    **Package Deals:**
+    ```
+    Basic Kit: $120 (binoculars, field guide)
+    Complete Kit: $200 (binoculars, guide, camera bag, hat)
+    ```
+  </Tab>
+  
+  <Tab title="Services">
+    **Hourly/Daily Rates:**
+    ```
+    $50 per hour | $350 per day
+    ```
+    
+    **Service Tiers:**
+    ```
+    Standard: $100 per day
+    Premium: $200 per day
+    VIP: $400 per day
+    ```
+    
+    **Package Pricing:**
+    ```
+    Half-Day Package: $150 (4 hours)
+    Full-Day Package: $250 (8 hours)
+    Multi-Day: $220 per day (3+ days)
+    ```
+  </Tab>
+</Tabs>
+
+## Inventory Management (Products)
+
+<Warning>
+The current system tracks quantity but doesn't automatically decrement on purchase. You'll need to manually update quantities after sales or implement automatic inventory management.
+</Warning>
+
+**Recommended Workflow:**
+1. Set initial `quantity_available` when creating product
+2. Monitor sales through your order system
+3. Manually update quantities regularly
+4. Set up low stock alerts
+5. Unpublish or mark as "out of stock" when quantity reaches 0
+6. Republish when restocked
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Product Not Selling">
+    **Potential Issues:**
+    - Check that product is published
+    - Verify quantity_available is greater than 0
+    - Ensure price is competitive
+    - Review product description for completeness
+    - Check image quality and variety
+    - Confirm category is correct
+  </Accordion>
+  
+  <Accordion title="Service Booking Confusion">
+    **Solutions:**
+    - Clarify booking process in description
+    - Include clear call-to-action
+    - Provide contact information
+    - Specify availability clearly
+    - Set clear expectations
+  </Accordion>
+  
+  <Accordion title="Category Filter Not Working">
+    **Check:**
+    - Category name spelling and capitalization
+    - No extra spaces in category field
+    - Item is published
+    - Cache cleared if caching enabled
+  </Accordion>
+</AccordionGroup>
+
+## Integration with Other Features
+
+<CardGroup cols={2}>
+  <Card title="Tours & Safaris" icon="compass" href="/features/tours-safaris">
+    Suggest relevant products/services on tour pages
+  </Card>
+  <Card title="Bookings" icon="calendar-check" href="/features/bookings">
+    Offer products/services during booking process
+  </Card>
+  <Card title="Events" icon="calendar-star" href="/features/events">
+    Promote event-specific services and equipment
+  </Card>
+  <Card title="Blog" icon="newspaper" href="/features/blog">
+    Feature products/services in blog content
+  </Card>
+</CardGroup>
+
+## Enhancement Opportunities
+
+<Info>
+Consider implementing:
+- Shopping cart for product purchases
+- Online payment integration
+- Automatic inventory decrement
+- Service booking calendar
+- Customer reviews and ratings
+- Related product recommendations
+- Email notifications for low stock
+- Discount codes and promotions
+- Bundle packages (products + services + tours)
+</Info>

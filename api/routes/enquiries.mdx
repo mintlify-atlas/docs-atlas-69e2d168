@@ -1,0 +1,312 @@
+---
+title: 'Enquiries Routes'
+description: 'API endpoints for managing customer enquiries and contact forms'
+---
+
+## Overview
+
+The Enquiries API provides endpoints for managing customer enquiries, trip planning requests, and contact form submissions. This is a resource controller implementation with standard CRUD operations.
+
+## List All Enquiries (Admin)
+
+<api method="GET" path="/enquiries" />
+
+Retrieve a paginated list of all enquiries.
+
+### Response
+
+<ResponseField name="enquiries" type="array">
+  Paginated collection of enquiries (10 per page)
+  
+  <Expandable title="Enquiry Object">
+    <ResponseField name="id" type="integer">
+      Unique enquiry identifier
+    </ResponseField>
+    
+    <ResponseField name="full_name" type="string">
+      Customer's full name
+    </ResponseField>
+    
+    <ResponseField name="email_address" type="string">
+      Customer's email address
+    </ResponseField>
+    
+    <ResponseField name="phone_number" type="string">
+      Customer's phone number
+    </ResponseField>
+    
+    <ResponseField name="destinations" type="string">
+      Desired destinations
+    </ResponseField>
+    
+    <ResponseField name="adults" type="integer">
+      Number of adult travelers
+    </ResponseField>
+    
+    <ResponseField name="kids" type="integer">
+      Number of children
+    </ResponseField>
+    
+    <ResponseField name="nationality" type="string">
+      Customer's nationality
+    </ResponseField>
+    
+    <ResponseField name="travel_date" type="date">
+      Preferred travel date
+    </ResponseField>
+    
+    <ResponseField name="budget" type="string">
+      Budget range or amount
+    </ResponseField>
+    
+    <ResponseField name="medium" type="string">
+      Trip style or accommodation preference (medium level)
+    </ResponseField>
+    
+    <ResponseField name="luxury" type="string">
+      Luxury level preference
+    </ResponseField>
+    
+    <ResponseField name="additional_info" type="text">
+      Additional information or special requests
+    </ResponseField>
+    
+    <ResponseField name="created_at" type="timestamp">
+      Enquiry submission timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/enquiries
+```
+
+---
+
+## Create Enquiry Form
+
+<api method="GET" path="/enquiries/create" />
+
+Display the enquiry form for customers to submit trip planning requests.
+
+### Response
+
+Returns the enquiry form with all blog posts for display.
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/enquiries/create
+```
+
+---
+
+## Submit Enquiry
+
+<api method="POST" path="/enquiries" />
+
+Submit a new enquiry or trip planning request.
+
+### Request Body
+
+<ParamField body="full_name" type="string" required>
+  Customer's full name
+</ParamField>
+
+<ParamField body="email_address" type="email" required>
+  Customer's email address
+</ParamField>
+
+<ParamField body="phone_number" type="string" required>
+  Customer's contact phone number
+</ParamField>
+
+<ParamField body="destinations" type="string" required>
+  Desired safari destinations or locations
+</ParamField>
+
+<ParamField body="adults" type="integer" required>
+  Number of adult travelers
+</ParamField>
+
+<ParamField body="kids" type="integer" required>
+  Number of children (can be 0)
+</ParamField>
+
+<ParamField body="nationality" type="string" required>
+  Customer's nationality or country of residence
+</ParamField>
+
+<ParamField body="travel_date" type="date" required>
+  Preferred travel date (YYYY-MM-DD)
+</ParamField>
+
+<ParamField body="budget" type="string" required>
+  Budget range or estimated amount
+</ParamField>
+
+<ParamField body="medium" type="string" required>
+  Trip style or medium-level accommodation preference
+</ParamField>
+
+<ParamField body="luxury" type="string" required>
+  Luxury level preference
+</ParamField>
+
+<ParamField body="additional_info" type="text" optional>
+  Additional information, special requests, or questions
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X POST https://yourdomain.com/enquiries \
+  -H "Content-Type: application/json" \
+  -d '{
+    "full_name": "Jane Smith",
+    "email_address": "jane.smith@example.com",
+    "phone_number": "+1234567890",
+    "destinations": "Maasai Mara, Serengeti, Amboseli",
+    "adults": 2,
+    "kids": 1,
+    "nationality": "United States",
+    "travel_date": "2026-08-15",
+    "budget": "$5000-$7000",
+    "medium": "Mid-range lodges",
+    "luxury": "Some luxury experiences",
+    "additional_info": "We are interested in seeing the great migration and would prefer lodges with good photography opportunities."
+  }'
+```
+
+### Response
+
+Redirects back to enquiry form with success message: "We have recieved your Message, Thank You.. Our customer experience representative will be reaching out shortly via the contacts provided."
+
+<Note>
+  The application includes commented-out email notification code that would send confirmation emails to the customer when implemented.
+</Note>
+
+---
+
+## Show Enquiry Details
+
+<api method="GET" path="/enquiries/{enquiry}" />
+
+Retrieve detailed information about a specific enquiry.
+
+<Warning>
+  This endpoint is defined in the resource controller but the method is not implemented in the EnquiryController.
+</Warning>
+
+### Path Parameters
+
+<ParamField path="enquiry" type="integer" required>
+  The unique enquiry ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/enquiries/123
+```
+
+---
+
+## Edit Enquiry Form
+
+<api method="GET" path="/enquiries/{enquiry}/edit" />
+
+Display the form for editing an existing enquiry.
+
+<Warning>
+  This endpoint is defined in the resource controller but the method is not implemented in the EnquiryController.
+</Warning>
+
+### Path Parameters
+
+<ParamField path="enquiry" type="integer" required>
+  The unique enquiry ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/enquiries/123/edit
+```
+
+---
+
+## Update Enquiry
+
+<api method="PUT" path="/enquiries/{enquiry}" />
+<api method="PATCH" path="/enquiries/{enquiry}" />
+
+Update an existing enquiry.
+
+<Warning>
+  This endpoint is defined in the resource controller but the method is not implemented in the EnquiryController.
+</Warning>
+
+### Path Parameters
+
+<ParamField path="enquiry" type="integer" required>
+  The unique enquiry ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/enquiries/123 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "full_name": "Jane Smith",
+    "email_address": "jane.smith@example.com",
+    "phone_number": "+1234567890",
+    "destinations": "Updated destinations",
+    "adults": 3,
+    "kids": 2
+  }'
+```
+
+---
+
+## Delete Enquiry
+
+<api method="DELETE" path="/enquiries/{enquiry}" />
+
+Permanently delete an enquiry.
+
+### Path Parameters
+
+<ParamField path="enquiry" type="integer" required>
+  The unique enquiry ID (passed as Enquiry model instance)
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X DELETE https://yourdomain.com/enquiries/123 \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to enquiries list with success message: "Enquiry Deleted Successfully"
+
+---
+
+## Resource Routes
+
+<Note>
+  The Enquiries routes are defined as a resource controller using `Route::resource('enquiries', EnquiryController::class)`, which automatically generates the following RESTful routes:
+
+  - `GET /enquiries` - index
+  - `GET /enquiries/create` - create
+  - `POST /enquiries` - store
+  - `GET /enquiries/{enquiry}` - show
+  - `GET /enquiries/{enquiry}/edit` - edit
+  - `PUT/PATCH /enquiries/{enquiry}` - update
+  - `DELETE /enquiries/{enquiry}` - destroy
+</Note>

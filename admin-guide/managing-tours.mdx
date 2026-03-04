@@ -1,0 +1,169 @@
+---
+title: 'Managing Tours'
+description: 'Create, edit, publish, and manage safari tour packages'
+---
+
+## Overview
+
+The tours management system allows you to create and maintain safari tour packages with detailed information, pricing, images, and categorization.
+
+## Viewing Tours
+
+Access the tours list at `/addtour` to see all existing safari packages, sorted by most recent first (20 per page).
+
+## Creating a New Tour
+
+### Step 1: Navigate to Create Tour
+
+Click "Add Tour" or visit `/addtour/create` to open the tour creation form.
+
+### Step 2: Fill in Required Fields
+
+<Accordion title="Basic Information">
+  - **Hotel**: Name of accommodation/hotel
+  - **Transport**: Transportation details
+  - **Location**: Tour destination/location
+  - **Category**: Main tour category (e.g., Wildlife Safaris, Beach Holidays)
+  - **Sub Category**: More specific classification
+</Accordion>
+
+<Accordion title="Pricing">
+  - **Single Room**: Price for single occupancy
+  - **Per Person Sharing**: Price per person for shared accommodation
+</Accordion>
+
+<Accordion title="Tour Details">
+  - **Meals**: Meal plan included (e.g., Full Board, Half Board)
+  - **Additional Info**: Extra details about the tour (optional)
+</Accordion>
+
+### Step 3: Upload Images
+
+<Warning>
+  Images must be in JPG, JPEG, SVG, PNG, or WEBP format.
+</Warning>
+
+**Required Images:**
+- **Image 1**: Primary tour image (required)
+- **Image 2**: Secondary tour image (required)
+
+**Optional Images:**
+- **Image 3-6**: Additional gallery images (optional)
+
+Images are automatically stored in the public storage directory.
+
+### Step 4: Save the Tour
+
+Click "Save" to create the tour. The tour will be saved as unpublished by default.
+
+## Editing Tours
+
+### Update Tour Information
+
+1. Navigate to `/addtour`
+2. Click "Edit" on the tour you want to modify
+3. Update any fields as needed
+4. Optionally upload new images (existing images retained if not replaced)
+5. Click "Update" to save changes
+
+<Note>
+  When editing, you don't need to re-upload images unless you want to replace them. Existing images will be preserved.
+</Note>
+
+## Publishing Workflow
+
+### Draft vs. Published Status
+
+All tours have a publication status:
+- **Unpublished (0)**: Tour is hidden from public view
+- **Published (1)**: Tour is visible to customers
+
+### Publishing a Tour
+
+1. Navigate to the tours list
+2. Find the tour you want to publish
+3. Click the "Publish" button
+4. The status toggles between published and unpublished
+
+<Info>
+  Publishing a tour makes it immediately visible on the public-facing safari listings page.
+</Info>
+
+## Viewing Tour Details
+
+Click "View" on any tour to see:
+- Complete tour information
+- All uploaded images
+- Current pricing
+- Publication status
+- Related categories and tours
+
+## Deleting Tours
+
+<Warning>
+  Deleting a tour is permanent and cannot be undone.
+</Warning>
+
+1. Navigate to `/addtour`
+2. Click "Delete" on the tour
+3. Confirm the deletion
+4. Tour is permanently removed from the system
+
+## Tour Categories
+
+Tours must be assigned to both a category and subcategory. Categories help organize tours and enable filtering on the public website.
+
+<Card title="Managing Categories" icon="folder-tree" href="/admin-guide/categories">
+  Learn how to create and manage tour categories
+</Card>
+
+## Best Practices
+
+### Image Quality
+- Use high-quality images that showcase the safari experience
+- Ensure images are properly sized (not too large to affect load times)
+- Include diverse images showing different aspects of the tour
+
+### Pricing
+- Keep pricing up-to-date and competitive
+- Clearly distinguish between single and shared pricing
+- Use consistent currency formatting
+
+### Descriptions
+- Provide detailed information in the Additional Info field
+- Highlight unique selling points
+- Include what's included and excluded
+
+### Categorization
+- Choose appropriate categories for accurate filtering
+- Use subcategories to provide more specific classification
+- Be consistent with category usage across similar tours
+
+## Image Management
+
+### Image Upload Process
+
+1. **Primary Image**: Main listing photo (required)
+2. **Secondary Image**: Additional key photo (required)
+3. **Gallery Images**: Up to 4 additional photos (optional)
+
+### Image Storage
+
+All images are stored in:
+- Storage location: `storage/app/public/images`
+- Accessible via: `/storage/images/[filename]`
+
+### Updating Images
+
+When editing a tour:
+- Leave image fields empty to keep existing images
+- Upload new images only for those you want to replace
+- All selected images will be replaced if any are uploaded
+
+## Tour Permissions
+
+All tour management actions require:
+- Active user authentication (`auth` middleware)
+- Verified email address (`verified` middleware)
+
+The system automatically associates tours with the logged-in admin user.

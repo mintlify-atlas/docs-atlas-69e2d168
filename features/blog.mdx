@@ -1,0 +1,592 @@
+---
+title: 'Blog'
+description: 'Create and manage engaging content to attract customers and share safari experiences'
+icon: 'newspaper'
+---
+
+## Overview
+
+The Blog feature enables Okulink Safaris to create compelling content that attracts potential customers, shares safari experiences, provides travel tips, and establishes expertise in safari tourism. The blog supports rich media content with multiple images and is integrated throughout the platform to drive engagement.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Rich Content" icon="file-richtext">
+    Create detailed blog posts with extensive content and formatting
+  </Card>
+  <Card title="Image Galleries" icon="images">
+    Add up to 6 images per post to create visual stories
+  </Card>
+  <Card title="Content Management" icon="pen-to-square">
+    Easy editing and updating of published content
+  </Card>
+  <Card title="Publication Control" icon="toggle-on">
+    Draft and publish workflow for content review
+  </Card>
+</CardGroup>
+
+## Blog Post Information
+
+### Database Fields
+
+Each blog post contains:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | text | Blog post title/headline |
+| `content` | text | Full article content (supports HTML) |
+| `image` | text | Main featured image path |
+| `image2` - `image6` | text | Additional images for the post |
+| `user_id` | integer | Author (administrator) ID |
+| `published` | integer | Publication status (0 = draft, 1 = published) |
+
+<Note>
+The blog model has basic fillable fields (image, title, content) with additional image fields added via migrations.
+</Note>
+
+## Creating a Blog Post
+
+<Steps>
+  <Step title="Access Blog Creation">
+    Navigate to `/blogs/create` (route name: `blogs.create`) from the admin dashboard
+    
+    <Info>Requires authentication and email verification</Info>
+  </Step>
+  
+  <Step title="Write Your Content">
+    **Title**: Create an engaging, descriptive headline
+    - Keep it concise but informative
+    - Include keywords for SEO
+    - Make it compelling to encourage clicks
+    
+    **Content**: Write your full article
+    - Use clear paragraphs and sections
+    - Include relevant information and details
+    - Add formatting for readability
+    - Incorporate storytelling elements
+    - Include practical tips and advice
+  </Step>
+  
+  <Step title="Add Images">
+    Upload visual content to enhance your post:
+    
+    - **Main Image**: Featured image (required, JPG/PNG/SVG/WebP)
+    - **Second Image**: Secondary image (required)
+    - **Additional Images**: Up to 4 more images (optional, image3-6)
+    
+    Use images that:
+    - Support your written content
+    - Show safari experiences
+    - Capture wildlife and landscapes
+    - Illustrate tips or advice
+    - Break up long text sections
+  </Step>
+  
+  <Step title="Save Blog Post">
+    Click "Submit" to create the post. The system will:
+    - Store all content and images
+    - Create post in draft mode (unpublished)
+    - Associate post with your user account
+    - Redirect to blogs management page
+    - Show success message: "Content Created Successfully!"
+  </Step>
+</Steps>
+
+## Managing Blog Posts
+
+### Viewing Blog Posts
+
+<Tabs>
+  <Tab title="Admin View">
+    Access all blog posts at `/all-blogs` (route name: `all-blogs`):
+    
+    **Features:**
+    - All blog posts (published and drafts)
+    - 10 posts per page with pagination
+    - Most recent posts first
+    - Quick action buttons (edit, publish, delete)
+    - Current publication status visible
+    
+    <Note>Alternative admin route: `/blogs` (route name: `blogs`) also shows admin management</Note>
+  </Tab>
+  
+  <Tab title="Public Blog Page">
+    Customers view blogs at `/blog` (route name: `blog`):
+    
+    **Features:**
+    - Only published posts displayed
+    - 6 cover/featured posts with pagination
+    - Latest 2 posts highlighted in sidebar
+    - Engaging layout for reading
+  </Tab>
+</Tabs>
+
+### Reading a Blog Post
+
+Individual posts are accessible at `/blogs/show/{id}` (route name: `blogs.show`):
+
+**Post Page Includes:**
+- Full article title and content
+- All post images in gallery format
+- Latest 2 blog posts in sidebar for continued engagement
+- Latest 4 posts at bottom for related reading
+- Publication date and metadata
+
+### Editing a Blog Post
+
+<Steps>
+  <Step title="Navigate to Edit Page">
+    From the blogs management page, click "Edit" or visit `/blogs/edit/{id}`
+  </Step>
+  
+  <Step title="Modify Content">
+    Update any aspect of the post:
+    - Title
+    - Content/article text
+    - Can add, remove, or modify any section
+  </Step>
+  
+  <Step title="Update Images (Optional)">
+    Replace or add images:
+    - If you upload any new images, all image fields are processed
+    - If no images are uploaded, existing images are preserved
+    - Can selectively update specific images
+  </Step>
+  
+  <Step title="Save Changes">
+    Click "Update" to save your edits
+    - User association updated to current user
+    - Redirected to admin blogs page
+    - Success message: "Content updated Successfully!"
+  </Step>
+</Steps>
+
+### Publishing and Unpublishing
+
+<Tabs>
+  <Tab title="Publishing a Draft">
+    To make a blog post visible to readers:
+    
+    1. Navigate to `/all-blogs` or `/blogs`
+    2. Find the post with published status 0 (draft)
+    3. Click "Publish" (PUT request to `/blogs/publish/{id}`)
+    4. Status changes to 1 (published)
+    5. Post now appears on public blog pages
+    6. Post included in sidebar and featured sections
+  </Tab>
+  
+  <Tab title="Unpublishing a Post">
+    To remove a post from public view:
+    
+    1. Navigate to the blogs management page
+    2. Find the post with published status 1
+    3. Click "Unpublish"
+    4. Status changes to 0 (draft)
+    5. Post hidden from public pages
+    6. Post still accessible in admin view
+  </Tab>
+</Tabs>
+
+<Info>
+Use draft mode to prepare content in advance, review posts before publication, or temporarily hide outdated content without deleting it.
+</Info>
+
+### Deleting a Blog Post
+
+<Warning>
+Deleting a blog post permanently removes it from the database. This action cannot be undone. Consider unpublishing instead if the content might be useful later.
+</Warning>
+
+To delete a post:
+1. Navigate to blogs management page
+2. Click "Delete" on the post
+3. Confirm deletion
+4. Post permanently removed with message: "Content Deleted"
+
+## Routes Reference
+
+| Action | Method | Route | Route Name | Auth Required |
+|--------|--------|-------|------------|---------------|
+| List all (admin) | GET | `/all-blogs` | `all-blogs` | No* |
+| Admin management | GET | `/blogs` | `blogs` | No* |
+| Public blog page | GET | `/blog` | `blog` | No |
+| Create form | GET | `/blogs/create` | `blogs.create` | Yes (verified) |
+| Store new post | POST | `/blogs/store` | `blogs.store` | Yes (verified) |
+| Show post | GET | `/blogs/show/{id}` | `blogs.show` | No |
+| Edit form | GET | `/blogs/edit/{id}` | `blogs.edit` | Yes (verified) |
+| Update post | POST | `/blogs/update/{id}` | `blogs.update` | Yes (verified) |
+| Delete post | DELETE | `/blogs/delete/{id}` | `blogs.delete` | Yes (verified) |
+| Toggle publish | PUT | `/blogs/publish/{id}` | `blogs.publish` | Yes (verified) |
+
+<Note>
+*While admin blog list routes don't enforce authentication at the route level, creation, editing, and deletion require authentication and verification.
+</Note>
+
+## Validation Rules
+
+When creating blog posts, the following validation applies:
+
+```php
+'title' => 'required',
+'image' => 'required',
+'content' => 'required'
+```
+
+<Note>
+During updates, images are optional. If not provided, existing images are preserved.
+</Note>
+
+## Content Strategy
+
+<AccordionGroup>
+  <Accordion title="Blog Post Types">
+    **Destination Guides**
+    - Detailed area information
+    - Best times to visit
+    - Wildlife to expect
+    - Cultural insights
+    - Practical travel tips
+    
+    **Safari Stories**
+    - Customer experiences
+    - Wildlife encounters
+    - Photography highlights
+    - Memorable moments
+    - Guide perspectives
+    
+    **Travel Tips**
+    - Packing lists
+    - Photography advice
+    - Safety information
+    - Cultural etiquette
+    - Budget planning
+    
+    **Wildlife Features**
+    - Species spotlights
+    - Behavioral insights
+    - Conservation updates
+    - Seasonal migrations
+    - Photography tips
+    
+    **Company News**
+    - New tour offerings
+    - Awards and recognition
+    - Staff spotlights
+    - Partnership announcements
+    - Sustainability initiatives
+  </Accordion>
+  
+  <Accordion title="Content Calendar">
+    **Plan Your Posts:**
+    - Seasonal content (migration timing, weather)
+    - Event-related posts (cultural festivals)
+    - Educational series (wildlife, conservation)
+    - Promotional content (new tours, special offers)
+    - User-generated content (customer stories)
+    
+    **Posting Frequency:**
+    - Consistent schedule (weekly or bi-weekly)
+    - Quality over quantity
+    - Mix of post types
+    - Evergreen and timely content
+    - Regular updates to maintain engagement
+  </Accordion>
+  
+  <Accordion title="SEO Best Practices">
+    **Titles:**
+    - Include target keywords naturally
+    - Keep under 60 characters for search results
+    - Make them compelling and descriptive
+    - Front-load important keywords
+    
+    **Content:**
+    - Use headings and subheadings (H2, H3)
+    - Include relevant keywords naturally
+    - Write comprehensive, valuable content (1000+ words)
+    - Link to related pages on your site
+    - Update old posts with new information
+    
+    **Images:**
+    - Use descriptive file names
+    - Include alt text (accessibility and SEO)
+    - Optimize file sizes for fast loading
+    - Use high-quality, relevant images
+  </Accordion>
+</AccordionGroup>
+
+## Writing Effective Blog Posts
+
+<Tabs>
+  <Tab title="Structure">
+    **Recommended Post Structure:**
+    
+    1. **Engaging Opening** (1-2 paragraphs)
+       - Hook the reader immediately
+       - State what the post will cover
+       - Why it matters to readers
+    
+    2. **Main Content** (Multiple sections)
+       - Use clear headings
+       - Break into digestible chunks
+       - Include specific examples
+       - Add practical tips
+       - Support with images
+    
+    3. **Conclusion** (1 paragraph)
+       - Summarize key points
+       - Call to action
+       - Encourage engagement
+    
+    4. **Call to Action**
+       - Book a tour
+       - Contact for more information
+       - Share the post
+       - Read related content
+  </Tab>
+  
+  <Tab title="Writing Tips">
+    **Do:**
+    - Write conversationally but professionally
+    - Use active voice
+    - Include personal experiences
+    - Add specific details and examples
+    - Break up long paragraphs
+    - Use bullet points and lists
+    - Proofread carefully
+    - Include actionable advice
+    
+    **Don't:**
+    - Use jargon without explanation
+    - Write overly long paragraphs
+    - Forget to proofread
+    - Neglect image captions
+    - Overlook mobile readability
+    - Skip the conclusion
+    - Forget calls to action
+  </Tab>
+  
+  <Tab title="Engagement">
+    **Encourage Interaction:**
+    - Ask questions in the content
+    - Invite comments and feedback
+    - Include social sharing buttons
+    - Link to related tours or services
+    - Offer downloadable resources
+    - Include contact information
+    
+    **Build Authority:**
+    - Cite sources when using statistics
+    - Include expert quotes
+    - Share insider knowledge
+    - Demonstrate expertise
+    - Provide unique insights
+  </Tab>
+</Tabs>
+
+## Image Guidelines
+
+### Accepted Formats
+- JPG/JPEG
+- PNG
+- SVG
+- WebP
+
+### Image Strategy
+
+<CardGroup cols={2}>
+  <Card title="Main Image" icon="image">
+    The featured/hero image:
+    - Most visually striking image
+    - Represents the post topic
+    - High resolution and quality
+    - Captures attention
+    - Works as thumbnail
+  </Card>
+  <Card title="Second Image" icon="images">
+    Supporting visual content:
+    - Complements main image
+    - Different aspect or angle
+    - Adds context or detail
+    - Breaks up initial text
+  </Card>
+  <Card title="Additional Images" icon="photo-film">
+    Content support images:
+    - Illustrate specific points
+    - Show step-by-step processes
+    - Display variety
+    - Provide visual breaks
+    - Create image galleries
+  </Card>
+  <Card title="Quality Standards" icon="star">
+    Professional presentation:
+    - Minimum 1920x1080px
+    - Proper lighting
+    - Sharp focus
+    - Consistent style
+    - Authentic content
+    - Properly compressed
+  </Card>
+</CardGroup>
+
+## Blog Integration
+
+The blog is integrated throughout the platform:
+
+<CardGroup cols={2}>
+  <Card title="Tour Pages" icon="compass">
+    Related blog posts appear on tour detail pages to provide additional context and engagement
+  </Card>
+  <Card title="Safaris Page" icon="binoculars">
+    Latest 2 blog posts featured on the safaris browsing page for content discovery
+  </Card>
+  <Card title="Home Page" icon="house">
+    Recent blog content often featured on homepage to drive traffic and showcase expertise
+  </Card>
+  <Card title="Cross-Linking" icon="link">
+    Link from blog posts to relevant tours, accommodations, events, and other content
+  </Card>
+</CardGroup>
+
+## Content Examples
+
+<Tabs>
+  <Tab title="Destination Guide">
+    **Title**: "Complete Guide to Serengeti National Park: When to Visit and What to Expect"
+    
+    **Content Structure**:
+    - Introduction: Why Serengeti is special
+    - Best Times to Visit: Seasonal breakdown
+    - Wildlife: What you'll see and when
+    - Accommodations: Where to stay
+    - Activities: Game drives, balloon safaris, etc.
+    - Practical Tips: What to pack, how to prepare
+    - Call to Action: Browse Serengeti tours
+    
+    **Images**:
+    - Serengeti landscape panorama
+    - Wildlife during migration
+    - Accommodation examples
+    - Visitors on safari
+    - Sunset or scenic vista
+  </Tab>
+  
+  <Tab title="Travel Tips">
+    **Title**: "10 Essential Items Every Safari Traveler Should Pack"
+    
+    **Content Structure**:
+    - Introduction: Packing importance
+    - Item 1-10: Detailed explanation of each item
+    - Bonus Tips: Additional advice
+    - What to Leave Behind
+    - Conclusion: Preparation importance
+    - Call to Action: View safari packages
+    
+    **Images**:
+    - Packed safari bag
+    - Individual gear items
+    - Gear in use on safari
+    - Packing organization tips
+  </Tab>
+  
+  <Tab title="Wildlife Feature">
+    **Title**: "The Big Five: Your Guide to Africa's Most Iconic Wildlife"
+    
+    **Content Structure**:
+    - Introduction: What are the Big Five?
+    - Lion: Behavior, habitat, viewing tips
+    - Elephant: Characteristics, conservation
+    - Buffalo: Facts and safety
+    - Leopard: Spotting techniques
+    - Rhino: Conservation status
+    - Photography Tips
+    - Best Places to See Them
+    - Call to Action: Book Big Five safari
+    
+    **Images**:
+    - Each of the Big Five animals
+    - Action shots
+    - Habitat photos
+  </Tab>
+</Tabs>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Images Not Displaying in Post">
+    **Problem**: Images uploaded but not showing in published post
+    
+    **Solutions**:
+    - Verify storage symlink exists: `php artisan storage:link`
+    - Check image file formats (JPG, PNG, SVG, WebP only)
+    - Confirm file permissions on storage directory
+    - Clear browser cache
+    - Check that images were successfully uploaded
+    - Verify image paths in database
+  </Accordion>
+  
+  <Accordion title="Post Not Appearing on Public Page">
+    **Problem**: Published post doesn't show on blog page
+    
+    **Solutions**:
+    - Verify published status is 1 (published, not 0)
+    - Clear application cache if caching enabled
+    - Check that title and content are not empty
+    - Refresh the blog page
+    - Verify post ID exists in database
+  </Accordion>
+  
+  <Accordion title="Content Formatting Issues">
+    **Problem**: Content doesn't display as intended
+    
+    **Solutions**:
+    - Check HTML formatting in content field
+    - Verify no unclosed tags
+    - Test in different browsers
+    - Review CSS conflicts
+    - Use simple, clean HTML
+  </Accordion>
+  
+  <Accordion title="Cannot Edit Published Post">
+    **Problem**: Edit page doesn't load or save
+    
+    **Solutions**:
+    - Verify authentication and email verification
+    - Check post ID is correct
+    - Ensure required fields are filled
+    - Clear browser cache
+    - Try different browser
+  </Accordion>
+</AccordionGroup>
+
+## Related Features
+
+<CardGroup cols={2}>
+  <Card title="Tours & Safaris" icon="compass" href="/features/tours-safaris">
+    Link blog posts to relevant tours for conversion
+  </Card>
+  <Card title="Events" icon="calendar-star" href="/features/events">
+    Write blog posts about upcoming events
+  </Card>
+  <Card title="Accommodations" icon="hotel" href="/features/accommodations">
+    Feature accommodations in destination guides
+  </Card>
+  <Card title="Products & Services" icon="cart-shopping" href="/features/products-services">
+    Promote products and services in relevant posts
+  </Card>
+</CardGroup>
+
+## Content Marketing Tips
+
+<Info>
+**Maximize Blog Impact:**
+- Share posts on social media
+- Include in email newsletters
+- Update and republish old posts
+- Create content series for sustained engagement
+- Use analytics to track popular topics
+- Respond to comments and engagement
+- Collaborate with guests for user-generated content
+- Optimize for mobile reading
+- Include internal links to increase site navigation
+- Consider guest posts from guides or partners
+</Info>

@@ -1,0 +1,330 @@
+---
+title: 'Tours & Safaris'
+description: 'Manage and showcase safari tour packages with detailed itineraries, pricing, and multimedia content'
+icon: 'compass'
+---
+
+## Overview
+
+The Tours & Safaris feature is the core of Okulink Safaris, allowing administrators to create, manage, and publish comprehensive safari tour packages. Each tour includes detailed information about accommodations, transportation, meals, pricing, and multiple images to showcase the experience.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Multi-Image Gallery" icon="images">
+    Upload up to 6 high-quality images per tour to showcase destinations, accommodations, and activities
+  </Card>
+  <Card title="Flexible Pricing" icon="dollar-sign">
+    Set different rates for single room occupancy and per-person sharing options
+  </Card>
+  <Card title="Categorization" icon="folder-tree">
+    Organize tours by category and sub-category for easy browsing and filtering
+  </Card>
+  <Card title="Publish Control" icon="toggle-on">
+    Toggle tour visibility to control which packages are displayed to customers
+  </Card>
+</CardGroup>
+
+## Tour Information
+
+### Database Fields
+
+Each tour package contains the following information:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `hotel` | string | Accommodation details and hotel information |
+| `transport` | text | Transportation arrangements and details |
+| `location` | text | Destination location |
+| `category` | text | Primary tour category |
+| `sub_category` | text | Secondary categorization |
+| `per_person_sharing` | text | Price per person for shared accommodations |
+| `single_room` | text | Price for single room occupancy |
+| `meals` | text | Meal plan and dining information |
+| `additional_info` | text | Extra details and important notes |
+| `image` - `image6` | text | Up to 6 image paths for the tour gallery |
+| `published` | integer | Publication status (0 = draft, 1 = published) |
+| `user_id` | integer | ID of the administrator who created the tour |
+
+## Creating a Tour
+
+<Steps>
+  <Step title="Access Tour Creation">
+    Navigate to the admin dashboard and click "Add Tour" or visit `/addtour/create`
+    
+    <Info>You must be logged in and have a verified email address to create tours</Info>
+  </Step>
+  
+  <Step title="Fill Required Information">
+    Complete the tour creation form with the following required fields:
+    
+    - **Hotel**: Accommodation name and details
+    - **Transport**: Transportation arrangements
+    - **Location**: Tour destination
+    - **Category**: Primary tour category
+    - **Sub-category**: Secondary classification
+    - **Per Person Sharing**: Shared accommodation rate
+    - **Single Room**: Individual room rate
+    - **Meals**: Meal plan details
+    - **Main Image**: Primary tour image (JPG, PNG, SVG, or WebP)
+    - **Second Image**: Secondary tour image (JPG, PNG, SVG, or WebP)
+  </Step>
+  
+  <Step title="Add Additional Images (Optional)">
+    Upload up to 4 additional images (image3 through image6) to create a comprehensive tour gallery
+  </Step>
+  
+  <Step title="Include Additional Information">
+    Add any extra details in the "Additional Info" field, such as:
+    - What to bring
+    - Special requirements
+    - Booking conditions
+    - Cancellation policy
+  </Step>
+  
+  <Step title="Save Tour">
+    Click "Submit" to save the tour. The tour will be created in draft mode (unpublished) by default
+  </Step>
+</Steps>
+
+## Managing Tours
+
+### Viewing All Tours
+
+Access the tours management page at `/addtour` (route name: `tours`) to see all tours in the system. Tours are displayed with pagination showing 20 tours per page, ordered by most recent first.
+
+### Viewing Tour Details
+
+Click on any tour to view its complete details at `/addtour/show/{id}` (route name: `addtour.show`). This displays all tour information including images, pricing, and additional details.
+
+### Editing a Tour
+
+<Steps>
+  <Step title="Navigate to Edit Page">
+    From the tours list, click "Edit" on the tour you want to modify, or visit `/addtour/edit/{id}`
+  </Step>
+  
+  <Step title="Update Information">
+    Modify any tour details. All fields except images are required:
+    - Hotel information
+    - Transport details
+    - Pricing (single room and per person sharing)
+    - Meals
+    - Category and sub-category
+  </Step>
+  
+  <Step title="Update Images (Optional)">
+    Upload new images if you want to replace existing ones. If no new images are provided, the existing images will be preserved
+  </Step>
+  
+  <Step title="Save Changes">
+    Click "Update" to save your changes. You'll be redirected to the tours list with a success message
+  </Step>
+</Steps>
+
+### Publishing and Unpublishing
+
+Control tour visibility using the publish toggle:
+
+<Tabs>
+  <Tab title="Publishing a Tour">
+    To make a tour visible to customers:
+    1. Navigate to the tours management page
+    2. Click the "Publish" button on the tour (PUT request to `/addtour/publish/{id}`)
+    3. The tour's published status will change to 1 (published)
+    4. The tour will now appear on the public safaris page
+  </Tab>
+  
+  <Tab title="Unpublishing a Tour">
+    To hide a tour from customers:
+    1. Navigate to the tours management page
+    2. Click the "Unpublish" button on the published tour
+    3. The tour's published status will change to 0 (draft)
+    4. The tour will be hidden from the public safaris page
+  </Tab>
+</Tabs>
+
+<Note>
+Unpublishing a tour does not delete it - it only hides it from public view. You can re-publish it at any time.
+</Note>
+
+### Deleting a Tour
+
+<Warning>
+Deleting a tour is permanent and cannot be undone. Make sure you want to permanently remove the tour before proceeding.
+</Warning>
+
+To delete a tour:
+1. Navigate to the tours management page
+2. Click "Delete" on the tour you want to remove
+3. Confirm the deletion
+4. The tour will be permanently removed from the database
+
+## Public Tour Display
+
+### Safaris Page
+
+Customers can browse all published tours at `/safaris` (route name: `safaris`). The page displays:
+- 20 tours per page in random order
+- Tour categories for filtering
+- Recent blog posts for engagement
+
+### Tour Search
+
+Customers can search for specific tours using the search functionality at `/search` (route name: `search`).
+
+### Category Filtering
+
+Tours can be filtered by:
+- **Primary Category**: `/tours/{category}` (route name: `tour`)
+- **Sub-category**: `/tours/categories/{sub_category}` (route name: `tour_cat`)
+
+## Image Requirements
+
+<Info>
+All tour images must be in one of the following formats:
+- JPG/JPEG
+- PNG
+- SVG
+- WebP
+</Info>
+
+### Image Upload Guidelines
+
+- **Minimum Required**: 2 images (main image and image1)
+- **Maximum Allowed**: 6 images total
+- **Storage**: Images are stored in the `storage/app/public/images` directory
+- **Best Practices**:
+  - Use high-resolution images (at least 1920x1080px)
+  - Compress images to balance quality and file size
+  - Choose images that showcase the tour highlights
+  - Include variety: landscapes, accommodations, activities
+
+## Routes Reference
+
+| Action | Method | Route | Route Name | Auth Required |
+|--------|--------|-------|------------|---------------|
+| List all tours | GET | `/addtour` | `tours` | Yes (verified) |
+| Show tour details | GET | `/addtour/show/{id}` | `addtour.show` | No |
+| Create tour form | GET | `/addtour/create` | `addtour.create` | Yes (verified) |
+| Store new tour | POST | `/addtour/store` | `addtour.store` | Yes (verified) |
+| Edit tour form | GET | `/addtour/edit/{id}` | `addtour.edit` | Yes (verified) |
+| Update tour | POST | `/addtour/update/{id}` | `addtour.update` | Yes (verified) |
+| Delete tour | DELETE | `/addtour/delete/{id}` | `addtour.delete` | Yes (verified) |
+| Toggle publish | PUT | `/addtour/publish/{id}` | `addtour.publish` | Yes (verified) |
+| Browse safaris | GET | `/safaris` | `safaris` | No |
+
+## Validation Rules
+
+When creating or updating tours, the following validation rules apply:
+
+### Create Tour Validation
+```php
+'hotel' => 'required',
+'transport' => 'required',
+'image' => 'required|mimes:jpg,jpeg,svg,png,webp',
+'image1' => 'required|mimes:jpg,jpeg,svg,png,webp',
+'single_room' => 'required',
+'per_person_sharing' => 'required',
+'meals' => 'required',
+'category' => 'required',
+'sub_category' => 'required',
+'location' => 'required'
+```
+
+### Update Tour Validation
+```php
+'hotel' => 'required',
+'transport' => 'required',
+'single_room' => 'required',
+'per_person_sharing' => 'required',
+'meals' => 'required',
+'category' => 'required',
+'sub_category' => 'required'
+```
+
+<Note>
+Images are only required when creating a new tour. When updating, images are optional and will be preserved if not provided.
+</Note>
+
+## Related Features
+
+<CardGroup cols={2}>
+  <Card title="Bookings" icon="calendar-check" href="/features/bookings">
+    Customers can book tours directly from the tour details page
+  </Card>
+  <Card title="Categories" icon="folder">
+    Tours are organized using the category system for easy navigation
+  </Card>
+  <Card title="Blog" icon="newspaper" href="/features/blog">
+    Related blog posts are displayed on tour pages to engage customers
+  </Card>
+  <Card title="Search" icon="magnifying-glass">
+    Tours are searchable through the site-wide search functionality
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Writing Effective Tour Descriptions">
+    - Be specific about what's included in the tour
+    - Highlight unique experiences and selling points
+    - Include practical information (duration, difficulty level)
+    - Use descriptive language that evokes the safari experience
+    - Mention any special requirements or restrictions
+  </Accordion>
+  
+  <Accordion title="Pricing Strategy">
+    - Clearly differentiate between single room and shared pricing
+    - Include what's covered in the price (meals, transport, accommodation)
+    - Keep pricing up-to-date with current rates
+    - Consider seasonal pricing variations
+  </Accordion>
+  
+  <Accordion title="Image Selection">
+    - Use the main image for the most impressive view or highlight
+    - Include images of accommodations, landscapes, and activities
+    - Ensure images are recent and accurately represent the tour
+    - Maintain consistent image quality across all tours
+  </Accordion>
+  
+  <Accordion title="Category Organization">
+    - Use consistent category naming conventions
+    - Create logical sub-categories for easy filtering
+    - Review and update categories as your tour offerings grow
+    - Consider customer browsing patterns when organizing
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Image Upload Fails">
+    **Problem**: Images won't upload or show an error
+    
+    **Solutions**:
+    - Verify the image format is JPG, PNG, SVG, or WebP
+    - Check that the image file size isn't too large
+    - Ensure the `storage/app/public/images` directory exists and is writable
+    - Verify that the storage symlink is created (`php artisan storage:link`)
+  </Accordion>
+  
+  <Accordion title="Tour Not Appearing on Safaris Page">
+    **Problem**: Tour is created but not visible to customers
+    
+    **Solutions**:
+    - Check that the tour is published (published = 1)
+    - Verify the tour has all required fields filled
+    - Clear application cache if using caching
+  </Accordion>
+  
+  <Accordion title="Cannot Edit Tour">
+    **Problem**: Edit page doesn't load or save
+    
+    **Solutions**:
+    - Verify you're logged in with a verified email
+    - Check that the tour ID exists in the database
+    - Ensure all required fields are filled before saving
+  </Accordion>
+</AccordionGroup>

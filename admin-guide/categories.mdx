@@ -1,0 +1,278 @@
+---
+title: 'Categories'
+description: 'Create and manage tour categories and subcategories'
+---
+
+## Overview
+
+The category system allows you to organize tours into logical groupings with main categories and up to three subcategories, enabling customers to easily filter and find tours.
+
+## Viewing Categories
+
+Access the categories management page at `/categories` to see all existing categories with pagination (10 per page).
+
+## Category Structure
+
+Each category can have:
+- **Category Name**: Main category (required)
+- **Sub Category**: First subcategory level (optional)
+- **Sub Category 1**: Second subcategory level (optional)
+- **Sub Category 2**: Third subcategory level (optional)
+
+<Info>
+  Categories help organize tours and enable filtering on the public website.
+</Info>
+
+## Creating Categories
+
+### Step 1: Navigate to Create Category
+
+Visit `/category/create` to open the category creation form.
+
+### Step 2: Enter Category Information
+
+1. **Category Name** (required): Enter the main category name
+   - Examples: "Wildlife Safaris", "Beach Holidays", "Mountain Climbing", "Cultural Tours"
+
+2. **Sub Category** (optional): Enter the first subcategory
+   - Examples: "Big Five Safaris", "Bird Watching", "Photography Safaris"
+
+3. **Sub Category 1** (optional): Enter the second subcategory
+   - Examples: "Day Trips", "Multi-Day Tours", "Private Tours"
+
+4. **Sub Category 2** (optional): Enter the third subcategory
+   - Examples: "Budget", "Luxury", "Family-Friendly"
+
+### Step 3: Save Category
+
+Click "Save" to create the category. You'll be redirected to the categories list.
+
+<Note>
+  Only the category name is required. Subcategories are optional and can be added based on your organizational needs.
+</Note>
+
+## Category Examples
+
+### Example 1: Wildlife Safaris
+```
+Category Name: Wildlife Safaris
+Sub Category: Big Five Safaris
+Sub Category 1: Multi-Day Tours
+Sub Category 2: Luxury
+```
+
+### Example 2: Beach Holidays
+```
+Category Name: Beach Holidays
+Sub Category: Mombasa Coast
+Sub Category 1: Day Trips
+Sub Category 2: Budget
+```
+
+### Example 3: Mountain Climbing
+```
+Category Name: Mountain Climbing
+Sub Category: Mount Kenya
+Sub Category 1: Guided Tours
+Sub Category 2: Adventure
+```
+
+## Editing Categories
+
+### Update Category Information
+
+1. Navigate to `/categories`
+2. Click "Edit" on the category you want to modify
+3. Update the category name or any subcategories
+4. Click "Update" to save changes
+
+<Warning>
+  Changing a category name will affect all tours assigned to that category.
+</Warning>
+
+### When to Edit Categories
+
+- Correct spelling or formatting errors
+- Rename categories for better clarity
+- Add missing subcategories
+- Update category structure
+
+## Deleting Categories
+
+<Warning>
+  Deleting a category is permanent. Ensure no active tours are using this category before deletion.
+</Warning>
+
+### Deletion Process
+
+1. Navigate to `/categories`
+2. Click "Delete" on the category
+3. Confirm the deletion
+4. Category is permanently removed
+
+### Before Deleting
+
+- Check if any tours use this category
+- Reassign tours to different categories if needed
+- Consider editing instead of deleting if only updating names
+
+## How Categories Are Used
+
+### Tour Assignment
+
+When creating or editing a tour, admins must select:
+- A category (from the main category list)
+- A subcategory (from available subcategories)
+
+### Public Website Filtering
+
+Categories enable two types of tour filtering:
+
+1. **By Main Category**: `/tours/{category}`
+   - Shows all tours in the specified category
+   - Example: `/tours/Wildlife Safaris`
+
+2. **By Subcategory**: `/tours/categories/{sub_category}`
+   - Shows all tours in the specified subcategory
+   - Example: `/tours/categories/Big Five Safaris`
+
+### Category Navigation
+
+The category list appears throughout the website:
+- Main navigation menu
+- Tour filtering sidebar
+- Footer links
+- Search results
+
+## Best Practices
+
+### Naming Conventions
+
+<Accordion title="Use Clear, Descriptive Names">
+  - Choose names that are immediately understandable
+  - Avoid abbreviations or jargon
+  - Use proper capitalization
+  - Example: "Wildlife Safaris" not "WS" or "wildlife safaris"
+</Accordion>
+
+<Accordion title="Be Consistent">
+  - Use consistent terminology across categories
+  - Follow the same naming pattern
+  - Maintain uniform capitalization style
+  - Example: "Beach Holidays" and "Mountain Holidays" (not "beach holidays" or "Holiday - Mountains")
+</Accordion>
+
+<Accordion title="Keep It Simple">
+  - Don't create too many subcategories
+  - Use subcategories only when they add value
+  - Avoid overly complex category structures
+  - Remember: customers should easily find what they're looking for
+</Accordion>
+
+### Category Hierarchy
+
+**Main Categories** should be broad:
+- Wildlife Safaris
+- Beach Holidays
+- Mountain Climbing
+- Cultural Tours
+- City Tours
+
+**Subcategories** should be more specific:
+- Big Five Safaris
+- Bird Watching
+- Photography Safaris
+- Scenic Tours
+
+**Further Subcategories** add detail:
+- Day Trips
+- Multi-Day Tours
+- Private Tours
+- Group Tours
+
+**Final Subcategories** for special classifications:
+- Budget
+- Luxury
+- Family-Friendly
+- Adventure
+
+### Planning Categories
+
+<Steps>
+  <Step title="Analyze Your Tours">
+    Review all tour types you offer and identify natural groupings
+  </Step>
+  <Step title="Create Main Categories">
+    Define 5-10 broad main categories that cover all tour types
+  </Step>
+  <Step title="Add Subcategories">
+    Create subcategories for more specific classifications within each main category
+  </Step>
+  <Step title="Test Navigation">
+    Ensure customers can easily navigate and filter tours using your category structure
+  </Step>
+  <Step title="Refine As Needed">
+    Adjust categories based on usage patterns and customer feedback
+  </Step>
+</Steps>
+
+## Category Management Tips
+
+### Regular Review
+
+- Periodically review your category structure
+- Remove unused categories
+- Merge similar categories if needed
+- Add new categories as tour offerings expand
+
+### Data Consistency
+
+- Ensure all tours have both category and subcategory assigned
+- Verify category names match exactly (case-sensitive)
+- Keep category names synchronized across the platform
+
+### SEO Considerations
+
+- Use keywords in category names that customers might search for
+- Create category descriptions that help with search engine optimization
+- Ensure category URLs are clean and descriptive
+
+## Troubleshooting
+
+### Tours Not Appearing in Category
+
+If tours aren't showing in the correct category:
+1. Check the tour's assigned category matches exactly
+2. Verify spelling and capitalization
+3. Ensure the tour is published
+4. Confirm the category hasn't been renamed
+
+### Duplicate Categories
+
+If you see duplicate or similar categories:
+1. Choose the preferred category name
+2. Reassign all tours to the preferred category
+3. Delete the duplicate category
+
+### Empty Categories
+
+If a category has no tours:
+1. Consider if the category is still needed
+2. Delete unused categories to simplify navigation
+3. Or create tours for that category if it's intentionally empty
+
+## Category Access
+
+### Permissions
+
+Category management requires:
+- Active user authentication (`auth` middleware)
+- Verified email address (`verified` middleware)
+
+### Public Access
+
+Categories are publicly visible and used for:
+- Website navigation
+- Tour filtering
+- Search functionality
+- Breadcrumb navigation

@@ -1,0 +1,487 @@
+---
+title: 'Events Routes'
+description: 'API endpoints for managing events and activities'
+---
+
+## Overview
+
+The Events API provides endpoints for browsing and managing special events, activities, and seasonal experiences available at various safari destinations.
+
+## List All Events
+
+<api method="GET" path="/events" />
+
+Retrieve a paginated list of all available events.
+
+### Response
+
+<ResponseField name="events" type="array">
+  Paginated collection of events (20 per page)
+  
+  <Expandable title="Event Object">
+    <ResponseField name="id" type="integer">
+      Unique event identifier
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Event name
+    </ResponseField>
+    
+    <ResponseField name="slug" type="string">
+      URL-friendly slug (auto-generated from name)
+    </ResponseField>
+    
+    <ResponseField name="category" type="string">
+      Event category
+    </ResponseField>
+    
+    <ResponseField name="location" type="string">
+      Event location
+    </ResponseField>
+    
+    <ResponseField name="price" type="decimal">
+      Event ticket price or participation fee
+    </ResponseField>
+    
+    <ResponseField name="when" type="string">
+      When the event occurs (e.g., "Annually", "Monthly")
+    </ResponseField>
+    
+    <ResponseField name="starts" type="datetime">
+      Event start date and time
+    </ResponseField>
+    
+    <ResponseField name="ends" type="datetime">
+      Event end date and time
+    </ResponseField>
+    
+    <ResponseField name="description" type="text">
+      Detailed event description
+    </ResponseField>
+    
+    <ResponseField name="image" type="string">
+      Main event image path
+    </ResponseField>
+    
+    <ResponseField name="image2" type="string">
+      Secondary event image path
+    </ResponseField>
+    
+    <ResponseField name="image3" type="string" optional>
+      Additional event image path
+    </ResponseField>
+    
+    <ResponseField name="image4" type="string" optional>
+      Additional event image path
+    </ResponseField>
+    
+    <ResponseField name="image5" type="string" optional>
+      Additional event image path
+    </ResponseField>
+    
+    <ResponseField name="image6" type="string" optional>
+      Additional event image path
+    </ResponseField>
+    
+    <ResponseField name="published" type="boolean">
+      Publication status (0 or 1)
+    </ResponseField>
+    
+    <ResponseField name="user_id" type="integer">
+      ID of user who created the event
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/events
+```
+
+---
+
+## Browse Events by Category
+
+<api method="GET" path="/event/category/{category}" />
+
+Retrieve events filtered by a specific category.
+
+### Path Parameters
+
+<ParamField path="category" type="string" required>
+  The category to filter by (e.g., "Wildlife", "Cultural", "Adventure")
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/event/category/Wildlife
+```
+
+---
+
+## Show Event Details
+
+<api method="GET" path="/event/{slug}" />
+
+Retrieve detailed information about a specific event.
+
+### Path Parameters
+
+<ParamField path="slug" type="string" required>
+  The URL-friendly slug of the event
+</ParamField>
+
+### Response
+
+Returns:
+- Complete event details
+- All events for related suggestions
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/event/great-migration-festival
+```
+
+---
+
+## List All Events (Admin)
+
+<api method="GET" path="/all-events" />
+
+Retrieve a paginated list of all events for admin management.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Response
+
+Returns paginated list of events (20 per page) ordered by most recent.
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/all-events \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Cookie: laravel_session=YOUR_SESSION"
+```
+
+---
+
+## Create Event Form (Admin)
+
+<api method="GET" path="/event/new" />
+
+Display the form for creating a new event.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/event/new \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Create Event (Admin)
+
+<api method="POST" path="/event/create" />
+
+Create a new event.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Event name
+</ParamField>
+
+<ParamField body="category" type="string" required>
+  Event category
+</ParamField>
+
+<ParamField body="location" type="string" required>
+  Event location
+</ParamField>
+
+<ParamField body="price" type="decimal" required>
+  Event ticket price or participation fee
+</ParamField>
+
+<ParamField body="when" type="string" required>
+  When the event occurs (e.g., "Annually in July", "Every full moon")
+</ParamField>
+
+<ParamField body="starts" type="datetime" required>
+  Event start date and time (YYYY-MM-DD HH:MM:SS)
+</ParamField>
+
+<ParamField body="ends" type="datetime" required>
+  Event end date and time (YYYY-MM-DD HH:MM:SS)
+</ParamField>
+
+<ParamField body="description" type="text" required>
+  Detailed description of the event
+</ParamField>
+
+<ParamField body="image" type="file" required>
+  Main event image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image2" type="file" required>
+  Secondary event image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image3" type="file" optional>
+  Additional event image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image4" type="file" optional>
+  Additional event image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image5" type="file" optional>
+  Additional event image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image6" type="file" optional>
+  Additional event image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X POST https://yourdomain.com/event/create \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Great Migration Festival" \
+  -F "category=Wildlife" \
+  -F "location=Maasai Mara, Kenya" \
+  -F "price=150.00" \
+  -F "when=Annually in July-August" \
+  -F "starts=2026-07-15 06:00:00" \
+  -F "ends=2026-08-31 18:00:00" \
+  -F "description=Experience the world-famous wildebeest migration" \
+  -F "image=@/path/to/image.jpg" \
+  -F "image2=@/path/to/image2.jpg"
+```
+
+### Response
+
+Redirects to events admin list with success message: "You Added a Product."
+
+<Note>
+  The slug is automatically generated from the name by replacing spaces with hyphens.
+</Note>
+
+---
+
+## Edit Event Form (Admin)
+
+<api method="GET" path="/event/edit/{id}" />
+
+Display the form for editing an existing event.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique event ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/event/edit/123 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Update Event (Admin)
+
+<api method="PUT" path="/event/update/{id}" />
+
+Update an existing event.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique event ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Event name
+</ParamField>
+
+<ParamField body="category" type="string" required>
+  Event category
+</ParamField>
+
+<ParamField body="location" type="string" required>
+  Event location
+</ParamField>
+
+<ParamField body="price" type="decimal" required>
+  Event ticket price or participation fee
+</ParamField>
+
+<ParamField body="when" type="string" required>
+  When the event occurs
+</ParamField>
+
+<ParamField body="starts" type="datetime" required>
+  Event start date and time
+</ParamField>
+
+<ParamField body="ends" type="datetime" required>
+  Event end date and time
+</ParamField>
+
+<ParamField body="description" type="text" required>
+  Detailed description of the event
+</ParamField>
+
+<ParamField body="image" type="file" optional>
+  Main event image (only if updating)
+</ParamField>
+
+<ParamField body="image2" type="file" optional>
+  Additional event images (only if updating)
+</ParamField>
+
+<Note>
+  Images are optional during update. If not provided, existing images are retained. The slug remains unchanged during updates.
+</Note>
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/event/update/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Great Migration Festival" \
+  -F "category=Wildlife" \
+  -F "location=Maasai Mara, Kenya" \
+  -F "price=175.00" \
+  -F "when=Annually in July-September" \
+  -F "starts=2026-07-10 06:00:00" \
+  -F "ends=2026-09-15 18:00:00" \
+  -F "description=Updated description for the migration festival"
+```
+
+### Response
+
+Redirects to events admin list with success message: "event Updated"
+
+---
+
+## Delete Event (Admin)
+
+<api method="DELETE" path="/event/delete/{id}" />
+
+Permanently delete an event.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique event ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X DELETE https://yourdomain.com/event/delete/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to events admin list with success message: "You Deleted event."
+
+---
+
+## Publish/Unpublish Event (Admin)
+
+<api method="PUT" path="/event/publish/{id}" />
+
+Toggle the publication status of an event.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique event ID
+</ParamField>
+
+### Behavior
+
+- If `published = 0`, sets to `1` (publish)
+- If `published = 1`, sets to `0` (unpublish)
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/event/publish/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to events admin list with updated publication status.

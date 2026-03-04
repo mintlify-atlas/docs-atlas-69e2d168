@@ -1,0 +1,510 @@
+---
+title: 'Events'
+description: 'Manage and promote safari events, special activities, and scheduled experiences'
+icon: 'calendar-star'
+---
+
+## Overview
+
+The Events feature enables Okulink Safaris to showcase and manage special events, activities, and scheduled experiences. From wildlife migration viewings to cultural festivals and exclusive safari experiences, the event system provides comprehensive scheduling and promotional capabilities.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Time Scheduling" icon="clock">
+    Precise event scheduling with date, start time, and end time
+  </Card>
+  <Card title="Pricing Management" icon="tag">
+    Flexible pricing for different event types and packages
+  </Card>
+  <Card title="Media Gallery" icon="images">
+    Upload up to 6 images to showcase event experiences
+  </Card>
+  <Card title="SEO Optimization" icon="link">
+    Auto-generated slugs for clean, shareable event URLs
+  </Card>
+</CardGroup>
+
+## Event Information
+
+### Database Fields
+
+Each event contains the following information:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Event name or title |
+| `slug` | string | URL-friendly identifier (unique) |
+| `category` | string | Event category or type |
+| `location` | string | Event venue or area |
+| `price` | string | Event pricing information |
+| `when` | date | Event date |
+| `starts` | time | Event start time |
+| `ends` | time | Event end time |
+| `description` | text | Detailed event information |
+| `image` - `image6` | string | Up to 6 image paths for event gallery |
+| `user_id` | integer | ID of the administrator who created the event |
+| `published` | integer | Publication status (0 = draft, 1 = published) |
+
+## Creating an Event
+
+<Steps>
+  <Step title="Access Event Creation">
+    Navigate to `/event/new` (route name: `events.create`) from the admin dashboard
+    
+    <Info>Authentication and email verification are required to create events</Info>
+  </Step>
+  
+  <Step title="Enter Basic Information">
+    Complete the following required fields:
+    
+    - **Name**: Descriptive event title (e.g., "Great Migration Viewing Experience")
+    - **Category**: Event type (e.g., "Wildlife Event", "Cultural Festival", "Adventure Activity")
+    - **Location**: Specific venue or area where the event occurs
+    - **Price**: Event cost (can include various ticket types or packages)
+  </Step>
+  
+  <Step title="Schedule the Event">
+    Set the precise timing:
+    
+    - **When**: Event date (date picker format)
+    - **Starts**: Event start time (time picker format)
+    - **Ends**: Event end time (time picker format)
+    
+    <Note>Ensure the end time is after the start time for proper event duration</Note>
+  </Step>
+  
+  <Step title="Add Description">
+    Write a comprehensive description including:
+    - What the event entails
+    - What participants can expect
+    - What's included in the price
+    - Any requirements or restrictions
+    - Meeting points and logistics
+    - What to bring
+  </Step>
+  
+  <Step title="Upload Images">
+    Provide visual content:
+    
+    - **Main Image**: Primary event image (required, JPG/PNG/SVG/WebP)
+    - **Second Image**: Secondary image (required)
+    - **Additional Images**: Up to 4 more images (optional, image3-6)
+    
+    Show various aspects like activities, locations, past events, or expected experiences
+  </Step>
+  
+  <Step title="Create Event">
+    Click "Submit" to save the event. The system will:
+    - Generate a URL-friendly slug from the event name
+    - Store all images in public storage
+    - Create the event in draft mode (unpublished)
+    - Associate the event with your user account
+    - Redirect to the events management page
+  </Step>
+</Steps>
+
+## Managing Events
+
+### Viewing All Events
+
+<Tabs>
+  <Tab title="Admin View">
+    Access the events management page at `/all-events` (route name: `events.all`):
+    
+    **Features:**
+    - All events in the system (published and unpublished)
+    - 20 events per page with pagination
+    - Most recent events displayed first
+    - Quick action buttons for each event
+    - Current publication status visible
+    
+    <Note>Requires authentication and email verification</Note>
+  </Tab>
+  
+  <Tab title="Public View">
+    Customers browse events at `/events` (route name: `events`):
+    
+    **Features:**
+    - Only published events visible
+    - 20 events per page with pagination
+    - Latest events shown first
+    - Filter by category available
+    - Direct links to event details
+  </Tab>
+</Tabs>
+
+### Viewing Event Details
+
+Event details are accessible at `/event/{slug}` where `{slug}` is the URL-friendly event name.
+
+**Detail Page Includes:**
+- Complete event information and description
+- Full image gallery (all uploaded images)
+- Date, time, and location details
+- Pricing information
+- List of all latest events for browsing
+
+### Editing an Event
+
+<Steps>
+  <Step title="Navigate to Edit Page">
+    From the events management page, click "Edit" or visit `/event/edit/{id}`
+  </Step>
+  
+  <Step title="Modify Event Details">
+    Update any event information:
+    - Name (slug remains unchanged to preserve URL)
+    - Category
+    - Location
+    - Price
+    - Date (when)
+    - Start time
+    - End time
+    - Description
+  </Step>
+  
+  <Step title="Update Images (Optional)">
+    Replace event images:
+    - If you upload any new image files, all image fields will be processed
+    - If no new images are uploaded, existing images are preserved
+    - Can update all or selected images
+  </Step>
+  
+  <Step title="Save Changes">
+    Click "Update" to save modifications. You'll be redirected to `/all-events` with the success message: "event Updated"
+  </Step>
+</Steps>
+
+<Warning>
+The slug (URL) is preserved during updates to maintain link consistency. If you need a different URL, create a new event.
+</Warning>
+
+### Publishing and Unpublishing
+
+Control event visibility with the publish toggle:
+
+<Tabs>
+  <Tab title="Publishing an Event">
+    Make an event visible to customers:
+    
+    1. Navigate to `/all-events`
+    2. Find the event with published status 0 (draft)
+    3. Click "Publish" (PUT request to `/event/publish/{id}`)
+    4. Status changes to 1 (published)
+    5. Event now appears on public events page
+    6. Event is included in category filters
+  </Tab>
+  
+  <Tab title="Unpublishing an Event">
+    Hide an event from customers:
+    
+    1. Navigate to the events management page
+    2. Find the event with published status 1
+    3. Click "Unpublish"
+    4. Status changes to 0 (draft)
+    5. Event hidden from public pages
+    6. Event still accessible in admin view
+  </Tab>
+</Tabs>
+
+<Info>
+Unpublishing is useful for past events you want to keep for reference or events that are temporarily not available.
+</Info>
+
+### Deleting an Event
+
+<Warning>
+Deleting an event permanently removes it from the database. This action cannot be undone. Consider unpublishing instead if you might need the event information later.
+</Warning>
+
+To delete an event:
+1. Navigate to `/all-events`
+2. Click "Delete" on the event
+3. Confirm the deletion
+4. Event is permanently removed with message: "You Deleted event."
+
+## Category Filtering
+
+Events can be filtered by category using `/event/category/{category}` (route name: `events.category`).
+
+**Common Event Categories:**
+- Wildlife Events (migrations, breeding seasons)
+- Cultural Festivals (local celebrations, traditional ceremonies)
+- Adventure Activities (climbing, rafting, hiking)
+- Photography Safaris (specialized photo opportunities)
+- Night Drives (nocturnal wildlife viewing)
+- Bird Watching Events (seasonal migrations, rare species)
+- Conservation Activities (tree planting, wildlife monitoring)
+- Educational Workshops (wildlife, ecology, culture)
+
+## Routes Reference
+
+| Action | Method | Route | Route Name | Auth Required |
+|--------|--------|-------|------------|---------------|
+| List all (admin) | GET | `/all-events` | `events.all` | Yes (verified) |
+| Browse (public) | GET | `/events` | `events` | No |
+| Create form | GET | `/event/new` | `events.create` | Yes (verified) |
+| Store new event | POST | `/event/create` | `events.store` | Yes (verified) |
+| Show details | GET | `/event/{slug}` | `events.show` | No |
+| Edit form | GET | `/event/edit/{id}` | `events.edit` | Yes (verified) |
+| Update event | PUT | `/event/update/{id}` | `events.update` | Yes (verified) |
+| Delete event | DELETE | `/event/delete/{id}` | `events.delete` | Yes (verified) |
+| Toggle publish | PUT | `/event/publish/{id}` | `events.publish` | Yes (verified) |
+| Filter by category | GET | `/event/category/{category}` | `events.category` | No |
+
+## Validation Rules
+
+When creating events, the following validation applies:
+
+```php
+'name' => 'required',
+'category' => 'required',
+'image' => 'required',        // Main image
+'location' => 'required',
+'price' => 'required',
+'when' => 'required',         // Event date
+'starts' => 'required',       // Start time
+'ends' => 'required',         // End time
+'description' => 'required'
+```
+
+<Note>
+During updates, images are optional. If not provided, existing images are maintained.
+</Note>
+
+## Event Scheduling Best Practices
+
+<AccordionGroup>
+  <Accordion title="Date and Time Planning">
+    **Before Scheduling:**
+    - Research seasonal patterns (migrations, weather, festivals)
+    - Check for conflicting events
+    - Consider travel time to location
+    - Account for setup and breakdown time
+    - Plan buffer time between events
+    
+    **Time Duration:**
+    - Be realistic about event length
+    - Include time for breaks if needed
+    - Account for travel to/from event location
+    - Consider daylight hours for outdoor events
+    - Plan for different time zones if applicable
+  </Accordion>
+  
+  <Accordion title="Pricing Strategy">
+    **Price Structure:**
+    - Clear indication of what's included
+    - Different price tiers if applicable (adult/child, standard/VIP)
+    - Group discounts mentioned
+    - Early bird specials noted
+    - Cancellation policy included
+    
+    **Price Presentation:**
+    - "$150 per person (includes transport and guide)"
+    - "Adult: $200 | Child (5-12): $100 | Under 5: Free"
+    - "Standard Package: $180 | VIP Experience: $350"
+  </Accordion>
+  
+  <Accordion title="Description Writing">
+    **Essential Elements:**
+    1. **Opening**: Capture attention with the unique aspect
+    2. **Details**: What happens during the event
+    3. **Inclusions**: What's provided (transport, meals, equipment)
+    4. **Requirements**: Fitness level, age restrictions, special needs
+    5. **Practical Info**: Meeting point, what to bring, dress code
+    6. **Booking**: How to reserve, cancellation policy
+    
+    **Writing Tips:**
+    - Use active, engaging language
+    - Include sensory details (sights, sounds, experiences)
+    - Be specific about timing and logistics
+    - Highlight unique selling points
+    - Address common customer questions
+  </Accordion>
+</AccordionGroup>
+
+## Image Guidelines
+
+### Accepted Formats
+- JPG/JPEG
+- PNG
+- SVG
+- WebP
+
+### Image Requirements
+- **Minimum**: 2 images required (main image and image2)
+- **Maximum**: 6 images total per event
+- **Storage**: Stored in `storage/app/public/images`
+
+### Effective Event Images
+
+<CardGroup cols={2}>
+  <Card title="Main Image" icon="image">
+    The hero shot that captures the essence:
+    - Action shots from the event type
+    - Dramatic landscapes or wildlife
+    - Happy participants engaging
+    - Peak moment of the experience
+  </Card>
+  <Card title="Second Image" icon="images">
+    Supporting visual information:
+    - Different angle or aspect
+    - Detail shots of activities
+    - Group interactions
+    - Venue or location overview
+  </Card>
+  <Card title="Additional Images" icon="photo-film">
+    Comprehensive visual story:
+    - Various activities offered
+    - Different times of day
+    - Diverse participant groups
+    - Equipment or facilities
+    - Before/during/after progression
+    - Local culture or wildlife featured
+  </Card>
+  <Card title="Quality Standards" icon="star">
+    Professional presentation:
+    - High resolution (1920x1080px minimum)
+    - Good lighting and composition
+    - Authentic, not overly staged
+    - Recent and accurate representation
+    - Consistent quality across gallery
+  </Card>
+</CardGroup>
+
+## Event Types and Examples
+
+<Tabs>
+  <Tab title="Wildlife Events">
+    **Great Migration Viewing**
+    - **When**: July-September
+    - **Duration**: Full day (6:00 AM - 6:00 PM)
+    - **Price**: $300 per person
+    - **Includes**: Transport, guide, lunch, park fees
+    
+    **Night Game Drive**
+    - **When**: Year-round
+    - **Duration**: 3 hours (7:00 PM - 10:00 PM)
+    - **Price**: $120 per person
+    - **Includes**: Spotlights, guide, refreshments
+  </Tab>
+  
+  <Tab title="Cultural Events">
+    **Maasai Cultural Experience**
+    - **When**: Daily except Sundays
+    - **Duration**: 4 hours (2:00 PM - 6:00 PM)
+    - **Price**: $80 per person
+    - **Includes**: Village visit, traditional meal, dance performance
+    
+    **Harvest Festival**
+    - **When**: Specific seasonal dates
+    - **Duration**: Full day (8:00 AM - 5:00 PM)
+    - **Price**: $150 per person
+    - **Includes**: Festival participation, traditional meals, crafts
+  </Tab>
+  
+  <Tab title="Adventure Activities">
+    **Hot Air Balloon Safari**
+    - **When**: Daily (weather permitting)
+    - **Duration**: 4 hours (5:00 AM - 9:00 AM)
+    - **Price**: $450 per person
+    - **Includes**: Flight, champagne breakfast, certificate
+    
+    **Walking Safari**
+    - **When**: Daily
+    - **Duration**: 3 hours (6:00 AM - 9:00 AM)
+    - **Price**: $90 per person
+    - **Includes**: Armed ranger, guide, refreshments
+  </Tab>
+  
+  <Tab title="Special Occasions">
+    **Sunset Photography Safari**
+    - **When**: Daily
+    - **Duration**: 3 hours (4:00 PM - 7:00 PM)
+    - **Price**: $180 per person
+    - **Includes**: Photography guide, prime locations, refreshments
+    
+    **Full Moon Safari**
+    - **When**: Monthly (full moon nights)
+    - **Duration**: 4 hours (7:00 PM - 11:00 PM)
+    - **Price**: $200 per person
+    - **Includes**: Night drive, dinner under stars, guide
+  </Tab>
+</Tabs>
+
+## Related Features
+
+<CardGroup cols={2}>
+  <Card title="Tours & Safaris" icon="compass" href="/features/tours-safaris">
+    Events can complement main tour packages
+  </Card>
+  <Card title="Bookings" icon="calendar-check" href="/features/bookings">
+    Customers may need to book spots for events
+  </Card>
+  <Card title="Blog" icon="newspaper" href="/features/blog">
+    Write about events to generate interest
+  </Card>
+  <Card title="Categories" icon="folder">
+    Organize events for easy customer navigation
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Date/Time Issues">
+    **Problem**: Event times not displaying correctly
+    
+    **Solutions**:
+    - Verify date format matches database requirements
+    - Check server timezone settings
+    - Ensure start time is before end time
+    - Use 24-hour format for time entries
+    - Confirm date is in the future (for upcoming events)
+  </Accordion>
+  
+  <Accordion title="Slug Conflicts">
+    **Problem**: Error creating event with similar name
+    
+    **Solutions**:
+    - Make event names more specific and unique
+    - Include date or location in the name
+    - Example: "Night Drive" → "Serengeti Night Drive July 2026"
+    - Check existing events for name duplicates
+  </Accordion>
+  
+  <Accordion title="Event Not Showing in Category">
+    **Problem**: Event missing from category filter
+    
+    **Solutions**:
+    - Verify event is published (published = 1)
+    - Check category name for exact match (case-sensitive)
+    - Remove extra spaces from category field
+    - Ensure category is spelled consistently across events
+  </Accordion>
+  
+  <Accordion title="Images Not Uploading">
+    **Problem**: Image upload fails during event creation
+    
+    **Solutions**:
+    - Check image file format (must be JPG, PNG, SVG, or WebP)
+    - Verify image file size isn't too large
+    - Ensure storage directory has write permissions
+    - Confirm storage symlink exists: `php artisan storage:link`
+    - Try compressing images before upload
+  </Accordion>
+</AccordionGroup>
+
+## Integration Opportunities
+
+<Info>
+Consider enhancing the events feature with:
+- Calendar integration for date selection
+- Capacity limits and registration tracking
+- Automated email reminders before events
+- Payment integration for event bookings
+- Waitlist functionality for sold-out events
+- Review/rating system after event completion
+- Social sharing for event promotion
+</Info>

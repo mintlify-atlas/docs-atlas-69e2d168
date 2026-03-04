@@ -1,0 +1,226 @@
+---
+title: "API Overview"
+description: "Introduction to the Okulink Safaris REST API"
+---
+
+## Introduction
+
+The Okulink Safaris API is a RESTful API built with Laravel 9 that provides programmatic access to manage tours, bookings, accommodations, events, products, services, and content.
+
+The API follows standard REST conventions and returns JSON responses for all requests.
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://your-domain.com/api
+```
+
+Replace `your-domain.com` with your actual domain.
+
+## API Conventions
+
+### Request Format
+
+- All requests must include appropriate headers
+- POST, PUT, and PATCH requests should send data as JSON with `Content-Type: application/json`
+- Authentication tokens must be included in the `Authorization` header
+
+### Response Format
+
+All API responses are returned in JSON format with appropriate HTTP status codes:
+
+```json Success Response
+{
+  "data": {
+    // Response data
+  },
+  "message": "Operation successful"
+}
+```
+
+```json Error Response
+{
+  "message": "Error description",
+  "errors": {
+    "field": ["Validation error message"]
+  }
+}
+```
+
+## HTTP Status Codes
+
+The API uses standard HTTP status codes:
+
+| Status Code | Description |
+|-------------|-------------|
+| `200` | OK - Request succeeded |
+| `201` | Created - Resource created successfully |
+| `204` | No Content - Request succeeded with no response body |
+| `400` | Bad Request - Invalid request parameters |
+| `401` | Unauthorized - Authentication required or failed |
+| `403` | Forbidden - Authenticated but not authorized |
+| `404` | Not Found - Resource not found |
+| `422` | Unprocessable Entity - Validation failed |
+| `429` | Too Many Requests - Rate limit exceeded |
+| `500` | Internal Server Error - Server error |
+
+## Error Handling
+
+### Validation Errors
+
+When validation fails, the API returns a `422` status code with detailed error messages:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "email": [
+      "The email field is required."
+    ],
+    "password": [
+      "The password must be at least 8 characters."
+    ]
+  }
+}
+```
+
+### Authentication Errors
+
+Unauthenticated requests receive a `401` status code:
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+### Authorization Errors
+
+Unauthorized access attempts receive a `403` status code:
+
+```json
+{
+  "message": "This action is unauthorized."
+}
+```
+
+## Rate Limiting
+
+The API implements rate limiting to ensure fair usage:
+
+- **API Routes**: 60 requests per minute per IP address
+- **Email Verification**: 6 requests per minute (throttled)
+
+When rate limits are exceeded, the API returns a `429 Too Many Requests` status code with headers indicating:
+
+- `X-RateLimit-Limit`: Maximum requests allowed
+- `X-RateLimit-Remaining`: Remaining requests in current window
+- `Retry-After`: Seconds until rate limit resets
+
+## Resource Groups
+
+The API provides access to the following resource groups:
+
+### Tours & Safaris
+
+Manage safari tours, destinations, and tour categories. Tours can be filtered by category and published/unpublished status.
+
+**Key Endpoints:**
+- Browse available tours
+- View tour details
+- Create and manage tours (authenticated, verified)
+- Publish/unpublish tours
+
+### Bookings
+
+Handle tour bookings and reservations. Requires authentication and email verification.
+
+**Key Endpoints:**
+- Create new bookings
+- View booking details
+- Update booking information
+- Confirm bookings
+
+### Accommodations
+
+Manage accommodation listings including hotels, lodges, and campsites.
+
+**Key Endpoints:**
+- Browse accommodations
+- Filter by category
+- View accommodation details
+- Manage listings (authenticated, verified)
+
+### Events
+
+Manage safari-related events, activities, and special occasions.
+
+**Key Endpoints:**
+- List all events
+- View event details
+- Create and update events (authenticated, verified)
+- Categorize events
+
+### Products
+
+Manage safari products and merchandise.
+
+**Key Endpoints:**
+- Browse product catalog
+- Filter by category
+- View product details
+- Manage inventory (authenticated, verified)
+
+### Services
+
+Manage additional safari services and offerings.
+
+**Key Endpoints:**
+- List available services
+- View service details
+- Create and manage services (authenticated, verified)
+- Categorize services
+
+### Blog & Content
+
+Manage blog posts, videos, and media content.
+
+**Key Endpoints:**
+- Browse blog posts
+- View post details
+- Create and publish content (authenticated, verified)
+- Manage videos and media
+
+### Enquiries
+
+Handle customer enquiries and contact requests.
+
+**Key Endpoints:**
+- Submit enquiries
+- View enquiry details
+- Manage enquiries (authenticated)
+
+## Middleware & Permissions
+
+The API uses middleware to control access:
+
+- **`auth`**: Requires user authentication
+- **`verified`**: Requires verified email address
+- **`guest`**: Only accessible to non-authenticated users
+- **`signed`**: Requires signed URL (used for email verification)
+- **`throttle`**: Applies rate limiting
+
+Many write operations (create, update, delete, publish) require both authentication and email verification.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/api/authentication">
+    Learn how to authenticate with Laravel Sanctum
+  </Card>
+  <Card title="Endpoints" icon="code" href="/api/routes/tours">
+    Browse available API endpoints
+  </Card>
+</CardGroup>

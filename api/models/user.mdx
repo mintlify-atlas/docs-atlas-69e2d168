@@ -1,0 +1,104 @@
+---
+title: User Model
+description: Complete reference for the User model in Okulink Safaris
+---
+
+## Overview
+
+The `User` model represents authenticated users in the Okulink Safaris system. It extends Laravel's Authenticatable class and implements email verification, providing authentication, authorization, and user management functionality.
+
+## Database Table
+
+**Table Name:** `users`
+
+## Traits
+
+- `HasApiTokens` - Enables Laravel Sanctum token authentication
+- `HasFactory` - Provides factory support for testing
+- `Notifiable` - Enables notification system
+
+## Fillable Fields
+
+The following fields can be mass-assigned:
+
+- `name`
+- `email`
+- `password`
+
+## Hidden Fields
+
+These fields are automatically hidden from JSON serialization:
+
+- `password`
+- `remember_token`
+
+## Complete Schema
+
+<ResponseField name="id" type="integer" required>
+  Primary key identifier for the user
+</ResponseField>
+
+<ResponseField name="name" type="string" required>
+  Full name of the user
+</ResponseField>
+
+<ResponseField name="email" type="string" required>
+  User's email address (unique)
+</ResponseField>
+
+<ResponseField name="isAdmin" type="string" default="0">
+  Admin status flag (0 = regular user, 1 = admin)
+</ResponseField>
+
+<ResponseField name="email_verified_at" type="timestamp">
+  Timestamp when the user verified their email address (nullable)
+</ResponseField>
+
+<ResponseField name="password" type="string" required>
+  Hashed password for authentication (hidden from JSON responses)
+</ResponseField>
+
+<ResponseField name="remember_token" type="string">
+  Token for "remember me" functionality (hidden from JSON responses)
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the user account was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the user account was last updated
+</ResponseField>
+
+## Relationships
+
+### Bookings
+
+A user can have many bookings. Defined as:
+
+```php
+public function bookings()
+{
+    return $this->hasMany('App\Booking');
+}
+```
+
+## Type Casting
+
+- `email_verified_at` is automatically cast to a `datetime` instance
+
+## Example JSON Response
+
+```json
+{
+  "id": 15,
+  "name": "Jane Smith",
+  "email": "jane.smith@example.com",
+  "isAdmin": "1",
+  "email_verified_at": "2024-01-10T12:30:00.000000Z",
+  "created_at": "2024-01-10T10:00:00.000000Z",
+  "updated_at": "2024-02-15T14:20:00.000000Z"
+}
+```
+
+**Note:** The `password` and `remember_token` fields are never included in JSON responses due to the `$hidden` property.

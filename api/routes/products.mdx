@@ -1,0 +1,472 @@
+---
+title: 'Products Routes'
+description: 'API endpoints for managing safari products and merchandise'
+---
+
+## Overview
+
+The Products API provides endpoints for browsing and managing safari-related products such as merchandise, equipment, and souvenirs.
+
+## List All Products
+
+<api method="GET" path="/products" />
+
+Retrieve a paginated list of all available products.
+
+### Response
+
+<ResponseField name="products" type="array">
+  Paginated collection of products (20 per page)
+  
+  <Expandable title="Product Object">
+    <ResponseField name="id" type="integer">
+      Unique product identifier
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Product name
+    </ResponseField>
+    
+    <ResponseField name="slug" type="string">
+      URL-friendly slug (auto-generated from name)
+    </ResponseField>
+    
+    <ResponseField name="category" type="string">
+      Product category
+    </ResponseField>
+    
+    <ResponseField name="location" type="string">
+      Product location or origin
+    </ResponseField>
+    
+    <ResponseField name="price" type="decimal">
+      Product price
+    </ResponseField>
+    
+    <ResponseField name="quantity_available" type="integer">
+      Available stock quantity
+    </ResponseField>
+    
+    <ResponseField name="description" type="text">
+      Detailed product description
+    </ResponseField>
+    
+    <ResponseField name="image" type="string">
+      Main product image path
+    </ResponseField>
+    
+    <ResponseField name="image2" type="string">
+      Secondary product image path
+    </ResponseField>
+    
+    <ResponseField name="image3" type="string" optional>
+      Additional product image path
+    </ResponseField>
+    
+    <ResponseField name="image4" type="string" optional>
+      Additional product image path
+    </ResponseField>
+    
+    <ResponseField name="image5" type="string" optional>
+      Additional product image path
+    </ResponseField>
+    
+    <ResponseField name="image6" type="string" optional>
+      Additional product image path
+    </ResponseField>
+    
+    <ResponseField name="published" type="boolean">
+      Publication status (0 or 1)
+    </ResponseField>
+    
+    <ResponseField name="user_id" type="integer">
+      ID of user who created the product
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/products
+```
+
+---
+
+## Browse Products by Category
+
+<api method="GET" path="/product/category/{category}" />
+
+Retrieve products filtered by a specific category.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="category" type="string" required>
+  The category to filter by (e.g., "Clothing", "Equipment", "Souvenirs")
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/product/category/Clothing \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Show Product Details
+
+<api method="GET" path="/product/{slug}" />
+
+Retrieve detailed information about a specific product.
+
+### Path Parameters
+
+<ParamField path="slug" type="string" required>
+  The URL-friendly slug of the product
+</ParamField>
+
+### Response
+
+Returns:
+- Complete product details
+- Latest 5 products for related suggestions
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/product/safari-hat
+```
+
+---
+
+## List All Products (Admin)
+
+<api method="GET" path="/all-products" />
+
+Retrieve a paginated list of all products for admin management.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Response
+
+Returns paginated list of products (20 per page) ordered by most recent.
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/all-products \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Cookie: laravel_session=YOUR_SESSION"
+```
+
+---
+
+## Create Product Form (Admin)
+
+<api method="GET" path="/product/new" />
+
+Display the form for creating a new product.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/product/new \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Create Product (Admin)
+
+<api method="POST" path="/product/create" />
+
+Create a new product listing.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Product name
+</ParamField>
+
+<ParamField body="category" type="string" required>
+  Product category
+</ParamField>
+
+<ParamField body="location" type="string" required>
+  Product location or origin
+</ParamField>
+
+<ParamField body="price" type="decimal" required>
+  Product price
+</ParamField>
+
+<ParamField body="quantity_available" type="integer" required>
+  Available stock quantity
+</ParamField>
+
+<ParamField body="description" type="text" required>
+  Detailed product description
+</ParamField>
+
+<ParamField body="image" type="file" required>
+  Main product image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image2" type="file" required>
+  Secondary product image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image3" type="file" optional>
+  Additional product image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image4" type="file" optional>
+  Additional product image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image5" type="file" optional>
+  Additional product image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image6" type="file" optional>
+  Additional product image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X POST https://yourdomain.com/product/create \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Safari Hat" \
+  -F "category=Clothing" \
+  -F "location=Nairobi, Kenya" \
+  -F "price=35.00" \
+  -F "quantity_available=150" \
+  -F "description=Comfortable wide-brimmed safari hat with UV protection" \
+  -F "image=@/path/to/image.jpg" \
+  -F "image2=@/path/to/image2.jpg"
+```
+
+### Response
+
+Redirects to products admin list with success message: "You Added a Product."
+
+<Note>
+  The slug is automatically generated from the name by replacing spaces with hyphens.
+</Note>
+
+---
+
+## Edit Product Form (Admin)
+
+<api method="GET" path="/product/edit/{id}" />
+
+Display the form for editing an existing product.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique product ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/product/edit/123 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Update Product (Admin)
+
+<api method="PUT" path="/product/update/{id}" />
+
+Update an existing product listing.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique product ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Product name
+</ParamField>
+
+<ParamField body="category" type="string" required>
+  Product category
+</ParamField>
+
+<ParamField body="location" type="string" required>
+  Product location or origin
+</ParamField>
+
+<ParamField body="price" type="decimal" required>
+  Product price
+</ParamField>
+
+<ParamField body="quantity_available" type="integer" required>
+  Available stock quantity
+</ParamField>
+
+<ParamField body="description" type="text" required>
+  Detailed product description
+</ParamField>
+
+<ParamField body="image" type="file" optional>
+  Main product image (only if updating)
+</ParamField>
+
+<ParamField body="image2" type="file" optional>
+  Additional product images (only if updating)
+</ParamField>
+
+<Note>
+  Images are optional during update. If not provided, existing images are retained. The slug remains unchanged during updates.
+</Note>
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/product/update/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Safari Hat" \
+  -F "category=Clothing" \
+  -F "location=Nairobi, Kenya" \
+  -F "price=39.99" \
+  -F "quantity_available=120" \
+  -F "description=Updated: Premium safari hat with enhanced UV protection"
+```
+
+### Response
+
+Redirects to products admin list with success message: "Product Updated"
+
+---
+
+## Delete Product (Admin)
+
+<api method="DELETE" path="/product/delete/{id}" />
+
+Permanently delete a product.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique product ID
+</ParamField>
+
+<Warning>
+  Note: This route is mapped to CategoryController::destroy instead of ProductController::destroy in the web.php routes file. This appears to be a bug in the application.
+</Warning>
+
+### Example Request
+
+```bash
+curl -X DELETE https://yourdomain.com/product/delete/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to products admin list with success message: "You Deleted Product."
+
+---
+
+## Publish/Unpublish Product (Admin)
+
+<api method="PUT" path="/product/publish/{id}" />
+
+Toggle the publication status of a product.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique product ID
+</ParamField>
+
+### Behavior
+
+- If `published = 0`, sets to `1` (publish)
+- If `published = 1`, sets to `0` (unpublish)
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/product/publish/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to products admin list with updated publication status.

@@ -1,0 +1,333 @@
+---
+title: 'User Management'
+description: 'View users, update user details, and manage user accounts'
+---
+
+## Overview
+
+The user management system allows administrators to view all registered users and update user account information including credentials.
+
+## Viewing Users
+
+Access the users list at `/users` to see all registered users in the system.
+
+<Info>
+  The users list displays all accounts that have registered on the platform.
+</Info>
+
+## User Information
+
+Each user account contains:
+- **Name**: User's full name
+- **Email**: User's email address
+- **Email Verification Status**: Whether email is verified
+- **Registration Date**: When the account was created
+- **User ID**: Unique identifier
+
+## Email Verification
+
+### Verification Requirement
+
+Users must verify their email address to access admin features. The verification workflow:
+
+1. User registers an account
+2. Verification email sent automatically
+3. User clicks verification link
+4. Email marked as verified
+5. User gains access to admin features
+
+### Verification Notice
+
+Unverified users see a verification notice at `/email/verify` when attempting to access protected features.
+
+### Resending Verification Email
+
+Users can request a new verification email:
+- Maximum 6 requests per minute (throttled)
+- Post request to `/email/verification-notification`
+- Confirmation message displayed
+
+## Updating User Information
+
+### Access User Edit Page
+
+1. Navigate to `/users`
+2. Click on the user you want to update
+3. This opens the edit page at `/users/update-user/{id}`
+
+### Editable Fields
+
+You can update:
+- **Name**: User's full name
+- **Email**: User's email address
+- **Password**: User's password (with confirmation)
+
+<Warning>
+  When updating passwords, you must provide matching password and password confirmation fields.
+</Warning>
+
+### Update Process
+
+1. Navigate to `/users/update-user/{id}`
+2. Modify the desired fields:
+   - Update name if needed
+   - Change email address if needed
+   - Enter new password (optional)
+3. Confirm password if changing it
+4. Click "Update"
+5. Changes are saved immediately
+
+<Note>
+  If you don't want to change a field, you can leave it as is. The system only updates fields that are modified.
+</Note>
+
+## Password Management
+
+### Password Update Requirements
+
+- Password and password confirmation must match
+- Passwords are automatically hashed for security
+- Minimum security standards should be enforced
+
+### Password Validation
+
+The system validates:
+1. Password and confirmation match
+2. Password meets minimum requirements
+3. Error displayed if validation fails
+
+### Password Security
+
+All passwords are:
+- Hashed using Laravel's Hash facade
+- Stored securely in the database
+- Never displayed in plain text
+- Protected from unauthorized access
+
+## Deleting Users
+
+<Warning>
+  Deleting a user is permanent and removes all associated data. Use with extreme caution.
+</Warning>
+
+### Deletion Process
+
+1. Navigate to `/users`
+2. Locate the user to delete
+3. Click "Delete"
+4. Confirm the deletion
+5. User is permanently removed from the system
+
+### Before Deleting a User
+
+Consider:
+- Are there associated bookings?
+- Has the user created any content?
+- Is this a spam or duplicate account?
+- Can you deactivate instead of delete?
+
+### What Gets Deleted
+
+When deleting a user:
+- User account information
+- Login credentials
+- Associated profile data
+- Note: Related content (tours, bookings, blogs) may need separate handling
+
+## User Profile
+
+Users can access their own profile at `/profile` where they see:
+- Personal information
+- Their booking history
+- Account settings
+- Verification status
+
+## User Bookings
+
+Users can view their bookings:
+- Navigate to `/profile`
+- See all bookings they've created
+- View booking status
+- Track confirmation status
+
+<Card title="Managing Bookings" icon="calendar-check" href="/admin-guide/managing-bookings">
+  Learn more about booking management
+</Card>
+
+## Authentication System
+
+### Login Routes
+
+Users access the system via Laravel's authentication routes:
+- Registration: `/register`
+- Login: `/login`
+- Password Reset: `/password/reset`
+- Logout: `/logout`
+
+### Middleware Protection
+
+Admin features are protected by middleware:
+- **auth**: Requires active login
+- **verified**: Requires verified email address
+
+### Session Management
+
+User sessions are automatically managed:
+- Sessions expire after inactivity
+- Remember me functionality available
+- Secure session storage
+
+## User Roles
+
+### Content Creation
+
+All authenticated and verified users can:
+- Create and edit tours
+- Manage bookings
+- Create blog posts
+- Add events, products, and services
+- Manage categories
+
+### Content Tracking
+
+The system tracks which user created content:
+- Tours include `user_id`
+- Blogs include `user_id`
+- Events include `user_id`
+- Products include `user_id`
+- Services include `user_id`
+
+## Best Practices
+
+### Account Security
+
+<Accordion title="Strong Passwords">
+  - Enforce strong password requirements
+  - Require password confirmation for updates
+  - Encourage regular password changes
+  - Use secure password hashing
+</Accordion>
+
+<Accordion title="Email Verification">
+  - Ensure all users verify their email
+  - Monitor for bounced verification emails
+  - Provide clear instructions for verification
+  - Follow up with users who haven't verified
+</Accordion>
+
+<Accordion title="Account Monitoring">
+  - Regularly review user accounts
+  - Remove duplicate accounts
+  - Monitor for suspicious activity
+  - Keep contact information up-to-date
+</Accordion>
+
+### User Communication
+
+- Notify users of account changes
+- Send password reset confirmations
+- Provide clear error messages
+- Offer support for account issues
+
+### Data Privacy
+
+- Protect user personal information
+- Follow data protection regulations
+- Secure password storage
+- Limit access to sensitive data
+- Provide user data export options if requested
+
+## Troubleshooting
+
+### User Can't Log In
+
+Common issues:
+1. **Incorrect credentials**: Verify email and password
+2. **Unverified email**: Check verification status
+3. **Account deleted**: Confirm account exists
+4. **Session expired**: Ask user to log in again
+
+### Password Reset Issues
+
+If password reset fails:
+1. Check email is valid and verified
+2. Verify reset link hasn't expired
+3. Ensure reset email was received
+4. Try generating a new reset link
+
+### Email Verification Problems
+
+If verification fails:
+1. Check email address is correct
+2. Verify email wasn't caught by spam filter
+3. Resend verification email
+4. Check for typos in email address
+5. Manually verify if necessary
+
+### Update Errors
+
+If user update fails:
+1. **Password mismatch**: Ensure password fields match
+2. **Email already exists**: Check for duplicate email
+3. **Validation errors**: Review all required fields
+4. **Permission issues**: Confirm admin access
+
+## User Management Workflow
+
+<Steps>
+  <Step title="User Registration">
+    New user creates account with email and password
+  </Step>
+  <Step title="Email Verification">
+    User verifies email address via verification link
+  </Step>
+  <Step title="Account Access">
+    Verified user gains access to admin features
+  </Step>
+  <Step title="Content Creation">
+    User can create tours, bookings, and other content
+  </Step>
+  <Step title="Ongoing Management">
+    Admin monitors and updates user accounts as needed
+  </Step>
+</Steps>
+
+## Security Features
+
+### Password Hashing
+- All passwords hashed with Laravel's Hash facade
+- Industry-standard bcrypt algorithm
+- Automatic salt generation
+- Secure storage in database
+
+### CSRF Protection
+- All forms protected with CSRF tokens
+- Automatic token validation
+- Protection against cross-site attacks
+
+### Email Verification
+- Signed URLs for verification links
+- Time-limited verification tokens
+- Automatic verification on valid link click
+
+### Rate Limiting
+- Throttled verification email requests
+- 6 requests per minute maximum
+- Protection against abuse
+
+## User Access Levels
+
+Current system has two access levels:
+
+### Unauthenticated Users
+- View public content
+- Browse tours and services
+- Submit bookings (if logged in)
+
+### Authenticated + Verified Users
+- Access admin dashboard
+- Create and manage tours
+- Process bookings
+- Manage all content types
+- Update categories
+- View all users

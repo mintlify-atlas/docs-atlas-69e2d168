@@ -1,0 +1,228 @@
+---
+title: 'Managing Bookings'
+description: 'View, confirm, and manage customer safari bookings'
+---
+
+## Overview
+
+The booking management system allows you to view customer reservations, review booking details, and confirm or process bookings.
+
+## Accessing Bookings
+
+Navigate to `/bookings` to view all customer bookings. The list displays the 10 most recent bookings with pagination.
+
+<Info>
+  Access to bookings requires authentication and a verified email address.
+</Info>
+
+## Viewing Bookings List
+
+The bookings index shows:
+- Customer name (first name + last name)
+- Destination
+- Arrival date
+- Number of adults and kids
+- Booking status
+- Contact information
+
+## Booking Details
+
+Each booking contains:
+
+### Customer Information
+- **First Name**: Customer's first name
+- **Last Name**: Customer's last name
+- **Email**: Customer's email address
+- **Phone Number**: Contact phone number
+- **Country**: Customer's country of origin
+
+### Trip Information
+- **Destination**: Selected safari tour
+- **Arrival Date**: Planned arrival date
+- **Adults**: Number of adult travelers
+- **Kids**: Number of children
+- **Special Requirements**: Any specific requests or needs
+
+### Payment Information
+- **Transaction Code**: Payment reference/confirmation code
+
+## Booking Status
+
+Bookings have two status states:
+- **Pending (0)**: Awaiting confirmation
+- **Confirmed (1)**: Booking approved and confirmed
+
+## Confirming Bookings
+
+### Confirmation Process
+
+1. Navigate to `/bookings`
+2. Review the booking details
+3. Verify payment transaction code
+4. Click the "Confirm" button to toggle status
+5. Status updates immediately
+
+<Note>
+  The confirm button acts as a toggle. You can mark bookings as confirmed or return them to pending status.
+</Note>
+
+### Confirmation Actions
+
+When you confirm a booking:
+- Status changes from pending (0) to confirmed (1)
+- Customer should be notified of confirmation
+- Booking moves to confirmed bookings list
+
+<Info>
+  After confirming a booking, follow up with the customer via email or phone to provide additional details and arrangements.
+</Info>
+
+## Viewing Individual Bookings
+
+Click on any booking to view full details including:
+- Complete customer information
+- All trip details
+- Special requirements
+- Transaction information
+- Current status
+
+## Editing Bookings
+
+### Update Booking Information
+
+1. Navigate to `/bookings/edit/{id}`
+2. Update any of the following fields:
+   - First name
+   - Last name
+   - Email address
+   - Phone number
+   - Arrival date
+   - Number of adults
+   - Number of kids
+3. Click "Update" to save changes
+
+<Warning>
+  All fields listed above are required when editing a booking.
+</Warning>
+
+## Deleting Bookings
+
+<Warning>
+  Deleting a booking is permanent. Only delete spam, duplicate, or cancelled bookings.
+</Warning>
+
+### Deletion Process
+
+1. Navigate to `/bookings`
+2. Locate the booking to delete
+3. Click "Delete"
+4. Confirm the deletion
+5. Booking is permanently removed
+
+## User Profile Bookings
+
+Customers can view their own bookings at `/profile` where they see:
+- Only bookings they created
+- Booking status
+- Trip details
+- Confirmation status
+
+## Booking Creation Flow
+
+### How Customers Book
+
+1. Customer selects a destination/tour
+2. Fills in the booking form at `/bookings/create/{destination}`
+3. Provides personal information
+4. Enters trip details
+5. Confirms email (must match in two fields)
+6. Provides transaction code
+7. Completes CAPTCHA verification
+8. Submits booking
+
+### Required Booking Fields
+
+<Accordion title="Personal Information">
+  - First name (required)
+  - Last name (required)
+  - Email (required, verified with double entry)
+  - Phone number (required)
+  - Country (optional)
+</Accordion>
+
+<Accordion title="Trip Details">
+  - Destination (required)
+  - Arrival date (required)
+  - Number of adults (required)
+  - Number of kids (required)
+  - Special requirements (optional)
+</Accordion>
+
+<Accordion title="Payment">
+  - Transaction code (required)
+</Accordion>
+
+## Best Practices
+
+### Timely Confirmation
+- Review and confirm bookings within 24 hours
+- Communicate with customers promptly
+- Verify payment information before confirming
+
+### Communication
+- Send confirmation emails after approval
+- Provide detailed trip information
+- Share contact information for questions
+- Follow up before arrival date
+
+### Record Keeping
+- Keep accurate transaction records
+- Note any special requirements
+- Document customer communications
+- Track payment confirmations
+
+### Transaction Verification
+- Always verify transaction codes
+- Cross-reference with payment system
+- Confirm payment received before final confirmation
+- Keep records of all transactions
+
+## Booking Workflow Summary
+
+<Steps>
+  <Step title="New Booking Arrives">
+    Customer submits booking form with all required information
+  </Step>
+  <Step title="Review Details">
+    Admin reviews customer info, trip details, and transaction code
+  </Step>
+  <Step title="Verify Payment">
+    Confirm transaction code matches payment received
+  </Step>
+  <Step title="Confirm Booking">
+    Toggle booking status to confirmed
+  </Step>
+  <Step title="Customer Communication">
+    Send confirmation email with trip details and next steps
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+### Missing Information
+If a booking is missing critical information:
+- Contact the customer directly
+- Request missing details
+- Update the booking once information is received
+
+### Payment Issues
+If transaction code doesn't match:
+- Contact customer for clarification
+- Verify payment system records
+- Don't confirm until payment is verified
+
+### Duplicate Bookings
+If you see duplicate bookings:
+- Verify with customer which booking is correct
+- Keep the correct booking
+- Delete the duplicate entry

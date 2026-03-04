@@ -1,0 +1,224 @@
+---
+title: Making Bookings
+description: Complete guide to booking your safari tour on Okulink Safaris
+---
+
+Booking a safari tour on Okulink Safaris is a straightforward process. This guide walks you through each step from selecting your tour to receiving confirmation.
+
+## Prerequisites
+
+Before you can complete a booking, you need:
+
+<CardGroup cols={2}>
+  <Card title="User Account" icon="user">
+    You must be registered and logged in to make a booking
+  </Card>
+  
+  <Card title="Verified Email" icon="envelope-circle-check">
+    Your email address must be verified before booking
+  </Card>
+</CardGroup>
+
+<Warning>
+Booking routes are protected by authentication and email verification middleware. Attempting to book without being logged in or verified will redirect you to the login or verification page.
+</Warning>
+
+## The Booking Process
+
+### Step 1: Select Your Tour
+
+<Steps>
+  <Step title="Browse Tours">
+    Navigate through the available tours using the browsing methods described in the [Browsing Tours](/user-guide/browsing-tours) guide
+  </Step>
+  
+  <Step title="Choose Your Destination">
+    Click on the tour you wish to book to view its details
+  </Step>
+  
+  <Step title="Start Booking">
+    Click the "Book Now" button or navigate to `/bookings/create/{destination}` where `{destination}` is the name of your chosen tour
+  </Step>
+</Steps>
+
+### Step 2: Fill in Booking Details
+
+Once you're on the booking form, you'll need to provide the following information:
+
+#### Required Information
+
+<Info>
+All fields marked as required must be completed to submit your booking.
+</Info>
+
+**Personal Details:**
+- First Name (required)
+- Last Name (required)
+- Phone Number (required)
+- Email Address (required, must be entered twice for confirmation)
+- Country
+
+**Tour Details:**
+- Arrival Date (required)
+- Number of Adults (required)
+- Number of Kids (required)
+- Destination (pre-filled from selected tour)
+
+**Payment Information:**
+- Transaction Code (required)
+
+**Additional Information:**
+- Special Requirements (optional)
+
+<Tip>
+Use the "Special Requirements" field to communicate any dietary restrictions, accessibility needs, or specific requests for your safari tour.
+</Tip>
+
+### Step 3: Email Confirmation
+
+The booking form requires you to enter your email address twice to ensure accuracy.
+
+<Steps>
+  <Step title="Enter Email">
+    Type your email address in the first email field
+  </Step>
+  
+  <Step title="Confirm Email">
+    Re-enter the same email address in the confirmation field
+  </Step>
+  
+  <Step title="Validation">
+    The system will verify that both email addresses match before allowing submission
+  </Step>
+</Steps>
+
+<Warning>
+If the email addresses don't match, you'll receive an error message: "please provide matching emails" and will need to correct the information.
+</Warning>
+
+### Step 4: Complete CAPTCHA Verification
+
+For security purposes, you must complete a CAPTCHA verification before submitting your booking.
+
+<Note>
+The reCAPTCHA helps protect against automated booking attempts and ensures genuine customer bookings.
+</Note>
+
+### Step 5: Submit Your Booking
+
+<Steps>
+  <Step title="Review Information">
+    Double-check all entered information for accuracy
+  </Step>
+  
+  <Step title="Submit Form">
+    Click the submit button to process your booking
+  </Step>
+  
+  <Step title="Confirmation">
+    Upon successful submission, you'll be redirected to your profile page with a success message: "Booking has been successful, We will contact you within 24hrs!"
+  </Step>
+</Steps>
+
+## After Booking
+
+### View Your Bookings
+
+Once your booking is submitted, you can view it in your profile.
+
+<Steps>
+  <Step title="Access Profile">
+    Navigate to `/profile` while logged in
+  </Step>
+  
+  <Step title="View Booking History">
+    Your profile page displays all your bookings, with the most recent bookings appearing first
+  </Step>
+  
+  <Step title="Check Booking Details">
+    Each booking shows:
+    - Destination
+    - Arrival date
+    - Number of adults and kids
+    - Booking status
+    - Special requirements
+  </Step>
+</Steps>
+
+### Booking Confirmation Process
+
+<Info>
+After submitting your booking, the Okulink Safaris team will review and confirm your reservation within 24 hours.
+</Info>
+
+The booking goes through the following states:
+- **Submitted** (Status: 0): Your booking has been received and is pending review
+- **Confirmed** (Status: 1): Your booking has been confirmed by the team
+
+## Managing Your Bookings
+
+### Editing a Booking
+
+If you need to modify your booking before it's confirmed:
+
+<Steps>
+  <Step title="Access Booking">
+    Navigate to `/bookings/edit/{id}` where `{id}` is your booking ID
+  </Step>
+  
+  <Step title="Update Information">
+    Modify the necessary details (first name, last name, email, phone number, arrival date, adults, kids)
+  </Step>
+  
+  <Step title="Save Changes">
+    Submit the updated information
+  </Step>
+</Steps>
+
+<Warning>
+You must be logged in and have email verification to edit bookings.
+</Warning>
+
+### Canceling a Booking
+
+To cancel a booking:
+
+1. Contact Okulink Safaris directly or
+2. Administrators can delete bookings through the admin panel at `/bookings/delete/{id}`
+
+<Note>
+For cancellation policies and refund information, please refer to the terms and conditions or contact customer support.
+</Note>
+
+## Common Booking Issues
+
+<CardGroup cols={2}>
+  <Card title="Not Logged In" icon="lock">
+    **Solution**: Create an account or log in before attempting to book
+  </Card>
+  
+  <Card title="Email Not Verified" icon="envelope">
+    **Solution**: Check your email for the verification link and verify your account
+  </Card>
+  
+  <Card title="Email Mismatch" icon="exclamation-triangle">
+    **Solution**: Ensure both email fields contain the exact same email address
+  </Card>
+  
+  <Card title="CAPTCHA Failed" icon="shield">
+    **Solution**: Complete the CAPTCHA verification correctly
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+After your booking is confirmed:
+
+1. **Receive Confirmation**: You'll be contacted within 24 hours via email or phone
+2. **Payment Processing**: Complete any additional payment requirements as instructed
+3. **Pre-Safari Information**: Receive detailed information about your safari
+4. **Enjoy Your Safari**: Arrive on your scheduled date and enjoy your adventure!
+
+<Tip>
+Keep your transaction code handy for reference when communicating with the Okulink Safaris team about your booking.
+</Tip>

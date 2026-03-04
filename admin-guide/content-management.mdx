@@ -1,0 +1,357 @@
+---
+title: 'Content Management'
+description: 'Manage blogs, events, products, services, videos, and highlights'
+---
+
+## Overview
+
+The content management system provides comprehensive tools to manage various types of content across the Okulink Safaris platform.
+
+## Blog Posts
+
+### Viewing Blogs
+
+Access the blog management interface at:
+- Admin view: `/blogs` (management interface)
+- Public view: `/all-blogs` (public blog listing)
+
+### Creating Blog Posts
+
+1. Navigate to `/blogs/create`
+2. Fill in required fields:
+   - **Title**: Blog post title (required)
+   - **Content**: Main blog content (required)
+   - **Image**: Primary featured image (required)
+   - **Image 2**: Secondary image (required)
+   - **Images 3-6**: Optional gallery images
+
+<Warning>
+  Blog images must be in JPG, JPEG, SVG, PNG, or WEBP format.
+</Warning>
+
+### Editing Blogs
+
+1. Navigate to `/blogs/edit/{id}`
+2. Update title and content
+3. Optionally replace images
+4. Click "Update" to save changes
+
+### Publishing Blogs
+
+Blogs can be published or unpublished:
+- **Unpublished (0)**: Hidden from public view
+- **Published (1)**: Visible on the website
+
+Toggle publication status by clicking the "Publish" button.
+
+### Deleting Blogs
+
+1. Find the blog in the admin list
+2. Click "Delete"
+3. Confirm deletion (permanent)
+
+## Events
+
+### Viewing Events
+
+Access event management at `/all-events` to see all events paginated (20 per page).
+
+### Creating Events
+
+1. Navigate to `/event/new`
+2. Fill in required fields:
+
+<AccordionGroup>
+  <Accordion title="Basic Information">
+    - **Name**: Event name (required)
+    - **Category**: Event category (required)
+    - **Location**: Event venue/location (required)
+    - **Description**: Event details (required)
+  </Accordion>
+  
+  <Accordion title="Schedule">
+    - **When**: Event date (required)
+    - **Starts**: Start time (required)
+    - **Ends**: End time (required)
+  </Accordion>
+  
+  <Accordion title="Pricing & Media">
+    - **Price**: Ticket/entry price (required)
+    - **Image**: Primary event image (required)
+    - **Image 2**: Secondary image (required)
+    - **Images 3-6**: Optional gallery images
+  </Accordion>
+</AccordionGroup>
+
+### Event Slug
+
+Event slugs are automatically generated from the event name by replacing spaces with hyphens.
+
+### Editing Events
+
+1. Navigate to `/event/edit/{id}`
+2. Update any event details
+3. Optionally replace images
+4. Slug remains unchanged
+5. Click "Update" to save
+
+### Publishing Events
+
+Toggle event publication status to control visibility on the public events page.
+
+### Event Categories
+
+Events can be filtered by category on the public site at `/event/category/{category}`.
+
+## Products
+
+### Viewing Products
+
+Access product management at `/all-products` to see all safari products and merchandise.
+
+### Creating Products
+
+1. Navigate to `/product/new`
+2. Fill in required fields:
+
+<AccordionGroup>
+  <Accordion title="Product Information">
+    - **Name**: Product name (required)
+    - **Category**: Product category (required)
+    - **Description**: Product details (required)
+    - **Location**: Where product is available (required)
+  </Accordion>
+  
+  <Accordion title="Inventory & Pricing">
+    - **Price**: Product price (required)
+    - **Quantity Available**: Stock quantity (required)
+  </Accordion>
+  
+  <Accordion title="Images">
+    - **Image**: Primary product image (required)
+    - **Image 2**: Secondary image (required)
+    - **Images 3-6**: Optional gallery images
+  </Accordion>
+</AccordionGroup>
+
+### Product Slug
+
+Product slugs are auto-generated from the product name (spaces replaced with hyphens).
+
+### Editing Products
+
+1. Navigate to `/product/edit/{id}`
+2. Update product information
+3. Adjust pricing or quantity
+4. Replace images if needed
+5. Slug remains unchanged
+6. Click "Update" to save
+
+### Publishing Products
+
+Control product visibility by toggling the published status.
+
+### Product Categories
+
+Products can be filtered by category at `/product/category/{category}`.
+
+## Services
+
+### Viewing Services
+
+Access service management at `/all-services` to manage all offered services.
+
+### Creating Services
+
+1. Navigate to `/service/new`
+2. Fill in required fields:
+   - **Name**: Service name (required)
+   - **Category**: Service category (required)
+   - **Description**: Service details (required)
+   - **Location**: Service availability (required)
+   - **Price**: Service cost (required)
+   - **Image**: Primary service image (required)
+   - **Image 2**: Secondary image (required)
+   - **Images 3-6**: Optional gallery images
+
+### Service Slug
+
+Service slugs are automatically generated from the service name.
+
+### Editing Services
+
+1. Navigate to `/service/edit/{id}`
+2. Update service details
+3. Adjust pricing
+4. Replace images if needed
+5. Click "Update" to save
+
+### Publishing Services
+
+Toggle service publication status to control public visibility.
+
+### Service Categories
+
+Services can be filtered by category at `/service/category/{category}`.
+
+## Videos
+
+### Viewing Videos
+
+Access video management at `/videos` to see all embedded videos.
+
+### Adding Videos
+
+1. Navigate to `/videos/create`
+2. Fill in required fields:
+   - **URL**: Full YouTube or video URL (required)
+   - **Name**: Video title/description (required)
+3. Click "Save"
+
+<Info>
+  The system automatically extracts the video ID from the URL by splitting on "/" and taking the last segment.
+</Info>
+
+### Video Storage
+
+Only the video ID is stored in the database, not the full URL. This allows for efficient embedding.
+
+### Deleting Videos
+
+1. Navigate to `/videos`
+2. Click "Delete" on the video
+3. Confirm deletion (permanent)
+
+<Note>
+  Videos are displayed on the homepage in groups of 3 random videos and on the media page.
+</Note>
+
+## Highlights
+
+### Overview
+
+Highlights are featured images displayed in the homepage carousel.
+
+### Viewing Highlights
+
+Access highlight management at `/highlights` to see all carousel images.
+
+### Adding Highlights
+
+1. Navigate to `/highlights/create`
+2. Upload an image (required)
+3. Click "Save"
+
+<Warning>
+  Highlight images should be high-quality and properly sized for carousel display.
+</Warning>
+
+### Deleting Highlights
+
+1. Navigate to `/highlights`
+2. Click "Delete" on the highlight
+3. Confirm deletion (permanent)
+
+### Highlight Display
+
+All highlights appear in rotation on the homepage carousel.
+
+## Publication Workflow
+
+### Publishing Controls
+
+All content types (except videos and highlights) support publication toggles:
+
+<Steps>
+  <Step title="Create Content">
+    Content is created in unpublished state by default
+  </Step>
+  <Step title="Review Content">
+    Review and refine content while unpublished
+  </Step>
+  <Step title="Publish">
+    Toggle publication status to make visible
+  </Step>
+  <Step title="Unpublish if Needed">
+    Toggle back to unpublished to hide from public
+  </Step>
+</Steps>
+
+## Image Management Best Practices
+
+### Image Requirements
+- **Format**: JPG, JPEG, SVG, PNG, or WEBP
+- **Size**: Optimize for web (balance quality and file size)
+- **Dimensions**: Use consistent aspect ratios
+
+### Gallery Images
+- Always provide at least 2 required images
+- Use additional images to showcase different aspects
+- Maintain consistent quality across all images
+
+### Image Updates
+- When editing, leave image fields empty to keep existing images
+- Upload new images only for those you want to replace
+- All images replaced together if any changes made
+
+## Content Organization
+
+### Categories
+
+Most content types support categorization:
+- Events can be filtered by category
+- Products can be filtered by category
+- Services can be filtered by category
+
+<Card title="Managing Categories" icon="folder-tree" href="/admin-guide/categories">
+  Learn how to create and manage content categories
+</Card>
+
+## Permissions
+
+All content management actions require:
+- Active user authentication (`auth` middleware)
+- Verified email address (`verified` middleware)
+
+The system automatically tracks which user created or modified content.
+
+## Content Display Locations
+
+### Homepage
+- Latest 2 blogs
+- 4 cover blogs
+- 3 random videos
+- All highlights (carousel)
+- Random tours
+- Latest products, services, events
+
+### Dedicated Pages
+- Blogs: `/all-blogs`
+- Videos: `/videos`
+- Events: `/events`
+- Products: `/products`
+- Services: `/services`
+
+## Tips for Effective Content Management
+
+### Consistency
+- Use consistent naming conventions
+- Maintain uniform image quality
+- Apply appropriate categories
+
+### SEO
+- Use descriptive titles
+- Write detailed descriptions
+- Include relevant keywords naturally
+
+### User Experience
+- Keep content fresh and updated
+- Remove outdated events and products
+- Ensure all links and media work correctly
+
+### Regular Maintenance
+- Review and update content regularly
+- Remove expired events
+- Update product availability
+- Refresh blog content
+- Check video embeds still work

@@ -1,0 +1,83 @@
+---
+title: Category Model
+description: Complete reference for the Category model in Okulink Safaris
+---
+
+## Overview
+
+The `Category` model manages tour categorization in the Okulink Safaris system. It provides a hierarchical structure for organizing tours into main categories and multiple subcategories.
+
+## Database Table
+
+**Table Name:** `categories`
+
+## Fillable Fields
+
+No fillable fields are explicitly defined in the model. All fields can be assigned directly.
+
+## Complete Schema
+
+<ResponseField name="id" type="integer" required>
+  Primary key identifier for the category
+</ResponseField>
+
+<ResponseField name="category_name" type="text" required>
+  Main category name (e.g., "Wildlife Safari", "Beach Holidays", "Mountain Trekking")
+</ResponseField>
+
+<ResponseField name="sub_category" type="text" required>
+  First subcategory option for this category
+</ResponseField>
+
+<ResponseField name="sub_category1" type="text" required>
+  Second subcategory option for this category
+</ResponseField>
+
+<ResponseField name="sub_category2" type="text" required>
+  Third subcategory option for this category
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the category was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the category was last updated
+</ResponseField>
+
+## Relationships
+
+No explicit relationships are defined in the model, but categories are referenced by tours through the `category` and `sub_category` fields in the Tours model.
+
+## Usage
+
+Categories provide a three-level hierarchical structure:
+1. Main category (`category_name`)
+2. Three subcategory options (`sub_category`, `sub_category1`, `sub_category2`)
+
+Tours can reference these categories to organize and filter tour packages.
+
+## Example JSON Response
+
+```json
+{
+  "id": 3,
+  "category_name": "Wildlife Safari",
+  "sub_category": "Big Five Safari",
+  "sub_category1": "Bird Watching Safari",
+  "sub_category2": "Photography Safari",
+  "created_at": "2024-01-05T08:00:00.000000Z",
+  "updated_at": "2024-01-05T08:00:00.000000Z"
+}
+```
+
+## Example Usage
+
+When creating or filtering tours, you would reference the category structure:
+
+```json
+{
+  "category": "Wildlife Safari",
+  "sub_category": "Big Five Safari"
+}
+```

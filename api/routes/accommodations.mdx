@@ -1,0 +1,446 @@
+---
+title: 'Accommodations Routes'
+description: 'API endpoints for managing accommodation listings'
+---
+
+## Overview
+
+The Accommodations API provides endpoints for browsing and managing accommodation listings such as hotels, lodges, camps, and guesthouses across various safari destinations.
+
+## List All Accommodations
+
+<api method="GET" path="/accomodations" />
+
+Retrieve a paginated list of all available accommodations.
+
+### Response
+
+<ResponseField name="accomodations" type="array">
+  Paginated collection of accommodations (20 per page)
+  
+  <Expandable title="Accommodation Object">
+    <ResponseField name="id" type="integer">
+      Unique accommodation identifier
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Accommodation name
+    </ResponseField>
+    
+    <ResponseField name="slug" type="string">
+      URL-friendly slug (auto-generated from name)
+    </ResponseField>
+    
+    <ResponseField name="category" type="string">
+      Accommodation category (e.g., "Hotel", "Lodge", "Camp")
+    </ResponseField>
+    
+    <ResponseField name="location" type="string">
+      Accommodation location
+    </ResponseField>
+    
+    <ResponseField name="rates" type="decimal">
+      Room rates/pricing
+    </ResponseField>
+    
+    <ResponseField name="description" type="text">
+      Detailed accommodation description
+    </ResponseField>
+    
+    <ResponseField name="image" type="string">
+      Main accommodation image path
+    </ResponseField>
+    
+    <ResponseField name="image2" type="string">
+      Secondary accommodation image path
+    </ResponseField>
+    
+    <ResponseField name="image3" type="string" optional>
+      Additional accommodation image path
+    </ResponseField>
+    
+    <ResponseField name="image4" type="string" optional>
+      Additional accommodation image path
+    </ResponseField>
+    
+    <ResponseField name="image5" type="string" optional>
+      Additional accommodation image path
+    </ResponseField>
+    
+    <ResponseField name="image6" type="string" optional>
+      Additional accommodation image path
+    </ResponseField>
+    
+    <ResponseField name="published" type="boolean">
+      Publication status (0 or 1)
+    </ResponseField>
+    
+    <ResponseField name="user_id" type="integer">
+      ID of user who created the listing
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/accomodations
+```
+
+---
+
+## Browse Accommodations by Category
+
+<api method="GET" path="/accomodation/category/{category}" />
+
+Retrieve accommodations filtered by a specific category.
+
+### Path Parameters
+
+<ParamField path="category" type="string" required>
+  The category to filter by (e.g., "Hotels", "Lodges", "Camps", "Guesthouses")
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/accomodation/category/Lodges
+```
+
+---
+
+## Show Accommodation Details
+
+<api method="GET" path="/accomodation/{slug}" />
+
+Retrieve detailed information about a specific accommodation.
+
+### Path Parameters
+
+<ParamField path="slug" type="string" required>
+  The URL-friendly slug of the accommodation
+</ParamField>
+
+### Response
+
+Returns:
+- Complete accommodation details
+- Latest 5 accommodations for related suggestions
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/accomodation/serena-safari-lodge
+```
+
+---
+
+## List All Accommodations (Admin)
+
+<api method="GET" path="/all-accomodations" />
+
+Retrieve a paginated list of all accommodations for admin management.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Response
+
+Returns paginated list of accommodations (20 per page) ordered by most recent.
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/all-accomodations \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Cookie: laravel_session=YOUR_SESSION"
+```
+
+---
+
+## Create Accommodation Form (Admin)
+
+<api method="GET" path="/accomodation/new" />
+
+Display the form for creating a new accommodation.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/accomodation/new \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Create Accommodation (Admin)
+
+<api method="POST" path="/accomodation/create" />
+
+Create a new accommodation listing.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Accommodation name
+</ParamField>
+
+<ParamField body="category" type="string" required>
+  Accommodation category
+</ParamField>
+
+<ParamField body="location" type="string" required>
+  Accommodation location
+</ParamField>
+
+<ParamField body="rates" type="decimal" required>
+  Room rates/pricing per night
+</ParamField>
+
+<ParamField body="description" type="text" required>
+  Detailed description of the accommodation
+</ParamField>
+
+<ParamField body="image" type="file" required>
+  Main accommodation image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image2" type="file" required>
+  Secondary accommodation image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image3" type="file" optional>
+  Additional accommodation image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image4" type="file" optional>
+  Additional accommodation image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image5" type="file" optional>
+  Additional accommodation image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image6" type="file" optional>
+  Additional accommodation image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X POST https://yourdomain.com/accomodation/create \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Serena Safari Lodge" \
+  -F "category=Lodge" \
+  -F "location=Maasai Mara, Kenya" \
+  -F "rates=250.00" \
+  -F "description=Luxury lodge with stunning views of the Mara plains" \
+  -F "image=@/path/to/image.jpg" \
+  -F "image2=@/path/to/image2.jpg" \
+  -F "image3=@/path/to/image3.jpg"
+```
+
+### Response
+
+Redirects to accommodations admin list.
+
+<Note>
+  The slug is automatically generated from the name by replacing spaces with hyphens.
+</Note>
+
+---
+
+## Edit Accommodation Form (Admin)
+
+<api method="GET" path="/accomodation/edit/{id}" />
+
+Display the form for editing an existing accommodation.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique accommodation ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/accomodation/edit/123 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Update Accommodation (Admin)
+
+<api method="PUT" path="/accomodation/update/{id}" />
+
+Update an existing accommodation listing.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique accommodation ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Accommodation name
+</ParamField>
+
+<ParamField body="category" type="string" required>
+  Accommodation category
+</ParamField>
+
+<ParamField body="location" type="string" required>
+  Accommodation location
+</ParamField>
+
+<ParamField body="rates" type="decimal" required>
+  Room rates/pricing per night
+</ParamField>
+
+<ParamField body="description" type="text" required>
+  Detailed description of the accommodation
+</ParamField>
+
+<ParamField body="image" type="file" optional>
+  Main accommodation image (only if updating)
+</ParamField>
+
+<ParamField body="image2" type="file" optional>
+  Additional accommodation images (only if updating)
+</ParamField>
+
+<Note>
+  Images are optional during update. If not provided, existing images are retained.
+</Note>
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/accomodation/update/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Updated Serena Safari Lodge" \
+  -F "category=Luxury Lodge" \
+  -F "location=Maasai Mara, Kenya" \
+  -F "rates=300.00" \
+  -F "description=Premium luxury lodge with panoramic Mara views"
+```
+
+### Response
+
+Redirects to accommodations admin list with success message: "accomodation Updated"
+
+---
+
+## Delete Accommodation (Admin)
+
+<api method="DELETE" path="/accomodation/delete/{id}" />
+
+Permanently delete an accommodation listing.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique accommodation ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X DELETE https://yourdomain.com/accomodation/delete/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to accommodations admin list with success message: "You Deleted accomodation."
+
+---
+
+## Publish/Unpublish Accommodation (Admin)
+
+<api method="PUT" path="/accomodation/publish/{id}" />
+
+Toggle the publication status of an accommodation.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique accommodation ID
+</ParamField>
+
+### Behavior
+
+- If `published = 0`, sets to `1` (publish)
+- If `published = 1`, sets to `0` (unpublish)
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/accomodation/publish/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to accommodations admin list with updated publication status.

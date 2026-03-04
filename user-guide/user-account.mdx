@@ -1,0 +1,290 @@
+---
+title: User Account Management
+description: Learn how to create, verify, and manage your Okulink Safaris user account
+---
+
+Your user account is essential for making bookings and managing your safari experiences on Okulink Safaris. This guide covers everything from registration to profile management.
+
+## Creating an Account
+
+To create a new user account on Okulink Safaris:
+
+<Steps>
+  <Step title="Access Registration">
+    Navigate to the registration page through the login/signup link in the navigation menu
+  </Step>
+  
+  <Step title="Fill in Registration Form">
+    Provide the required information:
+    - Name
+    - Email address
+    - Password
+    - Password confirmation
+  </Step>
+  
+  <Step title="Submit Registration">
+    Click the register button to create your account
+  </Step>
+  
+  <Step title="Email Verification">
+    After registration, you'll be redirected to the email verification notice page
+  </Step>
+</Steps>
+
+<Info>
+Okulink Safaris uses Laravel's built-in authentication system with email verification enabled for enhanced security.
+</Info>
+
+## Email Verification
+
+Email verification is required before you can make bookings or access certain features.
+
+### Verification Process
+
+<Steps>
+  <Step title="Check Your Email">
+    After registration, check your inbox for a verification email from Okulink Safaris
+  </Step>
+  
+  <Step title="Click Verification Link">
+    Click the verification link in the email. The link format is: `/email/verify/{id}/{hash}`
+  </Step>
+  
+  <Step title="Automatic Verification">
+    The system automatically verifies your email and redirects you to the homepage
+  </Step>
+  
+  <Step title="Start Booking">
+    You can now access all features including making safari bookings
+  </Step>
+</Steps>
+
+### Didn't Receive the Email?
+
+If you didn't receive your verification email:
+
+<Steps>
+  <Step title="Access Verification Page">
+    Navigate to `/email/verify` while logged in
+  </Step>
+  
+  <Step title="Request New Link">
+    Click the "Resend Verification Email" button
+  </Step>
+  
+  <Step title="Rate Limiting">
+    You can request up to 6 verification emails per minute (throttled for security)
+  </Step>
+  
+  <Step title="Confirmation">
+    You'll see the message: "Verification link sent!" when successful
+  </Step>
+</Steps>
+
+<Warning>
+The verification link is signed and secure. Don't share it with others as it's specific to your account.
+</Warning>
+
+## Logging In
+
+Once your account is created and verified:
+
+<Steps>
+  <Step title="Access Login Page">
+    Click the login link in the navigation menu
+  </Step>
+  
+  <Step title="Enter Credentials">
+    Provide your email address and password
+  </Step>
+  
+  <Step title="Login">
+    Click the login button to access your account
+  </Step>
+</Steps>
+
+<Tip>
+Remember your credentials securely. Use a password manager for better security.
+</Tip>
+
+## Viewing Your Profile
+
+Your profile is the central hub for managing your account and viewing your bookings.
+
+### Accessing Your Profile
+
+Navigate to `/profile` while logged in to view:
+
+<CardGroup cols={2}>
+  <Card title="Personal Information" icon="user">
+    Your name, email, and account details
+  </Card>
+  
+  <Card title="Booking History" icon="list">
+    All your past and current safari bookings
+  </Card>
+  
+  <Card title="Booking Status" icon="circle-check">
+    Track whether bookings are pending or confirmed
+  </Card>
+  
+  <Card title="Recent Activity" icon="clock">
+    Your most recent bookings appear first
+  </Card>
+</CardGroup>
+
+<Note>
+You must be logged in and have a verified email to access the profile page. The route is protected by both `auth` and `verified` middleware.
+</Note>
+
+## Managing Your Profile
+
+You can update your account information through the user update interface.
+
+### Updating Account Details
+
+<Steps>
+  <Step title="Access Update Page">
+    Navigate to `/users/update-user/{id}` where `{id}` is your user ID
+  </Step>
+  
+  <Step title="Update Information">
+    You can modify:
+    - Name
+    - Email address
+    - Password
+  </Step>
+  
+  <Step title="Password Confirmation">
+    If changing your password, enter it twice to confirm
+  </Step>
+  
+  <Step title="Save Changes">
+    Submit the form to update your credentials
+  </Step>
+</Steps>
+
+### Password Requirements
+
+<Info>
+When updating your password:
+- Enter the new password in the password field
+- Re-enter the same password in the confirmation field
+- Both fields must match exactly
+</Info>
+
+<Warning>
+If passwords don't match, you'll see the error: "Password does not match" and changes won't be saved.
+</Warning>
+
+## Viewing Your Bookings
+
+Your profile displays all bookings associated with your account.
+
+### Booking Information Display
+
+For each booking, you can view:
+
+- **Destination**: The safari tour you booked
+- **Travel Dates**: Your arrival date
+- **Party Size**: Number of adults and kids
+- **Contact Details**: Phone number and email
+- **Special Requirements**: Any special requests you submitted
+- **Transaction Code**: Your payment reference
+- **Booking Status**: Whether the booking is confirmed or pending
+
+<Tip>
+Bookings are paginated with 10 bookings per page and sorted by most recent first, making it easy to find your latest reservations.
+</Tip>
+
+## Account Security
+
+### Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Strong Password" icon="key">
+    Use a unique, strong password for your account
+  </Card>
+  
+  <Card title="Verify Email" icon="shield-check">
+    Complete email verification to secure your account
+  </Card>
+  
+  <Card title="Keep Info Updated" icon="refresh">
+    Ensure your contact information is current
+  </Card>
+  
+  <Card title="Secure Logout" icon="right-from-bracket">
+    Always log out when using shared devices
+  </Card>
+</CardGroup>
+
+### Password Security
+
+Passwords are stored securely:
+- Hashed using Laravel's Hash facade
+- Never stored in plain text
+- Cannot be retrieved (only reset)
+
+## Account Status
+
+### Required for Bookings
+
+To make bookings, your account must be:
+
+1. **Registered**: You've created an account
+2. **Authenticated**: You're currently logged in
+3. **Verified**: Your email address has been verified
+
+<Warning>
+Attempting to access booking features without meeting all three requirements will redirect you to the appropriate page (login or verification).
+</Warning>
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+<AccordionGroup>
+  <Accordion title="Can't access profile or bookings">
+    **Solution**: Ensure you're logged in and have verified your email address. Check your inbox for the verification email or request a new one.
+  </Accordion>
+  
+  <Accordion title="Password update not working">
+    **Solution**: Make sure both password fields match exactly. Check for spaces or typos.
+  </Accordion>
+  
+  <Accordion title="Verification email not received">
+    **Solution**: Check your spam folder, then request a new verification email from `/email/verify`. You can request up to 6 emails per minute.
+  </Accordion>
+  
+  <Accordion title="Can't log in">
+    **Solution**: Verify you're using the correct email and password. If forgotten, use the password reset feature.
+  </Accordion>
+</AccordionGroup>
+
+## Admin Users
+
+Some user accounts have administrative privileges that allow access to:
+
+- `/admin` - Admin dashboard
+- `/dashboard` - Main dashboard with statistics
+- Tour management features
+- Booking management and confirmation
+- User management
+
+<Note>
+Admin features are only available to authorized personnel and require authentication.
+</Note>
+
+## Data Privacy
+
+Your personal information is protected:
+
+- Email addresses are used only for account verification and communication
+- Passwords are securely hashed
+- Personal data is not shared with third parties
+- Contact the platform administrator for privacy policy details
+
+<Tip>
+For questions about your account or data privacy, contact Okulink Safaris through the help page or customer support.
+</Tip>

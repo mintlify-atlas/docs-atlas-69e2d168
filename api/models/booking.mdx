@@ -1,0 +1,118 @@
+---
+title: Booking Model
+description: Complete reference for the Booking model in Okulink Safaris
+---
+
+## Overview
+
+The `Booking` model represents tour booking reservations made by customers. It captures customer information, booking details, and tracks the booking status throughout the reservation process.
+
+## Database Table
+
+**Table Name:** `tour_bookings`
+
+## Fillable Fields
+
+The following fields can be mass-assigned:
+
+- `first_name`
+- `last_name`
+- `email`
+- `phone_number`
+- `adults`
+- `kids`
+
+## Complete Schema
+
+<ResponseField name="id" type="integer" required>
+  Primary key identifier for the booking
+</ResponseField>
+
+<ResponseField name="transaction_code" type="string" required>
+  Unique transaction code for tracking the booking
+</ResponseField>
+
+<ResponseField name="first_name" type="string" required>
+  Customer's first name
+</ResponseField>
+
+<ResponseField name="last_name" type="string" required>
+  Customer's last name
+</ResponseField>
+
+<ResponseField name="email" type="string" required>
+  Customer's email address for booking communication
+</ResponseField>
+
+<ResponseField name="phone_number" type="string" required>
+  Customer's contact phone number
+</ResponseField>
+
+<ResponseField name="country" type="string" required>
+  Customer's country of origin
+</ResponseField>
+
+<ResponseField name="arrival_date" type="date" required>
+  Expected arrival date for the tour
+</ResponseField>
+
+<ResponseField name="adults" type="string" required>
+  Number of adult travelers in the booking
+</ResponseField>
+
+<ResponseField name="kids" type="string" required>
+  Number of children in the booking
+</ResponseField>
+
+<ResponseField name="destination" type="string" required>
+  Selected tour destination
+</ResponseField>
+
+<ResponseField name="special_requirements" type="text" required>
+  Any special requirements or requests from the customer
+</ResponseField>
+
+<ResponseField name="user_id" type="integer" required>
+  ID of the user associated with the booking
+</ResponseField>
+
+<ResponseField name="status" type="string" default="0">
+  Booking status (0 = pending, 1 = confirmed, etc.)
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the booking was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the booking was last updated
+</ResponseField>
+
+## Relationships
+
+### User
+
+Each booking belongs to a user through the `user_id` foreign key. The User model defines a `hasMany` relationship to bookings.
+
+## Example JSON Response
+
+```json
+{
+  "id": 42,
+  "transaction_code": "TXN-2024-001542",
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
+  "phone_number": "+1-555-0123",
+  "country": "United States",
+  "arrival_date": "2024-06-15",
+  "adults": "2",
+  "kids": "1",
+  "destination": "Masai Mara Safari",
+  "special_requirements": "Vegetarian meals required. Need wheelchair accessible vehicle.",
+  "user_id": 15,
+  "status": "1",
+  "created_at": "2024-03-01T10:15:30.000000Z",
+  "updated_at": "2024-03-02T09:22:15.000000Z"
+}
+```

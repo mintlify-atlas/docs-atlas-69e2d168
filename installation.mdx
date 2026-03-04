@@ -1,0 +1,421 @@
+---
+title: "Installation"
+description: "Detailed installation and configuration guide for Okulink Safaris"
+---
+
+This comprehensive guide covers everything you need to install, configure, and deploy Okulink Safaris.
+
+## System Requirements
+
+Before installing Okulink Safaris, ensure your system meets these requirements:
+
+<CardGroup cols={2}>
+  <Card title="PHP" icon="php">
+    Version 8.0.2 or higher
+  </Card>
+  <Card title="Composer" icon="box">
+    Latest stable version
+  </Card>
+  <Card title="Node.js" icon="node">
+    Version 14.x or higher
+  </Card>
+  <Card title="Database" icon="database">
+    MySQL 5.7+ or PostgreSQL 10+
+  </Card>
+</CardGroup>
+
+### PHP Extensions Required
+
+Ensure the following PHP extensions are installed and enabled:
+
+- PDO (for database support)
+- pdo_mysql (for MySQL) or pdo_pgsql (for PostgreSQL)
+- mbstring
+- openssl
+- tokenizer
+- xml
+- ctype
+- json
+- bcmath
+- fileinfo
+
+<Note>
+  You can check installed extensions by running `php -m` in your terminal.
+</Note>
+
+## Installation Steps
+
+### 1. Server Setup
+
+<Tabs>
+  <Tab title="Local Development">
+    For local development, you can use Laravel's built-in server:
+
+    ```bash
+    php artisan serve
+    ```
+
+    Or use Laravel Sail (Docker-based development environment):
+
+    ```bash
+    ./vendor/bin/sail up
+    ```
+  </Tab>
+  
+  <Tab title="Production Server">
+    For production deployment, configure your web server (Apache/Nginx) to point to the `public` directory.
+
+    **Nginx Configuration Example:**
+
+    ```nginx
+    server {
+        listen 80;
+        server_name yourdomain.com;
+        root /var/www/safaris/public;
+
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-Content-Type-Options "nosniff";
+
+        index index.php;
+
+        charset utf-8;
+
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+
+        location ~ /\.(?!well-known).* {
+            deny all;
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### 2. Clone and Install Dependencies
+
+Clone the repository and install all dependencies:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd safaris
+
+# Install PHP dependencies
+composer install --optimize-autoloader --no-dev
+
+# Install Node.js dependencies
+npm install
+
+# Build frontend assets
+npm run production
+```
+
+<Warning>
+  In production, always use `--no-dev` flag with composer and `npm run production` to exclude development dependencies and optimize assets.
+</Warning>
+
+### 3. Environment Configuration
+
+Create and configure your environment file:
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Edit the `.env` file with your configuration:
+
+<CodeGroup>
+```env MySQL Configuration
+APP_NAME="Okulink Safaris"
+APP_ENV=production
+APP_KEY=base64:your-generated-key
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=safaris
+DB_USERNAME=your_username
+DB_PASSWORD=your_secure_password
+```
+
+```env PostgreSQL Configuration
+APP_NAME="Okulink Safaris"
+APP_ENV=production
+APP_KEY=base64:your-generated-key
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=safaris
+DB_USERNAME=your_username
+DB_PASSWORD=your_secure_password
+```
+</CodeGroup>
+
+<Note>
+  The application supports both MySQL and PostgreSQL. The default database name is `safaris`.
+</Note>
+
+### 4. Database Setup
+
+Create your database and run migrations:
+
+<CodeGroup>
+```bash MySQL
+# Create database
+mysql -u root -p -e "CREATE DATABASE safaris CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+# Run migrations
+php artisan migrate --force
+```
+
+```bash PostgreSQL
+# Create database
+createdb -U postgres safaris
+
+# Run migrations
+php artisan migrate --force
+```
+</CodeGroup>
+
+The migration process will create the following tables:
+
+- **users** - User accounts and authentication
+- **categories** - Tour categories and classifications
+- **tours** - Safari tour packages with pricing and details
+- **tour_bookings** - Customer bookings and reservations
+- **blogs** - Blog posts and content
+- **events** - Upcoming events and activities
+- **products** - Safari products and merchandise
+- **services** - Additional services offered
+- **accommodations** - Hotels and lodging options
+- **enquiries** - Customer inquiries and contact forms
+- **highlights** - Featured content and highlights
+- **videos** - Video content library
+
+### 5. Storage Configuration
+
+Set up the storage directory and create symbolic link:
+
+```bash
+# Create storage link
+php artisan storage:link
+
+# Set proper permissions (Linux/macOS)
+chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+```
+
+<Warning>
+  Ensure the `storage` and `bootstrap/cache` directories are writable by the web server.
+</Warning>
+
+### 6. Additional Configuration
+
+#### Mail Configuration
+
+Configure email settings for booking notifications:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_username
+MAIL_PASSWORD=your_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@yourdomain.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+#### reCAPTCHA Configuration
+
+The application uses NoCaptcha for form protection. Add your reCAPTCHA credentials:
+
+```env
+NOCAPTCHA_SITEKEY=your_site_key
+NOCAPTCHA_SECRET=your_secret_key
+```
+
+<Note>
+  Get your reCAPTCHA keys from [Google reCAPTCHA](https://www.google.com/recaptcha/admin).
+</Note>
+
+#### Session & Cache Configuration
+
+```env
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync
+```
+
+### 7. Optimize for Production
+
+Run these commands to optimize your production installation:
+
+```bash
+# Cache configuration
+php artisan config:cache
+
+# Cache routes
+php artisan route:cache
+
+# Cache views
+php artisan view:cache
+
+# Optimize autoloader
+composer dump-autoload --optimize
+```
+
+<Warning>
+  Remember to clear these caches when you update your configuration:
+  ```bash
+  php artisan cache:clear
+  php artisan config:clear
+  php artisan route:clear
+  php artisan view:clear
+  ```
+</Warning>
+
+## Troubleshooting
+
+### Common Issues
+
+<AccordionGroup>
+  <Accordion title="Permission Denied Errors">
+    If you encounter permission errors:
+
+    ```bash
+    # Fix storage permissions
+    chmod -R 775 storage bootstrap/cache
+    chown -R www-data:www-data storage bootstrap/cache
+
+    # On some systems, you may need
+    chgrp -R www-data storage bootstrap/cache
+    ```
+  </Accordion>
+
+  <Accordion title="Database Connection Failed">
+    Verify your database credentials and ensure:
+    
+    - Database server is running
+    - Database exists
+    - Username and password are correct
+    - Host and port are accessible
+    
+    Test connection:
+    ```bash
+    php artisan tinker
+    >>> DB::connection()->getPdo();
+    ```
+  </Accordion>
+
+  <Accordion title="Composer Install Fails">
+    If composer install fails:
+
+    ```bash
+    # Update composer
+    composer self-update
+
+    # Clear composer cache
+    composer clear-cache
+
+    # Try again
+    composer install --no-cache
+    ```
+  </Accordion>
+
+  <Accordion title="NPM Install Errors">
+    If npm install encounters issues:
+
+    ```bash
+    # Clear npm cache
+    npm cache clean --force
+
+    # Delete node_modules and package-lock.json
+    rm -rf node_modules package-lock.json
+
+    # Reinstall
+    npm install
+    ```
+  </Accordion>
+
+  <Accordion title="500 Internal Server Error">
+    Common causes and solutions:
+
+    1. Check storage permissions (see above)
+    2. Ensure `.env` file exists and has correct values
+    3. Run `php artisan key:generate` if APP_KEY is missing
+    4. Check Laravel logs at `storage/logs/laravel.log`
+    5. Enable debug mode temporarily: `APP_DEBUG=true` in `.env`
+    
+    <Warning>
+      Never leave debug mode enabled in production!
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Symbolic Link Not Created">
+    If `php artisan storage:link` fails:
+
+    ```bash
+    # Manual symlink creation (Linux/macOS)
+    ln -s ../storage/app/public public/storage
+
+    # Windows (run as Administrator)
+    mklink /D "public\storage" "..\storage\app\public"
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Debug Mode
+
+For development and troubleshooting, enable debug mode:
+
+```env
+APP_DEBUG=true
+APP_ENV=local
+```
+
+<Warning>
+  Never enable debug mode in production as it exposes sensitive application information.
+</Warning>
+
+### Log Files
+
+Check application logs for detailed error information:
+
+```bash
+# View latest log entries
+tail -f storage/logs/laravel.log
+
+# View full log
+cat storage/logs/laravel.log
+```
+
+## Verification
+
+After installation, verify everything is working:
+
+1. Visit your application URL
+2. Check that assets load correctly
+3. Test user registration/login
+4. Verify database connectivity
+5. Test file uploads
+6. Check email functionality (if configured)
+
+<Card title="Next Steps" icon="rocket" href="/quickstart">
+  Installation complete! Check out the quickstart guide to begin using Okulink Safaris.
+</Card>

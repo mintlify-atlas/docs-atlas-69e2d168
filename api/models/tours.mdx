@@ -1,0 +1,138 @@
+---
+title: Tours Model
+description: Complete reference for the Tours model in Okulink Safaris
+---
+
+## Overview
+
+The `Tours` model represents safari tour packages in the Okulink Safaris system. It manages tour details including accommodation, transport, pricing, images, and categorization.
+
+## Database Table
+
+**Table Name:** `tours`
+
+## Fillable Fields
+
+The following fields can be mass-assigned:
+
+- `hotel`
+- `transport`
+- `image`
+- `per_person_sharing`
+- `single_room`
+- `meals`
+
+## Complete Schema
+
+<ResponseField name="id" type="integer" required>
+  Primary key identifier for the tour
+</ResponseField>
+
+<ResponseField name="hotel" type="string" required>
+  Name of the hotel or accommodation included in the tour package
+</ResponseField>
+
+<ResponseField name="transport" type="text" required>
+  Description of transport arrangements for the tour
+</ResponseField>
+
+<ResponseField name="location" type="text" required>
+  Geographic location or destination of the tour
+</ResponseField>
+
+<ResponseField name="category" type="text" required>
+  Main category classification for the tour (e.g., Safari, Beach, Mountain)
+</ResponseField>
+
+<ResponseField name="sub_category" type="text" required>
+  Sub-category for more specific tour classification
+</ResponseField>
+
+<ResponseField name="image" type="text" required>
+  Primary image URL for the tour
+</ResponseField>
+
+<ResponseField name="image1" type="text" required>
+  Secondary image URL for the tour gallery
+</ResponseField>
+
+<ResponseField name="image2" type="text" required>
+  Third image URL for the tour gallery
+</ResponseField>
+
+<ResponseField name="image4" type="string" required>
+  Fourth image URL for the tour gallery
+</ResponseField>
+
+<ResponseField name="image5" type="string" required>
+  Fifth image URL for the tour gallery
+</ResponseField>
+
+<ResponseField name="image6" type="string" required>
+  Sixth image URL for the tour gallery
+</ResponseField>
+
+<ResponseField name="per_person_sharing" type="text" required>
+  Price per person when sharing accommodation
+</ResponseField>
+
+<ResponseField name="single_room" type="text" required>
+  Price for single room occupancy
+</ResponseField>
+
+<ResponseField name="meals" type="text" required>
+  Description of meal arrangements included in the tour
+</ResponseField>
+
+<ResponseField name="additional_info" type="text">
+  Additional information or special notes about the tour (nullable)
+</ResponseField>
+
+<ResponseField name="published" type="integer" default="0">
+  Publication status of the tour (0 = draft, 1 = published)
+</ResponseField>
+
+<ResponseField name="user_id" type="integer" required>
+  ID of the user who created the tour
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the tour was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the tour was last updated
+</ResponseField>
+
+## Relationships
+
+### User
+
+Each tour belongs to a user (author/creator) through the `user_id` foreign key.
+
+## Example JSON Response
+
+```json
+{
+  "id": 1,
+  "hotel": "Serena Safari Lodge",
+  "transport": "4x4 Safari Vehicle with pop-up roof",
+  "location": "Masai Mara National Reserve",
+  "category": "Wildlife Safari",
+  "sub_category": "Big Five Safari",
+  "image": "/images/tours/masai-mara-main.jpg",
+  "image1": "/images/tours/masai-mara-1.jpg",
+  "image2": "/images/tours/masai-mara-2.jpg",
+  "image4": "/images/tours/masai-mara-4.jpg",
+  "image5": "/images/tours/masai-mara-5.jpg",
+  "image6": "/images/tours/masai-mara-6.jpg",
+  "per_person_sharing": "$1,200",
+  "single_room": "$1,800",
+  "meals": "Full board - Breakfast, Lunch, and Dinner included",
+  "additional_info": "Game drives twice daily. Professional guide included.",
+  "published": 1,
+  "user_id": 5,
+  "created_at": "2024-01-15T08:30:00.000000Z",
+  "updated_at": "2024-02-20T14:45:00.000000Z"
+}
+```

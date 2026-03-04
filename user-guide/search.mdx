@@ -1,0 +1,299 @@
+---
+title: Searching Tours
+description: Learn how to search and filter safari tours on Okulink Safaris
+---
+
+The search functionality on Okulink Safaris helps you quickly find specific tours based on your preferences. This guide explains how to use the search feature effectively.
+
+## Accessing Search
+
+The search feature is available throughout the site:
+
+<Steps>
+  <Step title="Navigate to Search">
+    Access the search page at `/search` or use the search functionality in the navigation menu
+  </Step>
+  
+  <Step title="Enter Search Term">
+    Type your search query into the search box
+  </Step>
+  
+  <Step title="View Results">
+    Search results are displayed automatically, showing matching tours
+  </Step>
+</Steps>
+
+<Info>
+The search route is accessible at `/search` and uses the HomeController's search method to process queries.
+</Info>
+
+## How Search Works
+
+The Okulink Safaris search system looks for matches in tour information.
+
+### Search Parameters
+
+When you enter a search term, the system searches through:
+
+- **Hotel/Accommodation Names**: Finds tours based on where you'll stay
+- **Destination Information**: Matches against tour destinations
+
+<Note>
+The search uses a LIKE query pattern, meaning it will find partial matches. For example, searching for "Serengeti" will find "Serengeti National Park" and "Central Serengeti Lodge".
+</Note>
+
+### Search Query Format
+
+The search accepts a parameter called `item` that contains your search term:
+
+```
+/search?item=your-search-term
+```
+
+<Tip>
+Use specific terms related to hotels, accommodations, or destinations for best results.
+</Tip>
+
+## Understanding Search Results
+
+Search results are displayed with helpful information and context.
+
+### Results Display
+
+When viewing search results, you'll see:
+
+<CardGroup cols={2}>
+  <Card title="Matching Tours" icon="map-location-dot">
+    Tours that match your search criteria, displayed in a grid or list
+  </Card>
+  
+  <Card title="Pagination" icon="list-ol">
+    Results are paginated with 10 tours per page for easy browsing
+  </Card>
+  
+  <Card title="Random Suggestions" icon="shuffle">
+    3 random tours shown as additional suggestions
+  </Card>
+  
+  <Card title="Related Content" icon="newspaper">
+    2 recent blog posts for travel inspiration and information
+  </Card>
+</CardGroup>
+
+### Result Ordering
+
+Search results are ordered by:
+
+1. **Relevance**: Tours matching your search term
+2. **Most Recent**: Newest tours appear first (ordered by ID descending)
+
+<Info>
+The system displays both search results and random tour suggestions to help you discover options even with narrow search criteria.
+</Info>
+
+## Search Limitations
+
+Understand these search characteristics for best results:
+
+### What's Searchable
+
+Currently, the search focuses on:
+- Hotel names
+- Accommodation names
+- Tours with non-null hotel values
+
+### What's Not Searchable
+
+The following are not directly searchable through the main search:
+- Tour prices
+- Meal inclusions
+- Transport types
+- Tour categories (use category browsing instead)
+- Date ranges
+
+<Tip>
+For category-based browsing, use the category and subcategory navigation described in the [Browsing Tours](/user-guide/browsing-tours) guide.
+</Tip>
+
+## Search Tips and Best Practices
+
+### Getting Better Results
+
+<Steps>
+  <Step title="Be Specific">
+    Use specific hotel or lodge names when you know them (e.g., "Serengeti Sopa Lodge" instead of just "lodge")
+  </Step>
+  
+  <Step title="Try Different Terms">
+    If your first search doesn't yield results, try variations:
+    - Different spellings
+    - Shorter terms
+    - Related keywords
+  </Step>
+  
+  <Step title="Use Partial Matches">
+    The search finds partial matches, so you don't need to type the complete name
+  </Step>
+  
+  <Step title="Check Suggestions">
+    Review the random tour suggestions for alternatives you might not have considered
+  </Step>
+</Steps>
+
+### Example Searches
+
+<CardGroup cols={2}>
+  <Card title="By Location" icon="location-dot">
+    Search for "Serengeti", "Ngorongoro", "Zanzibar"
+  </Card>
+  
+  <Card title="By Accommodation" icon="hotel">
+    Search for "Lodge", "Camp", "Resort"
+  </Card>
+  
+  <Card title="By Park Name" icon="tree">
+    Search for specific national parks or reserves
+  </Card>
+  
+  <Card title="By Region" icon="map">
+    Search for broader regional terms
+  </Card>
+</CardGroup>
+
+## Alternative Finding Methods
+
+If search doesn't give you the results you're looking for, try these alternative methods:
+
+### Browse by Category
+
+Navigate to `/tours/{category}` to see all tours in a specific category.
+
+<Info>
+See the [Browsing Tours](/user-guide/browsing-tours) guide for detailed information on category navigation.
+</Info>
+
+### Browse by Subcategory
+
+Use `/tours/categories/{sub_category}` for more refined filtering.
+
+### View All Safaris
+
+Visit `/safaris` to browse the complete tour catalog.
+
+## Search Results Page Features
+
+The search results page includes helpful additional elements:
+
+### Categories Sidebar
+
+All tour categories are displayed, allowing you to:
+- Switch from search to category browsing
+- Understand available tour types
+- Navigate to specific category pages
+
+### Blog Content
+
+Recent blog posts provide:
+- Travel tips and advice
+- Destination information
+- Safari planning guides
+- Customer stories and testimonials
+
+### Random Tour Suggestions
+
+3 randomly selected tours help you:
+- Discover new destinations
+- Explore different safari types
+- Find alternatives if search results are limited
+
+<Tip>
+If you don't find what you're looking for in search results, the random suggestions might spark ideas for alternative safari experiences.
+</Tip>
+
+## Pagination
+
+Search results are paginated for better performance and usability.
+
+<Steps>
+  <Step title="View Initial Results">
+    The first page shows up to 10 matching tours
+  </Step>
+  
+  <Step title="Navigate Pages">
+    Use the pagination controls at the bottom to view additional results
+  </Step>
+  
+  <Step title="Page Numbers">
+    The current page number and total pages are displayed
+  </Step>
+</Steps>
+
+<Note>
+Pagination starts at page 1, with 5 items indexed per page in the results display.
+</Note>
+
+## No Results Found
+
+If your search doesn't return any results:
+
+<CardGroup cols={2}>
+  <Card title="Broaden Your Search" icon="magnifying-glass-plus">
+    Try a shorter or more general search term
+  </Card>
+  
+  <Card title="Check Spelling" icon="spell-check">
+    Verify your search term is spelled correctly
+  </Card>
+  
+  <Card title="Browse Categories" icon="folder-tree">
+    Use category navigation to find tours
+  </Card>
+  
+  <Card title="View All Tours" icon="list">
+    Browse the complete safari catalog
+  </Card>
+</CardGroup>
+
+## Mobile Search
+
+The search functionality works on all devices:
+
+- Responsive design adapts to mobile screens
+- Touch-friendly search input
+- Optimized results display for smaller screens
+- Full pagination support on mobile
+
+## Search Performance
+
+<Info>
+The search system is optimized for performance:
+- Indexed database queries for fast results
+- Pagination prevents loading too many results at once
+- Efficient LIKE queries with proper indexing
+</Info>
+
+## Future Enhancements
+
+While the current search focuses on hotel/accommodation names, you can use these workarounds for other search needs:
+
+- **Price Filtering**: Browse categories and compare prices on tour detail pages
+- **Date Availability**: Contact Okulink Safaris or check tour details
+- **Amenity Searching**: Use the detailed tour information pages
+- **Multi-criteria Filtering**: Combine category browsing with manual review
+
+<Tip>
+For complex search requirements or personalized safari planning, contact Okulink Safaris directly through the enquiry form or help page.
+</Tip>
+
+## Getting Help
+
+If you're having trouble finding the right safari:
+
+1. **Use the Help Page**: Visit `/help` for assistance
+2. **Submit an Enquiry**: Use the enquiry form to describe your needs
+3. **Browse FAQs**: Check `/faqs` for common questions
+4. **Contact Support**: Reach out to the team directly
+
+<Note>
+The Okulink Safaris team is available to help you find the perfect safari experience, even if search doesn't return exactly what you're looking for.
+</Note>

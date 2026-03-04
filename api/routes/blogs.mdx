@@ -1,0 +1,404 @@
+---
+title: 'Blogs Routes'
+description: 'API endpoints for managing blog posts and articles'
+---
+
+## Overview
+
+The Blogs API provides endpoints for browsing, creating, updating, and managing blog posts and articles about safari experiences, wildlife, travel tips, and destinations.
+
+## Browse All Blogs
+
+<api method="GET" path="/blogs" />
+
+Retrieve a paginated list of blog posts for public viewing.
+
+### Response
+
+<ResponseField name="coverBlogs" type="array">
+  Paginated collection of blog posts (6 per page) for main display
+</ResponseField>
+
+<ResponseField name="blogs" type="array">
+  Latest 2 blog posts for sidebar or featured section
+</ResponseField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/blogs
+```
+
+---
+
+## List All Blogs (Admin)
+
+<api method="GET" path="/all-blogs" />
+
+Retrieve a paginated list of all blogs for admin management.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Response
+
+<ResponseField name="blogs" type="array">
+  Paginated collection of blogs (10 per page)
+  
+  <Expandable title="Blog Object">
+    <ResponseField name="id" type="integer">
+      Unique blog identifier
+    </ResponseField>
+    
+    <ResponseField name="title" type="string">
+      Blog post title
+    </ResponseField>
+    
+    <ResponseField name="content" type="text">
+      Blog post content/body
+    </ResponseField>
+    
+    <ResponseField name="image" type="string">
+      Main blog post image path
+    </ResponseField>
+    
+    <ResponseField name="image2" type="string">
+      Secondary blog post image path
+    </ResponseField>
+    
+    <ResponseField name="image3" type="string" optional>
+      Additional blog post image path
+    </ResponseField>
+    
+    <ResponseField name="image4" type="string" optional>
+      Additional blog post image path
+    </ResponseField>
+    
+    <ResponseField name="image5" type="string" optional>
+      Additional blog post image path
+    </ResponseField>
+    
+    <ResponseField name="image6" type="string" optional>
+      Additional blog post image path
+    </ResponseField>
+    
+    <ResponseField name="published" type="boolean">
+      Publication status (0 or 1)
+    </ResponseField>
+    
+    <ResponseField name="user_id" type="integer">
+      ID of user who created the blog post
+    </ResponseField>
+    
+    <ResponseField name="created_at" type="timestamp">
+      Blog post creation timestamp
+    </ResponseField>
+    
+    <ResponseField name="updated_at" type="timestamp">
+      Blog post last update timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/all-blogs \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Cookie: laravel_session=YOUR_SESSION"
+```
+
+---
+
+## Show Blog Post
+
+<api method="GET" path="/blogs/show/{id}" />
+
+Retrieve detailed information about a specific blog post.
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique blog post ID
+</ParamField>
+
+### Response
+
+Returns:
+- Complete blog post details
+- Latest 2 blog posts for sidebar
+- Latest 4 blog posts for related suggestions
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/blogs/show/123
+```
+
+---
+
+## Create Blog Form (Admin)
+
+<api method="GET" path="/blogs/create" />
+
+Display the form for creating a new blog post.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/blogs/create \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Create Blog Post (Admin)
+
+<api method="POST" path="/blogs/store" />
+
+Create a new blog post.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Request Body
+
+<ParamField body="title" type="string" required>
+  Blog post title
+</ParamField>
+
+<ParamField body="content" type="text" required>
+  Blog post content/body (supports HTML)
+</ParamField>
+
+<ParamField body="image" type="file" required>
+  Main blog post image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image2" type="file" required>
+  Secondary blog post image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image3" type="file" optional>
+  Additional blog post image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image4" type="file" optional>
+  Additional blog post image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image5" type="file" optional>
+  Additional blog post image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image6" type="file" optional>
+  Additional blog post image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X POST https://yourdomain.com/blogs/store \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "title=Best Safari Destinations in 2026" \
+  -F "content=<p>Discover the top safari destinations...</p>" \
+  -F "image=@/path/to/image.jpg" \
+  -F "image2=@/path/to/image2.jpg"
+```
+
+### Response
+
+Redirects to blogs admin list with success message: "Content Created Successfully!"
+
+---
+
+## Edit Blog Form (Admin)
+
+<api method="GET" path="/blogs/edit/{id}" />
+
+Display the form for editing an existing blog post.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique blog post ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/blogs/edit/123 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Update Blog Post (Admin)
+
+<api method="POST" path="/blogs/update/{id}" />
+
+Update an existing blog post.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique blog post ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="title" type="string" required>
+  Blog post title
+</ParamField>
+
+<ParamField body="content" type="text" required>
+  Blog post content/body (supports HTML)
+</ParamField>
+
+<ParamField body="image" type="file" optional>
+  Main blog post image (only if updating)
+</ParamField>
+
+<ParamField body="image2" type="file" optional>
+  Additional blog post images (only if updating)
+</ParamField>
+
+<Note>
+  Images are optional during update. If not provided, existing images are retained.
+</Note>
+
+### Example Request
+
+```bash
+curl -X POST https://yourdomain.com/blogs/update/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "title=Updated: Best Safari Destinations in 2026" \
+  -F "content=<p>Updated content about top safari destinations...</p>"
+```
+
+### Response
+
+Redirects to blogs admin list with success message: "Content updated Successfully!"
+
+---
+
+## Delete Blog Post (Admin)
+
+<api method="DELETE" path="/blogs/delete/{id}" />
+
+Permanently delete a blog post.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique blog post ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X DELETE https://yourdomain.com/blogs/delete/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to blogs admin list with success message: "Content Deleted"
+
+---
+
+## Publish/Unpublish Blog Post (Admin)
+
+<api method="PUT" path="/blogs/publish/{id}" />
+
+Toggle the publication status of a blog post.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique blog post ID
+</ParamField>
+
+### Behavior
+
+- If `published = 0`, sets to `1` (publish)
+- If `published = 1`, sets to `0` (unpublish)
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/blogs/publish/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to blogs admin list with updated publication status.
+
+---
+
+## Blog Route (Public)
+
+<api method="GET" path="/blog" />
+
+Alternate route to browse blog posts (redirects to main home controller).
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/blog
+```

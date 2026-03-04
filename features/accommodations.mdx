@@ -1,0 +1,459 @@
+---
+title: 'Accommodations'
+description: 'Showcase and manage lodging options including hotels, lodges, and camps for safari experiences'
+icon: 'hotel'
+---
+
+## Overview
+
+The Accommodations feature allows Okulink Safaris to present and manage various lodging options available to customers. From luxury lodges to budget-friendly camps, the system supports detailed accommodation listings with rich media galleries, pricing information, and comprehensive descriptions.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Rich Media Galleries" icon="images">
+    Upload up to 6 images per accommodation to showcase facilities and amenities
+  </Card>
+  <Card title="SEO-Friendly URLs" icon="link">
+    Automatic slug generation for clean, readable accommodation URLs
+  </Card>
+  <Card title="Category Organization" icon="folder-tree">
+    Organize accommodations by type (hotels, lodges, camps, etc.)
+  </Card>
+  <Card title="Publish Control" icon="toggle-on">
+    Control visibility of accommodation listings with publish/unpublish toggle
+  </Card>
+</CardGroup>
+
+## Accommodation Information
+
+### Database Fields
+
+Each accommodation listing contains:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Accommodation name |
+| `slug` | string | URL-friendly version of name (unique) |
+| `category` | string | Type of accommodation (hotel, lodge, camp, etc.) |
+| `location` | string | Geographic location |
+| `rates` | string | Pricing information |
+| `description` | text | Detailed description of facilities and amenities |
+| `image` - `image6` | string | Up to 6 image paths for accommodation gallery |
+| `user_id` | integer | ID of the administrator who created the listing |
+| `published` | integer | Publication status (0 = draft, 1 = published) |
+
+## Creating an Accommodation
+
+<Steps>
+  <Step title="Access Creation Form">
+    Navigate to `/accomodation/new` (route name: `accomodations.create`) from the admin dashboard
+    
+    <Info>You must be logged in with a verified email address to create accommodations</Info>
+  </Step>
+  
+  <Step title="Enter Required Information">
+    Complete the form with the following required fields:
+    
+    - **Name**: Accommodation name (e.g., "Serengeti Safari Lodge")
+    - **Category**: Type of accommodation (e.g., "Luxury Lodge", "Budget Camp", "Boutique Hotel")
+    - **Location**: Geographic location or area
+    - **Rates**: Pricing information (can include various room types and seasons)
+    - **Description**: Comprehensive details about the accommodation
+    - **Main Image**: Primary accommodation image (JPG, PNG, SVG, or WebP)
+    - **Second Image**: Secondary image (required)
+  </Step>
+  
+  <Step title="Add Additional Images">
+    Upload up to 4 additional optional images (image3 through image6) to showcase:
+    - Room interiors
+    - Common areas
+    - Dining facilities
+    - Outdoor spaces
+    - Views and surroundings
+    - Amenities
+  </Step>
+  
+  <Step title="Save Accommodation">
+    Click "Submit" to create the accommodation. The system will:
+    - Generate a URL-friendly slug from the name (spaces replaced with hyphens)
+    - Store all images in the public storage
+    - Create the listing in draft mode (unpublished)
+    - Associate the listing with your user account
+    - Redirect you to the accommodations management page
+  </Step>
+</Steps>
+
+## Managing Accommodations
+
+### Viewing All Accommodations
+
+<Tabs>
+  <Tab title="Admin View">
+    Access the admin accommodations page at `/all-accomodations` (route name: `accomodations.all`) to see:
+    - All accommodations in the system
+    - 20 listings per page with pagination
+    - Most recent listings first
+    - Quick action buttons (edit, publish, delete)
+    
+    <Note>Requires authentication and email verification</Note>
+  </Tab>
+  
+  <Tab title="Public View">
+    Customers can browse published accommodations at `/accomodations` (route name: `accomodations`)
+    - Shows 20 accommodations per page
+    - Only displays published listings
+    - Latest additions shown first
+  </Tab>
+</Tabs>
+
+### Viewing Accommodation Details
+
+Accommodations can be viewed in detail at `/accomodation/{slug}` where `{slug}` is the URL-friendly name.
+
+**Detail Page Includes:**
+- All accommodation information and description
+- Complete image gallery
+- Pricing and rate information
+- Location details
+- 5 most recent related accommodations for browsing
+
+### Editing an Accommodation
+
+<Steps>
+  <Step title="Navigate to Edit Page">
+    From the admin accommodations list, click "Edit" or visit `/accomodation/edit/{id}`
+  </Step>
+  
+  <Step title="Update Information">
+    Modify any accommodation details:
+    - Name (slug will be preserved to maintain URL consistency)
+    - Category
+    - Location
+    - Rates
+    - Description
+  </Step>
+  
+  <Step title="Update Images (Optional)">
+    Upload new images to replace existing ones. The system behavior:
+    - If any image files are uploaded, all image fields will be updated
+    - If no images are uploaded, existing images are preserved
+    - Partial image updates are supported
+  </Step>
+  
+  <Step title="Save Changes">
+    Click "Update" to save modifications. You'll be redirected to the accommodations management page with a success message: "accomodation Updated"
+  </Step>
+</Steps>
+
+<Warning>
+When updating images, if you upload any new images, ensure you provide all images you want to keep. The system processes images as a group.
+</Warning>
+
+### Publishing and Unpublishing
+
+<Tabs>
+  <Tab title="Publishing">
+    To make an accommodation visible to customers:
+    1. Navigate to `/all-accomodations`
+    2. Find the unpublished accommodation (published = 0)
+    3. Click "Publish" (PUT request to `/accomodation/publish/{id}`)
+    4. Status changes to 1 (published)
+    5. Accommodation now appears on public pages
+  </Tab>
+  
+  <Tab title="Unpublishing">
+    To hide an accommodation from customers:
+    1. Navigate to the admin accommodations page
+    2. Find the published accommodation (published = 1)
+    3. Click "Unpublish"
+    4. Status changes to 0 (draft)
+    5. Accommodation hidden from public view
+  </Tab>
+</Tabs>
+
+<Note>
+Unpublishing does not delete the accommodation - it only controls visibility. This is useful for seasonal accommodations or temporary unavailability.
+</Note>
+
+### Deleting an Accommodation
+
+<Warning>
+Deleting an accommodation is permanent and cannot be undone. Consider unpublishing instead if you might need the listing again.
+</Warning>
+
+To permanently delete:
+1. Navigate to `/all-accomodations`
+2. Click "Delete" on the accommodation
+3. Confirm deletion
+4. The accommodation is permanently removed from the database
+
+## Category Filtering
+
+Customers can filter accommodations by category using the route `/accomodation/category/{category}` (route name: `accomodations.category`).
+
+**Common Category Examples:**
+- Luxury Lodges
+- Safari Camps
+- Budget Accommodations
+- Boutique Hotels
+- Eco Lodges
+- Mobile Camps
+- Tented Camps
+- Beach Resorts
+
+## Routes Reference
+
+| Action | Method | Route | Route Name | Auth Required |
+|--------|--------|-------|------------|---------------|
+| List all (admin) | GET | `/all-accomodations` | `accomodations.all` | Yes (verified) |
+| Browse (public) | GET | `/accomodations` | `accomodations` | No |
+| Create form | GET | `/accomodation/new` | `accomodations.create` | Yes (verified) |
+| Store new | POST | `/accomodation/create` | `accomodations.store` | Yes (verified) |
+| Show details | GET | `/accomodation/{slug}` | `accomodations.show` | No |
+| Edit form | GET | `/accomodation/edit/{id}` | `accomodations.edit` | Yes (verified) |
+| Update | PUT | `/accomodation/update/{id}` | `accomodations.update` | Yes (verified) |
+| Delete | DELETE | `/accomodation/delete/{id}` | `accomodations.delete` | Yes (verified) |
+| Toggle publish | PUT | `/accomodation/publish/{id}` | `accomodations.publish` | Yes (verified) |
+| Filter by category | GET | `/accomodation/category/{category}` | `accomodations.category` | No |
+
+## Validation Rules
+
+When creating accommodations, the following fields are required:
+
+```php
+'name' => 'required',
+'category' => 'required',
+'image' => 'required',      // Main image
+'location' => 'required',
+'rates' => 'required',
+'description' => 'required'
+```
+
+<Note>
+When updating accommodations, images are optional. If no new images are provided, existing images are preserved.
+</Note>
+
+## Image Guidelines
+
+### Accepted Formats
+- JPG/JPEG
+- PNG
+- SVG
+- WebP
+
+### Image Requirements
+- **Minimum**: 2 images (main image and image2) required at creation
+- **Maximum**: 6 images total per accommodation
+- **Storage**: Images stored in `storage/app/public/images`
+
+### Best Practices
+
+<AccordionGroup>
+  <Accordion title="Image Selection Strategy">
+    **Main Image (image)**: Use the most impressive exterior or signature view
+    
+    **Second Image (image2)**: Show interior accommodations or main amenities
+    
+    **Additional Images (image3-6)**:
+    - Guest rooms or sleeping areas
+    - Dining facilities
+    - Lounge and common areas
+    - Pool or recreational facilities
+    - Surrounding landscape and views
+    - Unique features or amenities
+  </Accordion>
+  
+  <Accordion title="Image Quality Standards">
+    - **Resolution**: Minimum 1920x1080px for main images
+    - **Aspect Ratio**: Consistent ratios across images (16:9 or 4:3 recommended)
+    - **Compression**: Balance quality with file size for web performance
+    - **Lighting**: Well-lit, professional-quality photos
+    - **Representation**: Accurate depiction of current facilities
+    - **Updates**: Refresh images if renovations or changes occur
+  </Accordion>
+</AccordionGroup>
+
+## Writing Effective Descriptions
+
+<Tabs>
+  <Tab title="Structure">
+    **Recommended Description Structure:**
+    
+    1. **Opening** (2-3 sentences)
+       - Location highlights
+       - Unique selling points
+       - Accommodation type and style
+    
+    2. **Facilities** (1-2 paragraphs)
+       - Room types and features
+       - Common areas
+       - Dining options
+       - Recreational facilities
+    
+    3. **Experience** (1 paragraph)
+       - Atmosphere and ambiance
+       - Activities available
+       - Wildlife viewing opportunities
+       - Special features
+    
+    4. **Practical Details** (bullet points)
+       - Number of rooms/units
+       - Capacity
+       - Power and connectivity
+       - Accessibility features
+  </Tab>
+  
+  <Tab title="Best Practices">
+    **Do:**
+    - Use descriptive, evocative language
+    - Highlight unique features and selling points
+    - Mention nearby attractions or activities
+    - Include practical information
+    - Be honest and accurate
+    - Update descriptions when facilities change
+    
+    **Don't:**
+    - Exaggerate or misrepresent facilities
+    - Use excessive superlatives
+    - Copy descriptions from other sources
+    - Include outdated information
+    - Forget to proofread for errors
+  </Tab>
+</Tabs>
+
+## Rates and Pricing Information
+
+The `rates` field is flexible and can include:
+
+<CardGroup cols={2}>
+  <Card title="Rate Types" icon="dollar-sign">
+    - Per person per night
+    - Per room per night
+    - Full board vs. half board
+    - All-inclusive packages
+  </Card>
+  <Card title="Seasonal Variations" icon="calendar">
+    - High season rates
+    - Low season rates
+    - Shoulder season rates
+    - Special event pricing
+  </Card>
+  <Card title="Room Categories" icon="bed">
+    - Standard rooms
+    - Deluxe rooms
+    - Suites
+    - Family rooms
+  </Card>
+  <Card title="Inclusions" icon="circle-check">
+    - Meals included
+    - Activities included
+    - Park fees
+    - Transportation
+  </Card>
+</CardGroup>
+
+## Slug Generation
+
+The system automatically generates URL-friendly slugs:
+
+**How it works:**
+- Spaces in the accommodation name are replaced with hyphens
+- Example: "Serengeti Safari Lodge" becomes "Serengeti-Safari-Lodge"
+- Slugs are unique (enforced at database level)
+- Slugs are preserved during updates to maintain URL consistency
+
+<Info>
+If you need to change a slug, you'll need to create a new accommodation or update it directly in the database to avoid breaking existing links.
+</Info>
+
+## Related Features
+
+<CardGroup cols={2}>
+  <Card title="Tours & Safaris" icon="compass" href="/features/tours-safaris">
+    Tours reference accommodations in their hotel field
+  </Card>
+  <Card title="Categories" icon="folder">
+    Accommodations are organized using the category system
+  </Card>
+  <Card title="Bookings" icon="calendar-check" href="/features/bookings">
+    Customers book tours that include accommodations
+  </Card>
+  <Card title="Images" icon="images">
+    Shared image storage and management system
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Duplicate Slug Error">
+    **Problem**: Error when creating accommodation with a name similar to existing one
+    
+    **Solutions**:
+    - Choose a more unique accommodation name
+    - Add location or distinctive feature to the name
+    - Check for existing accommodations with similar names
+    - Example: Instead of "Safari Camp", use "Maasai Mara Safari Camp"
+  </Accordion>
+  
+  <Accordion title="Images Not Displaying">
+    **Problem**: Images uploaded but not showing on public pages
+    
+    **Solutions**:
+    - Verify the storage symlink exists: `php artisan storage:link`
+    - Check file permissions on storage directory
+    - Confirm images are in the correct format (JPG, PNG, SVG, WebP)
+    - Clear browser cache
+    - Verify accommodation is published
+  </Accordion>
+  
+  <Accordion title="Cannot Update Accommodation">
+    **Problem**: Edit page saves but changes don't appear
+    
+    **Solutions**:
+    - Verify you're logged in with a verified email
+    - Check that you're editing the correct accommodation ID
+    - Clear application cache if caching is enabled
+    - Verify all required fields are completed
+  </Accordion>
+  
+  <Accordion title="Accommodation Not Showing in Category">
+    **Problem**: Accommodation doesn't appear when filtering by category
+    
+    **Solutions**:
+    - Verify the accommodation is published
+    - Check that the category name exactly matches
+    - Categories are case-sensitive
+    - Ensure no extra spaces in category name
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices Summary
+
+<CardGroup cols={2}>
+  <Card title="Content Quality" icon="star">
+    - Use high-quality, recent photographs
+    - Write detailed, accurate descriptions
+    - Keep pricing information up-to-date
+    - Update listings when facilities change
+  </Card>
+  <Card title="Organization" icon="folder-tree">
+    - Use consistent category naming
+    - Create logical category groups
+    - Maintain uniform rate formatting
+    - Keep location names consistent
+  </Card>
+  <Card title="SEO" icon="search">
+    - Use descriptive, keyword-rich names
+    - Write unique descriptions for each property
+    - Include location information
+    - Keep URLs stable (don't change slugs)
+  </Card>
+  <Card title="Customer Experience" icon="users">
+    - Highlight unique selling points
+    - Be transparent about facilities
+    - Include practical information
+    - Show variety in image gallery
+  </Card>
+</CardGroup>

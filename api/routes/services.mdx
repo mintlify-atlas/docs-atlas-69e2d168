@@ -1,0 +1,445 @@
+---
+title: 'Services Routes'
+description: 'API endpoints for managing safari services and offerings'
+---
+
+## Overview
+
+The Services API provides endpoints for browsing and managing various safari-related services such as guided tours, transportation, photography sessions, and more.
+
+## List All Services
+
+<api method="GET" path="/services" />
+
+Retrieve a paginated list of all available services.
+
+### Response
+
+<ResponseField name="services" type="array">
+  Paginated collection of services (20 per page)
+  
+  <Expandable title="Service Object">
+    <ResponseField name="id" type="integer">
+      Unique service identifier
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Service name
+    </ResponseField>
+    
+    <ResponseField name="slug" type="string">
+      URL-friendly slug (auto-generated from name)
+    </ResponseField>
+    
+    <ResponseField name="category" type="string">
+      Service category
+    </ResponseField>
+    
+    <ResponseField name="location" type="string">
+      Service location
+    </ResponseField>
+    
+    <ResponseField name="price" type="decimal">
+      Service price
+    </ResponseField>
+    
+    <ResponseField name="description" type="text">
+      Detailed service description
+    </ResponseField>
+    
+    <ResponseField name="image" type="string">
+      Main service image path
+    </ResponseField>
+    
+    <ResponseField name="image2" type="string">
+      Secondary service image path
+    </ResponseField>
+    
+    <ResponseField name="image3" type="string" optional>
+      Additional service image path
+    </ResponseField>
+    
+    <ResponseField name="image4" type="string" optional>
+      Additional service image path
+    </ResponseField>
+    
+    <ResponseField name="image5" type="string" optional>
+      Additional service image path
+    </ResponseField>
+    
+    <ResponseField name="image6" type="string" optional>
+      Additional service image path
+    </ResponseField>
+    
+    <ResponseField name="published" type="boolean">
+      Publication status (0 or 1)
+    </ResponseField>
+    
+    <ResponseField name="user_id" type="integer">
+      ID of user who created the service
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/services
+```
+
+---
+
+## Browse Services by Category
+
+<api method="GET" path="/service/category/{category}" />
+
+Retrieve services filtered by a specific category.
+
+### Path Parameters
+
+<ParamField path="category" type="string" required>
+  The category to filter by (e.g., "Guided Tours", "Transportation", "Photography")
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/service/category/Guided-Tours
+```
+
+---
+
+## Show Service Details
+
+<api method="GET" path="/service/{slug}" />
+
+Retrieve detailed information about a specific service.
+
+### Path Parameters
+
+<ParamField path="slug" type="string" required>
+  The URL-friendly slug of the service
+</ParamField>
+
+### Response
+
+Returns:
+- Complete service details
+- All services for related suggestions
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/service/private-game-drive
+```
+
+---
+
+## List All Services (Admin)
+
+<api method="GET" path="/all-services" />
+
+Retrieve a paginated list of all services for admin management.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Response
+
+Returns paginated list of services (20 per page) ordered by most recent.
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/all-services \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Cookie: laravel_session=YOUR_SESSION"
+```
+
+---
+
+## Create Service Form (Admin)
+
+<api method="GET" path="/service/new" />
+
+Display the form for creating a new service.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/service/new \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Create Service (Admin)
+
+<api method="POST" path="/service/create" />
+
+Create a new service offering.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Service name
+</ParamField>
+
+<ParamField body="category" type="string" required>
+  Service category
+</ParamField>
+
+<ParamField body="location" type="string" required>
+  Service location
+</ParamField>
+
+<ParamField body="price" type="decimal" required>
+  Service price
+</ParamField>
+
+<ParamField body="description" type="text" required>
+  Detailed service description
+</ParamField>
+
+<ParamField body="image" type="file" required>
+  Main service image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image2" type="file" optional>
+  Secondary service image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image3" type="file" optional>
+  Additional service image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image4" type="file" optional>
+  Additional service image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image5" type="file" optional>
+  Additional service image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+<ParamField body="image6" type="file" optional>
+  Additional service image (jpg, jpeg, svg, png, webp)
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X POST https://yourdomain.com/service/create \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Private Game Drive" \
+  -F "category=Guided Tours" \
+  -F "location=Maasai Mara, Kenya" \
+  -F "price=250.00" \
+  -F "description=Exclusive private game drive with expert guide" \
+  -F "image=@/path/to/image.jpg" \
+  -F "image2=@/path/to/image2.jpg"
+```
+
+### Response
+
+Redirects to services admin list with success message: "You Added a service."
+
+<Note>
+  The slug is automatically generated from the name by replacing spaces with hyphens.
+</Note>
+
+---
+
+## Edit Service Form (Admin)
+
+<api method="GET" path="/service/edit/{id}" />
+
+Display the form for editing an existing service.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique service ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/service/edit/123 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Update Service (Admin)
+
+<api method="PUT" path="/service/update/{id}" />
+
+Update an existing service offering.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique service ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Service name
+</ParamField>
+
+<ParamField body="category" type="string" required>
+  Service category
+</ParamField>
+
+<ParamField body="location" type="string" required>
+  Service location
+</ParamField>
+
+<ParamField body="price" type="decimal" required>
+  Service price
+</ParamField>
+
+<ParamField body="description" type="text" required>
+  Detailed service description
+</ParamField>
+
+<ParamField body="image" type="file" optional>
+  Main service image (only if updating)
+</ParamField>
+
+<ParamField body="image2" type="file" optional>
+  Additional service images (only if updating)
+</ParamField>
+
+<Note>
+  Images are optional during update. If not provided, existing images are retained.
+</Note>
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/service/update/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: multipart/form-data" \
+  -F "name=Private Game Drive" \
+  -F "category=Guided Tours" \
+  -F "location=Maasai Mara, Kenya" \
+  -F "price=275.00" \
+  -F "description=Premium private game drive with certified expert guide"
+```
+
+### Response
+
+Redirects to services admin list with success message: "Product Updated"
+
+---
+
+## Delete Service (Admin)
+
+<api method="DELETE" path="/service/delete/{id}" />
+
+Permanently delete a service.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique service ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X DELETE https://yourdomain.com/service/delete/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to services admin list with success message: "You Deleted Service."
+
+---
+
+## Publish/Unpublish Service (Admin)
+
+<api method="PUT" path="/service/publish/{id}" />
+
+Toggle the publication status of a service.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique service ID
+</ParamField>
+
+### Behavior
+
+- If `published = 0`, sets to `1` (publish)
+- If `published = 1`, sets to `0` (unpublish)
+
+### Example Request
+
+```bash
+curl -X PUT https://yourdomain.com/service/publish/123 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to services admin list with updated publication status.

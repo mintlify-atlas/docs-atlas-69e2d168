@@ -1,0 +1,513 @@
+---
+title: "Authentication"
+description: "Authenticate with Laravel Sanctum and manage user sessions"
+---
+
+## Overview
+
+Okulink Safaris API uses **Laravel Sanctum** for API token authentication and **Laravel UI** for session-based authentication. The application requires email verification for most booking and content management operations.
+
+## Authentication Methods
+
+The API supports two authentication methods:
+
+1. **Session-based Authentication** - For web applications using cookies
+2. **Token-based Authentication** - For mobile apps and SPAs using Laravel Sanctum
+
+## Registration
+
+Create a new user account by sending a POST request to the registration endpoint.
+
+### Endpoint
+
+```
+POST /register
+```
+
+### Request Parameters
+
+<ParamField path="name" type="string" required>
+  Full name of the user. Maximum 255 characters.
+</ParamField>
+
+<ParamField path="email" type="string" required>
+  Valid email address. Must be unique.
+</ParamField>
+
+<ParamField path="password" type="string" required>
+  Password for the account. Minimum 8 characters.
+</ParamField>
+
+<ParamField path="password_confirmation" type="string" required>
+  Password confirmation. Must match the password field.
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/register \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "SecurePass123",
+    "password_confirmation": "SecurePass123"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://your-domain.com/register', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'John Doe',
+    email: 'john@example.com',
+    password: 'SecurePass123',
+    password_confirmation: 'SecurePass123'
+  })
+});
+
+const data = await response.json();
+```
+
+### Response
+
+```json 201 Created
+{
+  "message": "Registration successful",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "email_verified_at": null,
+    "created_at": "2026-03-04T10:00:00.000000Z",
+    "updated_at": "2026-03-04T10:00:00.000000Z"
+  }
+}
+```
+
+<Note>
+  After registration, a verification email is automatically sent to the user's email address. Email verification is required for creating bookings and managing content.
+</Note>
+
+## Login
+
+Authenticate an existing user and establish a session or receive an API token.
+
+### Endpoint
+
+```
+POST /login
+```
+
+### Request Parameters
+
+<ParamField path="email" type="string" required>
+  User's registered email address.
+</ParamField>
+
+<ParamField path="password" type="string" required>
+  User's password.
+</ParamField>
+
+<ParamField path="remember" type="boolean">
+  Remember the user's session. Defaults to `false`.
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/login \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "email": "john@example.com",
+    "password": "SecurePass123",
+    "remember": true
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://your-domain.com/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  },
+  credentials: 'include', // Important for session cookies
+  body: JSON.stringify({
+    email: 'john@example.com',
+    password: 'SecurePass123',
+    remember: true
+  })
+});
+
+const data = await response.json();
+```
+
+### Response
+
+```json 200 OK
+{
+  "message": "Login successful",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "email_verified_at": "2026-03-04T10:30:00.000000Z"
+  }
+}
+```
+
+```json 401 Unauthorized
+{
+  "message": "These credentials do not match our records.",
+  "errors": {
+    "email": ["These credentials do not match our records."]
+  }
+}
+```
+
+## Logout
+
+Terminate the user's session and invalidate authentication.
+
+### Endpoint
+
+```
+POST /logout
+```
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/logout \
+  -H "Accept: application/json" \
+  -H "Cookie: laravel_session=your-session-cookie"
+```
+
+```javascript JavaScript
+await fetch('https://your-domain.com/logout', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json'
+  },
+  credentials: 'include'
+});
+```
+
+### Response
+
+```json 200 OK
+{
+  "message": "Logout successful"
+}
+```
+
+## Email Verification
+
+Email verification is required for creating bookings and managing content. The verification flow consists of three routes.
+
+### Verification Notice
+
+Display a notice prompting users to verify their email.
+
+```
+GET /email/verify
+```
+
+**Middleware**: `auth`
+
+Users are redirected to this route after registration if their email is not verified.
+
+### Verify Email Address
+
+Verify the user's email address using a signed URL sent via email.
+
+```
+GET /email/verify/{id}/{hash}
+```
+
+**Middleware**: `auth`, `signed`
+
+<ParamField path="id" type="integer" required>
+  User ID
+</ParamField>
+
+<ParamField path="hash" type="string" required>
+  Verification hash
+</ParamField>
+
+### Example Verification URL
+
+```
+https://your-domain.com/email/verify/1/abc123def456?expires=1234567890&signature=xyz
+```
+
+When the user clicks the verification link in their email, they are redirected to the home page with a verified email status.
+
+### Resend Verification Email
+
+Request a new verification email if the original was not received.
+
+```
+POST /email/verification-notification
+```
+
+**Middleware**: `auth`, `throttle:6,1`
+
+**Rate Limit**: 6 requests per minute
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/email/verification-notification \
+  -H "Accept: application/json" \
+  -H "Cookie: laravel_session=your-session-cookie"
+```
+
+```javascript JavaScript
+const response = await fetch('https://your-domain.com/email/verification-notification', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json'
+  },
+  credentials: 'include'
+});
+```
+
+### Response
+
+```json 200 OK
+{
+  "message": "Verification link sent!"
+}
+```
+
+<Warning>
+  This endpoint is rate-limited to 6 requests per minute to prevent abuse.
+</Warning>
+
+## Sanctum Token Authentication
+
+For API-only applications (mobile apps, SPAs), use Laravel Sanctum token authentication.
+
+### Get Authenticated User
+
+Retrieve the currently authenticated user's information.
+
+```
+GET /api/user
+```
+
+**Middleware**: `auth:sanctum`
+
+### Request Headers
+
+<ParamField path="Authorization" type="string" required>
+  Bearer token for authentication.
+  
+  Format: `Bearer {your-api-token}`
+</ParamField>
+
+<ParamField path="Accept" type="string" required>
+  Must be `application/json`
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X GET https://your-domain.com/api/user \
+  -H "Authorization: Bearer your-api-token" \
+  -H "Accept: application/json"
+```
+
+```javascript JavaScript
+const response = await fetch('https://your-domain.com/api/user', {
+  headers: {
+    'Authorization': 'Bearer your-api-token',
+    'Accept': 'application/json'
+  }
+});
+
+const user = await response.json();
+```
+
+### Response
+
+<ResponseField name="id" type="integer">
+  Unique user identifier
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  User's full name
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  User's email address
+</ResponseField>
+
+<ResponseField name="email_verified_at" type="string">
+  Timestamp of email verification. `null` if not verified.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Account creation timestamp
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  Last update timestamp
+</ResponseField>
+
+```json 200 OK
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "john@example.com",
+  "email_verified_at": "2026-03-04T10:30:00.000000Z",
+  "created_at": "2026-03-04T10:00:00.000000Z",
+  "updated_at": "2026-03-04T10:00:00.000000Z"
+}
+```
+
+```json 401 Unauthorized
+{
+  "message": "Unauthenticated."
+}
+```
+
+## Password Reset
+
+Users can reset their password if forgotten.
+
+### Request Password Reset
+
+```
+POST /password/email
+```
+
+<ParamField path="email" type="string" required>
+  Email address of the account to reset
+</ParamField>
+
+Sends a password reset link to the user's email.
+
+### Reset Password
+
+```
+POST /password/reset
+```
+
+<ParamField path="token" type="string" required>
+  Reset token from the email link
+</ParamField>
+
+<ParamField path="email" type="string" required>
+  Email address of the account
+</ParamField>
+
+<ParamField path="password" type="string" required>
+  New password (minimum 8 characters)
+</ParamField>
+
+<ParamField path="password_confirmation" type="string" required>
+  Password confirmation
+</ParamField>
+
+## Protected Routes
+
+Many routes in the API require authentication and email verification:
+
+### Authentication Required (`auth` middleware)
+
+- Dashboard access
+- Admin panel
+- User profile
+- Viewing bookings
+
+### Email Verification Required (`auth` + `verified` middleware)
+
+- Creating bookings
+- Managing tours
+- Publishing content
+- Creating/editing blogs, events, products, services
+- Managing accommodations
+- Updating and deleting resources
+
+<Tip>
+  Always check if your user's email is verified before attempting operations that require the `verified` middleware. The `email_verified_at` field will be `null` for unverified users.
+</Tip>
+
+## Error Responses
+
+### Validation Errors
+
+```json 422 Unprocessable Entity
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "email": [
+      "The email field is required."
+    ],
+    "password": [
+      "The password must be at least 8 characters.",
+      "The password confirmation does not match."
+    ]
+  }
+}
+```
+
+### Authentication Errors
+
+```json 401 Unauthorized
+{
+  "message": "Unauthenticated."
+}
+```
+
+### Email Not Verified
+
+```json 403 Forbidden
+{
+  "message": "Your email address is not verified."
+}
+```
+
+## Security Best Practices
+
+<Steps>
+  <Step title="Use HTTPS">
+    Always use HTTPS in production to protect credentials and tokens in transit.
+  </Step>
+  
+  <Step title="Store Tokens Securely">
+    Store API tokens securely. Never expose them in client-side code or version control.
+  </Step>
+  
+  <Step title="Verify Emails">
+    Require email verification for sensitive operations like bookings and payments.
+  </Step>
+  
+  <Step title="Handle Token Expiration">
+    Implement proper token refresh logic and handle 401 responses appropriately.
+  </Step>
+  
+  <Step title="Respect Rate Limits">
+    Stay within rate limits to avoid temporary blocks. Implement exponential backoff for retries.
+  </Step>
+</Steps>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="API Endpoints" icon="code" href="/api/routes/tours">
+    Explore available API endpoints
+  </Card>
+  <Card title="Bookings API" icon="calendar" href="/api/routes/bookings">
+    Learn about the bookings API
+  </Card>
+</CardGroup>

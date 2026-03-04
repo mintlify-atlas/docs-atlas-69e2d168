@@ -1,0 +1,465 @@
+---
+title: 'Bookings Routes'
+description: 'API endpoints for managing tour bookings and reservations'
+---
+
+## Overview
+
+The Bookings API allows authenticated users to create, view, update, and manage tour reservations. All booking operations require authentication and email verification.
+
+## List All Bookings (Admin)
+
+<api method="GET" path="/bookings" />
+
+Retrieve a paginated list of all bookings for admin management.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Response
+
+<ResponseField name="bookings" type="array">
+  Paginated collection of bookings (10 per page)
+  
+  <Expandable title="Booking Object">
+    <ResponseField name="id" type="integer">
+      Unique booking identifier
+    </ResponseField>
+    
+    <ResponseField name="first_name" type="string">
+      Guest's first name
+    </ResponseField>
+    
+    <ResponseField name="last_name" type="string">
+      Guest's last name
+    </ResponseField>
+    
+    <ResponseField name="email" type="string">
+      Guest's email address
+    </ResponseField>
+    
+    <ResponseField name="phone_number" type="string">
+      Guest's phone number
+    </ResponseField>
+    
+    <ResponseField name="country" type="string">
+      Guest's country
+    </ResponseField>
+    
+    <ResponseField name="arrival_date" type="date">
+      Planned arrival date
+    </ResponseField>
+    
+    <ResponseField name="adults" type="integer">
+      Number of adult guests
+    </ResponseField>
+    
+    <ResponseField name="kids" type="integer">
+      Number of children
+    </ResponseField>
+    
+    <ResponseField name="destination" type="string">
+      Booked destination/tour
+    </ResponseField>
+    
+    <ResponseField name="transaction_code" type="string">
+      Payment transaction reference
+    </ResponseField>
+    
+    <ResponseField name="special_requirements" type="text">
+      Special requests or requirements
+    </ResponseField>
+    
+    <ResponseField name="status" type="integer">
+      Booking status (0 = pending, 1 = confirmed)
+    </ResponseField>
+    
+    <ResponseField name="user_id" type="integer">
+      ID of user who made the booking
+    </ResponseField>
+    
+    <ResponseField name="created_at" type="timestamp">
+      Booking creation timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/bookings \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Cookie: laravel_session=YOUR_SESSION"
+```
+
+---
+
+## Show Booking Details
+
+<api method="GET" path="/bookings/show/{id}" />
+
+Retrieve detailed information about a specific booking.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique booking ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/bookings/show/456 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Create Booking Form
+
+<api method="GET" path="/bookings/create/{destination}" />
+
+Display the booking form for a specific destination.
+
+### Path Parameters
+
+<ParamField path="destination" type="string" required>
+  The destination or tour name to book
+</ParamField>
+
+### Response
+
+Returns booking form with:
+- Latest 3 tours
+- All categories
+- All blog posts
+- Selected destination
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/bookings/create/maasai-mara-safari
+```
+
+---
+
+## Create Booking
+
+<api method="POST" path="/bookings/new" />
+
+Create a new tour booking reservation.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Request Body
+
+<ParamField body="first_name" type="string" required>
+  Guest's first name
+</ParamField>
+
+<ParamField body="last_name" type="string" required>
+  Guest's last name
+</ParamField>
+
+<ParamField body="email1" type="email" required>
+  Guest's email address
+</ParamField>
+
+<ParamField body="email2" type="email" required>
+  Email confirmation (must match email1)
+</ParamField>
+
+<ParamField body="phone_number" type="string" required>
+  Guest's contact phone number
+</ParamField>
+
+<ParamField body="country" type="string" optional>
+  Guest's country of residence
+</ParamField>
+
+<ParamField body="arrival_date" type="date" required>
+  Planned arrival date (YYYY-MM-DD)
+</ParamField>
+
+<ParamField body="adults" type="integer" required>
+  Number of adult guests
+</ParamField>
+
+<ParamField body="kids" type="integer" required>
+  Number of children (can be 0)
+</ParamField>
+
+<ParamField body="destination" type="string" required>
+  Tour or destination being booked
+</ParamField>
+
+<ParamField body="transaction_code" type="string" required>
+  Payment transaction reference code
+</ParamField>
+
+<ParamField body="special_requirements" type="text" optional>
+  Special requests or dietary requirements
+</ParamField>
+
+<ParamField body="g-recaptcha-response" type="string" required>
+  reCAPTCHA verification token
+</ParamField>
+
+### Validation
+
+<Warning>
+  The two email fields (email1 and email2) must match exactly. If they don't match, the request will fail with an error message.
+</Warning>
+
+### Example Request
+
+```bash
+curl -X POST https://yourdomain.com/bookings/new \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "John",
+    "last_name": "Doe",
+    "email1": "john.doe@example.com",
+    "email2": "john.doe@example.com",
+    "phone_number": "+1234567890",
+    "country": "United States",
+    "arrival_date": "2026-06-15",
+    "adults": 2,
+    "kids": 1,
+    "destination": "Maasai Mara Safari",
+    "transaction_code": "TXN123456789",
+    "special_requirements": "Vegetarian meals required",
+    "g-recaptcha-response": "RECAPTCHA_TOKEN"
+  }'
+```
+
+### Response
+
+Redirects to user profile with success message: "Booking has been successfull, We will contact you within 24hrs!"
+
+---
+
+## Edit Booking Form
+
+<api method="GET" path="/bookings/edit/{id}" />
+
+Display the form for editing an existing booking.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique booking ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/bookings/edit/456 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## Update Booking
+
+<api method="POST" path="/bookings/update/{id}" />
+
+Update an existing booking.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique booking ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="first_name" type="string" required>
+  Guest's first name
+</ParamField>
+
+<ParamField body="last_name" type="string" required>
+  Guest's last name
+</ParamField>
+
+<ParamField body="email" type="email" required>
+  Guest's email address
+</ParamField>
+
+<ParamField body="phone_number" type="string" required>
+  Guest's contact phone number
+</ParamField>
+
+<ParamField body="arrival_date" type="date" required>
+  Planned arrival date (YYYY-MM-DD)
+</ParamField>
+
+<ParamField body="adults" type="integer" required>
+  Number of adult guests
+</ParamField>
+
+<ParamField body="kids" type="integer" required>
+  Number of children
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X POST https://yourdomain.com/bookings/update/456 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com",
+    "phone_number": "+1234567890",
+    "arrival_date": "2026-06-20",
+    "adults": 2,
+    "kids": 2
+  }'
+```
+
+### Response
+
+Redirects to bookings list with success message: "Booking updated successfully!"
+
+---
+
+## Delete Booking
+
+<api method="DELETE" path="/bookings/delete/{id}" />
+
+Permanently delete a booking.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique booking ID
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X DELETE https://yourdomain.com/bookings/delete/456 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to bookings list with success message: "Booking deleted successfully!"
+
+---
+
+## Confirm/Unconfirm Booking
+
+<api method="DELETE" path="/bookings/publish/{id}" />
+
+Toggle the confirmation status of a booking.
+
+<Note>
+  Despite the route name "publish", this actually controls the booking confirmation status. The HTTP method is DELETE but it performs an update operation.
+</Note>
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  The unique booking ID
+</ParamField>
+
+### Behavior
+
+- If `status = 0`, sets to `1` (confirmed)
+- If `status = 1`, sets to `0` (pending)
+
+### Example Request
+
+```bash
+curl -X DELETE https://yourdomain.com/bookings/publish/456 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-CSRF-TOKEN: YOUR_CSRF_TOKEN"
+```
+
+### Response
+
+Redirects to bookings list with success message: "Booking deleted successfully!" (Note: This message is misleading - the booking is not deleted, only its status is toggled)
+
+---
+
+## User Profile with Bookings
+
+<api method="GET" path="/profile" />
+
+View the authenticated user's profile and their booking history.
+
+### Authentication
+
+<Note>
+  Requires authentication and verified email
+</Note>
+
+**Middleware:** `auth`, `verified`
+
+### Response
+
+Returns paginated list of bookings (10 per page) for the authenticated user only.
+
+### Example Request
+
+```bash
+curl https://yourdomain.com/profile \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Cookie: laravel_session=YOUR_SESSION"
+```
