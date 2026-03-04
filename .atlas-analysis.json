@@ -1,0 +1,118 @@
+{
+  "projectType": "saas",
+  "projectName": "Okulink Safaris",
+  "projectDescription": "A full-featured safari tour booking and management platform for Kenya tourism.",
+  "theme": "almond",
+  "primaryColor": "#9d4c35",
+  "lightColor": "#4f2d31",
+  "darkColor": "#e6d8cc",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["introduction", "quickstart", "installation"]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "features/tours-safaris",
+              "features/bookings",
+              "features/accommodations",
+              "features/events",
+              "features/products-services",
+              "features/blog"
+            ]
+          },
+          {
+            "group": "User Guide",
+            "pages": [
+              "user-guide/browsing-tours",
+              "user-guide/making-bookings",
+              "user-guide/user-account",
+              "user-guide/search"
+            ]
+          },
+          {
+            "group": "Admin Guide",
+            "pages": [
+              "admin-guide/dashboard",
+              "admin-guide/managing-tours",
+              "admin-guide/managing-bookings",
+              "admin-guide/content-management",
+              "admin-guide/categories",
+              "admin-guide/user-management"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["api/overview", "api/authentication"]
+          },
+          {
+            "group": "Routes",
+            "pages": [
+              "api/routes/tours",
+              "api/routes/bookings",
+              "api/routes/accommodations",
+              "api/routes/events",
+              "api/routes/products",
+              "api/routes/services",
+              "api/routes/blogs",
+              "api/routes/enquiries"
+            ]
+          },
+          {
+            "group": "Models",
+            "pages": [
+              "api/models/tours",
+              "api/models/booking",
+              "api/models/user",
+              "api/models/category"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Safari tour browsing and booking",
+    "User authentication with email verification",
+    "Admin dashboard for content management",
+    "Multi-category tour system",
+    "Accommodations and events management",
+    "Blog and media content",
+    "Enquiry and booking management",
+    "Products and services catalog",
+    "Search functionality"
+  ],
+  "publicApiSurface": [
+    "GET / - Home page",
+    "GET /safaris - Browse safaris",
+    "GET /tours/{category} - Tours by category",
+    "GET /tours/categories/{sub_category} - Tours by subcategory",
+    "GET /bookings/create/{destination} - Create booking",
+    "POST /bookings/new - Store booking",
+    "GET /accomodations - View accommodations",
+    "GET /accomodation/{slug} - View accommodation details",
+    "GET /events - View events",
+    "GET /event/{slug} - View event details",
+    "GET /products - View products",
+    "GET /product/{slug} - View product details",
+    "GET /services - View services",
+    "GET /service/{slug} - View service details",
+    "GET /blogs - View all blogs",
+    "GET /blogs/show/{id} - View blog post",
+    "POST /enquiries - Submit enquiry",
+    "GET /search - Search tours",
+    "Auth::routes - Authentication routes (login, register, password reset)",
+    "GET /dashboard - Admin dashboard",
+    "GET /profile - User profile"
+  ]
+}
