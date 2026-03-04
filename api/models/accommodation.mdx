@@ -1,0 +1,114 @@
+---
+title: Accommodation model
+description: Database schema and structure for accommodations
+---
+
+The Accommodation model represents lodging options including hotels, lodges, and camps.
+
+## Table Structure
+
+The `accomodations` table (note the spelling in the database) stores accommodation listings.
+
+### Fields
+
+<ResponseField name="id" type="integer">
+  Unique identifier for the accommodation
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Accommodation name
+</ResponseField>
+
+<ResponseField name="description" type="text">
+  Detailed accommodation description
+</ResponseField>
+
+<ResponseField name="location" type="string">
+  Accommodation location
+</ResponseField>
+
+<ResponseField name="category" type="string">
+  Accommodation category (hotel, lodge, camp, etc.)
+</ResponseField>
+
+<ResponseField name="rates" type="text">
+  Pricing information and rates
+</ResponseField>
+
+<ResponseField name="slug" type="string">
+  URL-friendly identifier for the accommodation
+</ResponseField>
+
+<ResponseField name="image" type="text">
+  Primary image URL
+</ResponseField>
+
+<ResponseField name="image2" type="string">
+  Second image URL (optional)
+</ResponseField>
+
+<ResponseField name="image3" type="string">
+  Third image URL (optional)
+</ResponseField>
+
+<ResponseField name="image4" type="string">
+  Fourth image URL (optional)
+</ResponseField>
+
+<ResponseField name="image5" type="string">
+  Fifth image URL (optional)
+</ResponseField>
+
+<ResponseField name="image6" type="string">
+  Sixth image URL (optional)
+</ResponseField>
+
+<ResponseField name="user_id" type="integer">
+  ID of the user who created the accommodation listing
+</ResponseField>
+
+<ResponseField name="published" type="integer">
+  Publication status (0 = unpublished, 1 = published)
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the accommodation was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the accommodation was last updated
+</ResponseField>
+
+## Fillable Fields
+
+The following fields are mass-assignable:
+
+- `name`
+- `location`
+- `description`
+- `category`
+- `rates`
+
+## Example JSON
+
+```json
+{
+  "id": 1,
+  "name": "Mara Serena Safari Lodge",
+  "description": "Luxury lodge overlooking the Maasai Mara plains",
+  "location": "Maasai Mara",
+  "category": "Lodge",
+  "rates": "$300 per night (double occupancy)",
+  "slug": "mara-serena-safari-lodge",
+  "image": "/storage/accommodations/mara-serena-main.jpg",
+  "image2": "/storage/accommodations/mara-serena-room.jpg",
+  "image3": "/storage/accommodations/mara-serena-dining.jpg",
+  "image4": null,
+  "image5": null,
+  "image6": null,
+  "user_id": 1,
+  "published": 1,
+  "created_at": "2024-01-08T12:00:00.000000Z",
+  "updated_at": "2024-01-08T12:00:00.000000Z"
+}
+```

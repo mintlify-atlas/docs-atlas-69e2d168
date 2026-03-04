@@ -1,0 +1,212 @@
+---
+title: Categories routes
+description: API endpoints for managing tour categories and subcategories
+---
+
+Manage the hierarchical category system for organizing tours.
+
+## List all categories
+
+<Note>Public route - no authentication required</Note>
+
+```http
+GET /categories
+```
+
+Retrieve all categories.
+
+**Route name**: `categories`
+
+### Response
+
+<ResponseField name="categories" type="array">
+  Array of category objects
+  <Expandable title="category object">
+    <ResponseField name="id" type="integer">
+      Category ID
+    </ResponseField>
+    <ResponseField name="category_name" type="string">
+      Main category name
+    </ResponseField>
+    <ResponseField name="sub_category_option1" type="string">
+      First subcategory option
+    </ResponseField>
+    <ResponseField name="sub_category_option2" type="string">
+      Second subcategory option
+    </ResponseField>
+    <ResponseField name="sub_category_option3" type="string">
+      Third subcategory option
+    </ResponseField>
+    <ResponseField name="created_at" type="timestamp">
+      Creation timestamp
+    </ResponseField>
+    <ResponseField name="updated_at" type="timestamp">
+      Last update timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash cURL
+curl https://your-domain.com/categories
+```
+
+## Create category form
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+GET /category/create
+```
+
+Display the category creation form (admin only).
+
+**Route name**: `category.create`
+
+**Middleware**: `auth`, `verified`
+
+## Store new category
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+POST /category/new
+```
+
+Create a new category with subcategories.
+
+**Route name**: `category.store`
+
+**Middleware**: `auth`, `verified`
+
+### Request Body
+
+<ParamField body="category_name" type="string" required>
+  Main category name
+</ParamField>
+
+<ParamField body="sub_category_option1" type="string">
+  First subcategory name (optional)
+</ParamField>
+
+<ParamField body="sub_category_option2" type="string">
+  Second subcategory name (optional)
+</ParamField>
+
+<ParamField body="sub_category_option3" type="string">
+  Third subcategory name (optional)
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/category/new \
+  -H "Content-Type: application/json" \
+  -d '{
+    "category_name": "Wildlife Safari",
+    "sub_category_option1": "Big Five Safari",
+    "sub_category_option2": "Bird Watching",
+    "sub_category_option3": "Night Safari"
+  }'
+```
+
+## Edit category form
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+GET /category/edit/{id}
+```
+
+Display the category edit form.
+
+**Route name**: `category.edit`
+
+**Middleware**: `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Category ID
+</ParamField>
+
+## Update category
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+POST /category/update/{id}
+```
+
+Update an existing category.
+
+**Route name**: `category.update`
+
+**Middleware**: `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Category ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="category_name" type="string">
+  Main category name
+</ParamField>
+
+<ParamField body="sub_category_option1" type="string">
+  First subcategory name
+</ParamField>
+
+<ParamField body="sub_category_option2" type="string">
+  Second subcategory name
+</ParamField>
+
+<ParamField body="sub_category_option3" type="string">
+  Third subcategory name
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/category/update/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "category_name": "Wildlife Safari",
+    "sub_category_option1": "Big Five Safari",
+    "sub_category_option2": "Bird Watching Safari"
+  }'
+```
+
+## Delete category
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+DELETE /category/delete/{id}
+```
+
+Delete a category.
+
+**Route name**: `category.delete`
+
+**Middleware**: `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Category ID to delete
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X DELETE https://your-domain.com/category/delete/1
+```
+
+<Warning>
+Deleting a category may affect tours that are assigned to this category. Ensure no tours reference this category before deletion.
+</Warning>

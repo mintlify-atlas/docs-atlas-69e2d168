@@ -1,0 +1,50 @@
+---
+title: Video model
+description: Database schema and structure for videos
+---
+
+The Video model represents embedded videos (typically YouTube) displayed on the platform.
+
+## Table Structure
+
+The `videos` table stores video information for media content.
+
+### Fields
+
+<ResponseField name="id" type="integer">
+  Unique identifier for the video
+</ResponseField>
+
+<ResponseField name="name" type="text">
+  Video name or title
+</ResponseField>
+
+<ResponseField name="url" type="text">
+  YouTube video URL
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the video was added
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the video was last updated
+</ResponseField>
+
+## Fillable Fields
+
+The following field is mass-assignable:
+
+- `url`
+
+## Example JSON
+
+```json
+{
+  "id": 1,
+  "name": "Maasai Mara Wildlife Tour",
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "created_at": "2024-01-10T09:45:00.000000Z",
+  "updated_at": "2024-01-10T09:45:00.000000Z"
+}
+```

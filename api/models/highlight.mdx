@@ -1,0 +1,43 @@
+---
+title: Highlight model
+description: Database schema and structure for homepage highlights
+---
+
+The Highlight model represents featured images displayed in the homepage carousel.
+
+## Table Structure
+
+The `highlights` table stores featured images for the homepage slider/carousel.
+
+### Fields
+
+<ResponseField name="id" type="integer">
+  Unique identifier for the highlight
+</ResponseField>
+
+<ResponseField name="image" type="text">
+  Image URL for the highlight
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the highlight was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the highlight was last updated
+</ResponseField>
+
+## Fillable Fields
+
+No fillable fields are explicitly defined in the model.
+
+## Example JSON
+
+```json
+{
+  "id": 1,
+  "image": "/storage/highlights/masai-mara-hero.jpg",
+  "created_at": "2024-01-01T00:00:00.000000Z",
+  "updated_at": "2024-01-01T00:00:00.000000Z"
+}
+```

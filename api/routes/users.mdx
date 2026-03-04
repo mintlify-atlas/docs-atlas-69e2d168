@@ -1,0 +1,193 @@
+---
+title: Users routes
+description: API endpoints for user management
+---
+
+Manage user accounts and credentials (admin only).
+
+## List all users
+
+<Note>Public route but intended for admin use</Note>
+
+```http
+GET /users
+```
+
+Retrieve all registered users.
+
+**Route name**: `users`
+
+### Response
+
+<ResponseField name="users" type="array">
+  Array of user objects
+  <Expandable title="user object">
+    <ResponseField name="id" type="integer">
+      User ID
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      User's full name
+    </ResponseField>
+    <ResponseField name="email" type="string">
+      User's email address
+    </ResponseField>
+    <ResponseField name="email_verified_at" type="timestamp" nullable>
+      Email verification timestamp
+    </ResponseField>
+    <ResponseField name="isAdmin" type="integer">
+      Admin flag (1 = admin, 0 = regular user)
+    </ResponseField>
+    <ResponseField name="created_at" type="timestamp">
+      Account creation timestamp
+    </ResponseField>
+    <ResponseField name="updated_at" type="timestamp">
+      Last update timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Note>The `password` and `remember_token` fields are hidden and not returned in responses.</Note>
+
+### Example Request
+
+```bash cURL
+curl https://your-domain.com/users
+```
+
+## Get user update form
+
+<Note>Public route but intended for admin use</Note>
+
+```http
+GET /users/update-user/{id}
+```
+
+Display the user update form.
+
+**Route name**: `updatePage`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  User ID
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl https://your-domain.com/users/update-user/1
+```
+
+## Update user
+
+<Note>Public route but intended for admin use</Note>
+
+```http
+POST /users/update/{id}
+```
+
+Update a user's credentials.
+
+**Route name**: `updateUser`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  User ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="name" type="string">
+  User's full name
+</ParamField>
+
+<ParamField body="email" type="string">
+  User's email address
+</ParamField>
+
+<ParamField body="password" type="string">
+  New password (optional - only if changing password)
+</ParamField>
+
+<ParamField body="password_confirmation" type="string">
+  Password confirmation (required if changing password)
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/users/update/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "password": "newpassword123",
+    "password_confirmation": "newpassword123"
+  }'
+```
+
+<Note>
+Passwords are automatically hashed using bcrypt before storage.
+</Note>
+
+## Delete user
+
+<Note>Public route but intended for admin use</Note>
+
+```http
+DELETE /users/delete
+```
+
+Delete a user account.
+
+**Route name**: `deleteUser`
+
+### Request Body
+
+<ParamField body="id" type="integer" required>
+  User ID to delete
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X DELETE https://your-domain.com/users/delete \
+  -H "Content-Type: application/json" \
+  -d '{"id": 1}'
+```
+
+<Warning>
+Deleting a user account is permanent and will remove all associated data. This action cannot be undone.
+</Warning>
+
+## User profile
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+GET /profile
+```
+
+View the authenticated user's profile and bookings.
+
+**Route name**: `profile`
+
+**Middleware**: `auth`, `verified`
+
+### Response
+
+<ResponseField name="user" type="object">
+  Current user's information
+</ResponseField>
+
+<ResponseField name="bookings" type="array">
+  User's booking history
+</ResponseField>
+
+### Example Request
+
+```bash cURL
+curl https://your-domain.com/profile \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```

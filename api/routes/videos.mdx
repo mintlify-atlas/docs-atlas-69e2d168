@@ -1,0 +1,171 @@
+---
+title: Videos routes
+description: API endpoints for managing video content
+---
+
+Manage embedded YouTube videos displayed on the platform.
+
+## List all videos
+
+<Note>Public route - no authentication required</Note>
+
+```http
+GET /videos
+```
+
+Retrieve all videos in the system.
+
+### Response
+
+<ResponseField name="videos" type="array">
+  Array of video objects
+  <Expandable title="video object">
+    <ResponseField name="id" type="integer">
+      Video ID
+    </ResponseField>
+    <ResponseField name="name" type="text">
+      Video name/title
+    </ResponseField>
+    <ResponseField name="url" type="text">
+      YouTube URL
+    </ResponseField>
+    <ResponseField name="created_at" type="timestamp">
+      Creation timestamp
+    </ResponseField>
+    <ResponseField name="updated_at" type="timestamp">
+      Last update timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash cURL
+curl https://your-domain.com/videos
+```
+
+## Create video form
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+GET /videos/create
+```
+
+Display the video creation form (admin only).
+
+**Middleware**: `auth`, `verified`
+
+## Store new video
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+POST /videos/store
+```
+
+Create a new video entry.
+
+**Middleware**: `auth`, `verified`
+
+### Request Body
+
+<ParamField body="name" type="text" required>
+  Video name or title
+</ParamField>
+
+<ParamField body="url" type="text" required>
+  YouTube video URL
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/videos/store \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Maasai Mara Safari Tour",
+    "url": "https://www.youtube.com/watch?v=example"
+  }'
+```
+
+## Edit video form
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+GET /videos/edit/{id}
+```
+
+Display the video edit form.
+
+**Middleware**: `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Video ID
+</ParamField>
+
+## Update video
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+POST /videos/update/{id}
+```
+
+Update an existing video.
+
+**Middleware**: `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Video ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="name" type="text">
+  Video name or title
+</ParamField>
+
+<ParamField body="url" type="text">
+  YouTube video URL
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/videos/update/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Updated Video Title",
+    "url": "https://www.youtube.com/watch?v=newurl"
+  }'
+```
+
+## Delete video
+
+<Note>Requires authentication and email verification</Note>
+
+```http
+DELETE /videos/delete/{id}
+```
+
+Delete a video.
+
+**Middleware**: `auth`, `verified`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Video ID to delete
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X DELETE https://your-domain.com/videos/delete/1
+```

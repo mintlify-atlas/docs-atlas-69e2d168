@@ -1,0 +1,131 @@
+---
+title: Event model
+description: Database schema and structure for events
+---
+
+The Event model represents scheduled events and activities in the Okulink Safaris platform.
+
+## Table Structure
+
+The `events` table stores event information with scheduling and pricing details.
+
+### Fields
+
+<ResponseField name="id" type="integer">
+  Unique identifier for the event
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name of the event
+</ResponseField>
+
+<ResponseField name="description" type="text">
+  Detailed description of the event
+</ResponseField>
+
+<ResponseField name="location" type="string">
+  Event location
+</ResponseField>
+
+<ResponseField name="category" type="string">
+  Event category or type
+</ResponseField>
+
+<ResponseField name="when" type="date">
+  Date when the event takes place
+</ResponseField>
+
+<ResponseField name="starts" type="time">
+  Start time of the event
+</ResponseField>
+
+<ResponseField name="ends" type="time">
+  End time of the event
+</ResponseField>
+
+<ResponseField name="price" type="decimal">
+  Event ticket price
+</ResponseField>
+
+<ResponseField name="slug" type="string">
+  URL-friendly identifier for the event
+</ResponseField>
+
+<ResponseField name="image" type="text">
+  Primary image URL
+</ResponseField>
+
+<ResponseField name="image2" type="string">
+  Second image URL (optional)
+</ResponseField>
+
+<ResponseField name="image3" type="string">
+  Third image URL (optional)
+</ResponseField>
+
+<ResponseField name="image4" type="string">
+  Fourth image URL (optional)
+</ResponseField>
+
+<ResponseField name="image5" type="string">
+  Fifth image URL (optional)
+</ResponseField>
+
+<ResponseField name="image6" type="string">
+  Sixth image URL (optional)
+</ResponseField>
+
+<ResponseField name="user_id" type="integer">
+  ID of the user who created the event
+</ResponseField>
+
+<ResponseField name="published" type="integer">
+  Publication status (0 = unpublished, 1 = published)
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the event was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the event was last updated
+</ResponseField>
+
+## Fillable Fields
+
+The following fields are mass-assignable:
+
+- `name`
+- `location`
+- `description`
+- `category`
+- `when`
+- `starts`
+- `ends`
+
+## Example JSON
+
+```json
+{
+  "id": 1,
+  "name": "Maasai Mara Migration Tour",
+  "description": "Experience the great wildebeest migration in Maasai Mara",
+  "location": "Maasai Mara National Reserve",
+  "category": "Wildlife Safari",
+  "when": "2024-07-15",
+  "starts": "06:00:00",
+  "ends": "18:00:00",
+  "price": 250.00,
+  "slug": "maasai-mara-migration-tour",
+  "image": "/storage/events/migration.jpg",
+  "image2": null,
+  "image3": null,
+  "image4": null,
+  "image5": null,
+  "image6": null,
+  "user_id": 1,
+  "published": 1,
+  "created_at": "2024-01-10T09:00:00.000000Z",
+  "updated_at": "2024-01-10T09:00:00.000000Z"
+}
+```

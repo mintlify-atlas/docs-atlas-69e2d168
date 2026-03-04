@@ -1,0 +1,118 @@
+---
+title: Product model
+description: Database schema and structure for products
+---
+
+The Product model represents physical products and merchandise available in the Okulink Safaris platform.
+
+## Table Structure
+
+The `products` table stores product information with inventory tracking.
+
+### Fields
+
+<ResponseField name="id" type="integer">
+  Unique identifier for the product
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Product name
+</ResponseField>
+
+<ResponseField name="description" type="text">
+  Detailed product description
+</ResponseField>
+
+<ResponseField name="location" type="string">
+  Product location or origin
+</ResponseField>
+
+<ResponseField name="category" type="string">
+  Product category
+</ResponseField>
+
+<ResponseField name="price" type="decimal">
+  Product price
+</ResponseField>
+
+<ResponseField name="quantity_available" type="integer">
+  Available inventory quantity
+</ResponseField>
+
+<ResponseField name="slug" type="string">
+  URL-friendly identifier for the product
+</ResponseField>
+
+<ResponseField name="image" type="text">
+  Primary image URL
+</ResponseField>
+
+<ResponseField name="image2" type="string">
+  Second image URL (optional)
+</ResponseField>
+
+<ResponseField name="image3" type="string">
+  Third image URL (optional)
+</ResponseField>
+
+<ResponseField name="image4" type="string">
+  Fourth image URL (optional)
+</ResponseField>
+
+<ResponseField name="image5" type="string">
+  Fifth image URL (optional)
+</ResponseField>
+
+<ResponseField name="image6" type="string">
+  Sixth image URL (optional)
+</ResponseField>
+
+<ResponseField name="user_id" type="integer">
+  ID of the user who created the product listing
+</ResponseField>
+
+<ResponseField name="published" type="integer">
+  Publication status (0 = unpublished, 1 = published)
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the product was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the product was last updated
+</ResponseField>
+
+## Fillable Fields
+
+The following fields are mass-assignable:
+
+- `name`
+- `location`
+- `description`
+- `category` (note: there's a space before "category" in the source code)
+
+## Example JSON
+
+```json
+{
+  "id": 1,
+  "name": "Safari Hat",
+  "description": "Wide-brimmed sun protection hat perfect for safari adventures",
+  "location": "Nairobi",
+  "category": "Apparel",
+  "price": 25.00,
+  "quantity_available": 50,
+  "slug": "safari-hat",
+  "image": "/storage/products/safari-hat.jpg",
+  "image2": "/storage/products/safari-hat-side.jpg",
+  "image3": null,
+  "image4": null,
+  "image5": null,
+  "image6": null,
+  "user_id": 1,
+  "published": 1,
+  "created_at": "2024-01-05T11:20:00.000000Z",
+  "updated_at": "2024-01-15T16:30:00.000000Z"
+}
+```

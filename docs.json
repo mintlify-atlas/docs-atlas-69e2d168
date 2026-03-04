@@ -78,7 +78,11 @@
               "api/routes/products",
               "api/routes/services",
               "api/routes/blogs",
-              "api/routes/enquiries"
+              "api/routes/enquiries",
+              "api/routes/categories",
+              "api/routes/users",
+              "api/routes/videos",
+              "api/routes/highlights"
             ]
           },
           {
@@ -86,6 +90,14 @@
             "pages": [
               "api/models/tours",
               "api/models/booking",
+              "api/models/accommodation",
+              "api/models/event",
+              "api/models/product",
+              "api/models/service",
+              "api/models/blog",
+              "api/models/enquiry",
+              "api/models/video",
+              "api/models/highlight",
               "api/models/user",
               "api/models/category"
             ]

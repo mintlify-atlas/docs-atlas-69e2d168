@@ -1,0 +1,186 @@
+---
+title: Highlights routes
+description: API endpoints for managing homepage carousel highlights
+---
+
+Manage featured images displayed in the homepage carousel using Laravel's resource controller.
+
+<Note>
+Highlights use Laravel's `Route::resource()` pattern, which automatically creates standard CRUD routes.
+</Note>
+
+## List all highlights
+
+```http
+GET /highlights
+```
+
+Retrieve all highlight images.
+
+**Route name**: `highlights.index`
+
+### Response
+
+<ResponseField name="highlights" type="array">
+  Array of highlight objects
+  <Expandable title="highlight object">
+    <ResponseField name="id" type="integer">
+      Highlight ID
+    </ResponseField>
+    <ResponseField name="image" type="text">
+      Image URL
+    </ResponseField>
+    <ResponseField name="created_at" type="timestamp">
+      Creation timestamp
+    </ResponseField>
+    <ResponseField name="updated_at" type="timestamp">
+      Last update timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Request
+
+```bash cURL
+curl https://your-domain.com/highlights
+```
+
+## Create highlight form
+
+```http
+GET /highlights/create
+```
+
+Display the highlight creation form.
+
+**Route name**: `highlights.create`
+
+## Store new highlight
+
+```http
+POST /highlights
+```
+
+Create a new highlight.
+
+**Route name**: `highlights.store`
+
+### Request Body
+
+<ParamField body="image" type="file" required>
+  Image file for the highlight (JPEG, PNG, etc.)
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X POST https://your-domain.com/highlights \
+  -F "image=@/path/to/image.jpg"
+```
+
+## Show highlight
+
+```http
+GET /highlights/{id}
+```
+
+Display a specific highlight.
+
+**Route name**: `highlights.show`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Highlight ID
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl https://your-domain.com/highlights/1
+```
+
+## Edit highlight form
+
+```http
+GET /highlights/{id}/edit
+```
+
+Display the highlight edit form.
+
+**Route name**: `highlights.edit`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Highlight ID
+</ParamField>
+
+## Update highlight
+
+```http
+PUT /highlights/{id}
+```
+
+or
+
+```http
+PATCH /highlights/{id}
+```
+
+Update an existing highlight.
+
+**Route name**: `highlights.update`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Highlight ID
+</ParamField>
+
+### Request Body
+
+<ParamField body="image" type="file">
+  New image file for the highlight
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X PUT https://your-domain.com/highlights/1 \
+  -F "image=@/path/to/new-image.jpg"
+```
+
+## Delete highlight
+
+```http
+DELETE /highlights/{id}
+```
+
+Delete a highlight.
+
+**Route name**: `highlights.destroy`
+
+### Path Parameters
+
+<ParamField path="id" type="integer" required>
+  Highlight ID to delete
+</ParamField>
+
+### Example Request
+
+```bash cURL
+curl -X DELETE https://your-domain.com/highlights/1
+```
+
+## Resource Route Summary
+
+| Method | URI | Name | Action |
+|--------|-----|------|--------|
+| GET | /highlights | highlights.index | Display all highlights |
+| GET | /highlights/create | highlights.create | Show create form |
+| POST | /highlights | highlights.store | Store new highlight |
+| GET | /highlights/{id} | highlights.show | Show specific highlight |
+| GET | /highlights/{id}/edit | highlights.edit | Show edit form |
+| PUT/PATCH | /highlights/{id} | highlights.update | Update highlight |
+| DELETE | /highlights/{id} | highlights.destroy | Delete highlight |

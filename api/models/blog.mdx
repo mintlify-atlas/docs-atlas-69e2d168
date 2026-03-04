@@ -1,0 +1,96 @@
+---
+title: Blog model
+description: Database schema and structure for blog posts
+---
+
+The Blog model represents blog posts and articles in the Okulink Safaris platform.
+
+## Table Structure
+
+The `blogs` table stores all blog content with support for multiple images.
+
+### Fields
+
+<ResponseField name="id" type="integer">
+  Unique identifier for the blog post
+</ResponseField>
+
+<ResponseField name="title" type="text">
+  The title of the blog post
+</ResponseField>
+
+<ResponseField name="content" type="text">
+  The HTML content of the blog post
+</ResponseField>
+
+<ResponseField name="image" type="text">
+  Primary image URL for the blog post
+</ResponseField>
+
+<ResponseField name="image2" type="string">
+  Second image URL (optional)
+</ResponseField>
+
+<ResponseField name="image3" type="string">
+  Third image URL (optional)
+</ResponseField>
+
+<ResponseField name="image4" type="string">
+  Fourth image URL (optional)
+</ResponseField>
+
+<ResponseField name="image5" type="string">
+  Fifth image URL (optional)
+</ResponseField>
+
+<ResponseField name="image6" type="string">
+  Sixth image URL (optional)
+</ResponseField>
+
+<ResponseField name="user_id" type="integer">
+  ID of the user who created the blog post
+</ResponseField>
+
+<ResponseField name="published" type="integer">
+  Publication status (0 = draft, 1 = published)
+</ResponseField>
+
+<ResponseField name="created_at" type="timestamp">
+  Timestamp when the blog post was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="timestamp">
+  Timestamp when the blog post was last updated
+</ResponseField>
+
+## Fillable Fields
+
+The following fields are mass-assignable:
+
+- `image`
+- `title`
+- `content`
+
+## Relationships
+
+- **Belongs to**: User (via `user_id`)
+
+## Example JSON
+
+```json
+{
+  "id": 1,
+  "title": "Top 10 Safari Destinations in Kenya",
+  "content": "<p>Kenya offers some of the world's most spectacular safari experiences...</p>",
+  "image": "/storage/blogs/masai-mara-sunset.jpg",
+  "image2": "/storage/blogs/masai-mara-wildlife.jpg",
+  "image3": "/storage/blogs/masai-mara-landscape.jpg",
+  "image4": null,
+  "image5": null,
+  "image6": null,
+  "user_id": 1,
+  "published": 1,
+  "created_at": "2024-01-15T10:30:00.000000Z",
+  "updated_at": "2024-01-20T14:45:00.000000Z"
+}
+```
